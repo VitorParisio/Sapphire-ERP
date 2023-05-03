@@ -1,0 +1,596 @@
+::-webkit-scrollbar {
+  width: 7px;
+
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(185, 185, 185); 
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: rgb(175, 175, 175); 
+  
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f6792; 
+}
+
+::placeholder
+{
+    font-weight: 100;
+    font-style: italic;
+}
+
+/* -------------------- NFe CSS ------------------------ */
+.tb_notas_fiscais{
+    width: 100%;
+    text-align: center;
+}
+
+.list_produto_add ul,
+.prod_add ul{
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+
+/* ----------------------------------------------------- */
+
+
+/* -------------------- CATEGORIA CSS ------------------------ */
+
+.categorias_produto{
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.categorias_produto > .lista_categoria{
+    flex: 2;
+    height: 360px;
+    overflow: auto;
+}
+
+.lista_categoria .tb_categorias{
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+.lista_categoria .tb_categorias thead th{
+    font-size: 13px;
+    background: teal;
+    color: #FFF;
+    text-align: center;
+    height: 30px;
+}
+
+.lista_categoria .tb_categorias tbody td{
+    text-align: center;
+}
+
+.categorias_produto > .adicionar_categoria{
+    display: flex;
+    flex-direction: column;
+    background: #e2e2e2;
+    width: 245px;
+}
+
+.categorias_produto .adicionar_categoria .header_card_categoria
+{
+    text-align: center;
+    border-bottom: 1px solid;
+    background: teal;
+    color: #FFF;
+    padding: 7px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.categorias_produto .adicionar_categoria div:nth-child(2)
+{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    height: 271px;
+}
+
+.categorias_produto .adicionar_categoria div:nth-child(2) label
+{
+    font-size: 15px;
+    text-align: left;
+}
+
+.categorias_produto .adicionar_categoria .btn_add_categoria
+{
+    border: none;
+    background: #3f6792;
+    padding: 6px;
+    margin-top: 0px;
+    color: #FFF;
+    position: an;
+    position: absolute;
+    bottom: 0;
+    margin: 29px 0px;
+}
+
+
+.categorias_produto .adicionar_categoria div:nth-child(2) input
+{
+   outline: none;
+   border: none;
+   border-bottom: 1px solid rgba(0,0,0,0.2);
+   height: 37px;
+   margin-bottom: 15px;
+}
+
+.categorias_produto .adicionar_categoria div:nth-child(2) textarea
+{
+   outline: none;
+   border: none;
+}
+
+.editar_categoria {
+    background-color: cadetblue;
+}
+
+.editar_categoria .dados_editar_categoria{
+    margin-bottom: 15px;
+    padding: 0 10px
+}
+
+.editar_categoria .dados_editar_categoria label{
+   color: #FFF;
+}
+
+.editar_categoria .edit_categoria_inputs input,
+.editar_categoria .edit_categoria_inputs textarea{
+    outline: none;
+    border: none;
+}
+
+.editar_categoria .edit_categoria_inputs {
+    display: flex;
+    align-items: center;
+
+}
+
+.editar_categoria form .btn_edit_categoria{
+    background: #3f6792;
+    color: #FFF;
+    border: none;
+    padding: 6px;
+    float: right;
+}
+
+.editar_categoria .edit_categoria_inputs div{
+
+}
+
+.editar_categoria .edit_categoria_inputs div:nth-child(1){
+    
+}
+
+.editar_categoria .edit_categoria_inputs div:nth-child(2){
+    
+}
+
+/* ----------------------------------------------------- */
+
+
+/* -------------------- PRODUTOS CSS ------------------------ */
+.cadastro_empresas_inputs label,
+.cadastro_produtos_inputs label,
+.cadastro_clientes_inputs label
+{
+    font-weight: 100 !important;
+}
+
+.detalhes_produto,.editar_produto{
+    display: flex;
+}
+
+.detalhes_produto > div:nth-child(1){
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align:center;
+    border-right: 1px solid rgba(0,0,0,0.2);
+    margin-right: 15px;
+}
+
+
+.detalhes_produto > :nth-child(1) .img_detalhe > img{
+    width: 165px !important;
+    height: 205px !important;
+    margin-top: 35px;
+}
+
+.detalhes_produto > div:nth-child(1) > span:nth-child(1)
+{
+    font-size: 22px;
+}
+
+
+.editar_produto .img_editar > img {
+    width: 165px !important;
+    height: 205px !important;
+    margin-top: 0;
+}
+
+.detalhes_produto .fa-image,
+.editar_produto .fa-image {
+    font-size: 137px !important;
+    padding: 10px;
+}
+
+.detalhes_produto > .dados_detalhe,
+.editar_produto > .dados_editar {
+    width: 100%;
+}
+
+.detalhes_produto > .dados_detalhe div{
+    margin: 2px 0;
+}
+
+.detalhes_produto > .dados_detalhe > .produto_detalhe {
+    font-size: 40px;
+    font-weight: bold;
+    font-family: cursive;
+    display: flex;
+    justify-content: center;
+}
+
+.detalhes_produto > .dados_detalhe  .cod_barra_detalhe,
+.detalhes_produto > .dados_detalhe  .preco_venda_detalhe,
+.detalhes_produto > .dados_detalhe  .descricao_detalhe {
+    text-align: right;
+    float: right;
+    width: 150px;
+}
+
+.detalhes_produto > .dados_detalhe  label,
+.editar_produto > .dados_editar  label{
+   display: block;
+   font-weight: 100 !important;
+}
+
+.editar_produto > .dados_editar > form > button {
+    position: relative;
+    float: right;
+    margin-top: 20px;
+ }
+
+.editar_produto > div > form > input[type="file"],
+
+#img_produto_input, #file_empresa_input{
+    display: none;
+}
+
+.img_produto_input, 
+.file_empresa_input,
+.cadastro_clientes_inputs{
+    display: flex;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    align-items: center;
+    justify-self: center;
+}
+
+.img_produto_input > span:nth-child(1),
+.file_empresa_input > span:nth-child(1){
+    cursor: pointer;
+    background: teal;
+    color: #FFF;
+    padding: 2px 4px;
+}
+
+.img_produto_input > span:nth-child(2),
+.file_empresa_input > span:nth-child(2){
+    width: 100%;
+    cursor: pointer;
+    color: #615e5e;
+    font-size: 13px;
+    font-style: italic;
+    text-align: center;
+}
+
+.editar_produto > div > form > label{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 69px 38px;
+    background: #525e6a;
+    color: #FFF;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.lista_produto{
+    box-shadow: 0px 2px 0px 1px rgba(0,0,0,0.2);
+}
+
+.lista_produto thead th{
+    font-size: 13px;
+    background: teal;
+    color: #FFF;
+    text-align: center;
+    height: 30px;
+}
+
+.lista_produto tbody td{
+    
+}
+
+.preco_custo_detalhe, .preco_venda_detalhe, 
+.estoque_detalhe, .descricao_detalhe,
+.unidade_detalhe, .validade_detalhe,
+.id_detalhe, .cod_barra_detalhe {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.produto_editar, .preco_compra_editar, .preco_venda_editar, 
+.estoque_editar, .descricao_editar,
+.unidade_editar, .validade_editar,
+.id_editar, .cod_barra_editar {
+    width: 140px;
+    text-align: center;
+}
+* -------------------------------------------- */
+
+/* -------------------- ITEM CSS ------------------------ */
+
+.total_itens{
+    margin: -21px;
+}
+
+.tb_total_itens{
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+.tb_total_itens thead th{
+    font-size: 13px;
+    background: teal;
+    color: #FFF;
+    text-align: center;
+    width: 0px;
+    height: 30px;
+}
+
+/* -------------------------------------------- */
+
+/* -------------------- VENDAS CSS ------------------------ */
+
+.dados_itens_venda{
+    height:363px;
+    background-color: #FFF;
+    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.4);
+    width: 287px;
+    text-align:center;
+}
+
+.dados_itens_venda .dados_descricao, .dados_qtd, 
+.dados_valor_unitario, .dados_subtotal{
+    display: flex; 
+    flex-direction: column;
+    width:100%;
+}
+
+.dados_itens_venda div{
+    margin-bottom: 25px;
+}
+
+.dados_itens_venda h3{
+    background-color:#3f6792; 
+    color:#FFF;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+
+.dados_itens_venda input{
+    height:35px;
+    font-size:20px;
+}
+
+.table_itens_vendas {
+    width: 100%;
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle
+}
+
+.table_itens_vendas > tbody > tr > td > img {
+    height:60px;
+}
+
+.pdv{
+    display:flex; 
+    justify-content:space-between;
+}
+
+.letreiro{
+    width:100%; 
+    height:47px; 
+    font-size:32px; 
+    text-align:center; 
+    margin-bottom:20px;
+    border:none;
+    background-color: #eceff1;
+}
+
+.letreiro::placeholder{
+    font-weight: bold;
+    letter-spacing: 20px;
+}
+
+#descricao, #qtd_produto, 
+#valor_unitario, #subtotal{
+    text-align:center;
+}
+
+.itens_vendas{
+    height: 450px;
+    width:67%;
+    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.4);
+    overflow: scroll;
+    overflow-x: hidden;
+    border:none;
+    margin-bottom: 5px;
+}
+
+.table_itens_vendas thead {
+    position: sticky;
+    top: 0px;
+    background-color:#007bff;
+    color:#FFF;
+}
+
+.table_itens_vendas tbody {
+   background-color: #FFF;
+}
+
+.total_venda {
+    font-size: 26px;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-left: 62px;
+    background: #008d7f;
+    color: #FFF;
+    padding: 0px 14px;
+    border:none;
+}
+
+.pagamento_pdv{
+    display: flex;
+    flex-direction: column;
+    width: 372px;
+    margin: 0 auto;
+}
+
+.pagamento_pdv div{
+    display: flex;
+}
+
+.pagamento_pdv input, .modal-footer input{
+    text-align:center;
+    height: 50px;
+}
+
+.pagamento_pdv .forma_pagamento{
+    text-transform: uppercase;
+    text-align:center;  
+    font-size: 20px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.table thead tr{
+    background: teal;
+}
+
+.table thead tr, tbody td{
+    text-align: center;
+}
+
+.lista_atalhos{
+   border:1px solid;
+}
+
+.lista_atalhos li{
+    margin-left: 10px;
+    display: inline;
+}
+
+.modal-footer .result_pagamento{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
+.modal-footer .result_pagamento label h2{
+    font-weight: bold;
+    background-color: darkblue;
+    color:#FFF;
+    font-family:cursive;
+    padding:10px
+}
+
+.modal-footer .result_pagamento label input{
+    height: 101px;
+    font-size: 35px;
+    width: 210px;
+    border:none;
+    border-radius: 10px;
+    background-color: #eceff1;
+}
+
+.model-footer .btn_finalizar_venda{
+    text-align: center;
+    width: 100%;
+    background-color: #223746;
+}
+
+/* -------------------------------------------- */
+
+/* --------------------Componentes CSS------------------------ */
+
+.tabcontainer {
+    float: left;
+    width: 100%;
+}
+
+.tabheading{
+    padding: 0;
+    background-color: #e3e3e3;
+    text-align: center;
+}
+
+.tabheading li.active {
+    background-color: #3f6792;
+    border-bottom: 0;
+}
+
+.tabheading li {
+    display: inline-block;
+    border: 1px solid #f5f5f5;
+    width: 200px;
+    text-align: center;
+    background-color: rgb(169 169 169 / 80%);
+    cursor:pointer;
+    margin: 10px 5px;
+    font-family: 'Font Awesome 5 Free';
+}
+
+.tabheading li a { 
+    padding: 0 2%; 
+    color:#FFF;
+}
+
+.tabbody.active {
+    display: block;
+}
+
+.tabbody {
+    float: left;
+    width: 100%;
+    display: none;
+}
+
+/* -------------------------------------------- */
+
