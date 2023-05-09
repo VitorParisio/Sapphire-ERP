@@ -73,7 +73,6 @@
       $('#qtd_produto').prop( "disabled", true );
       $('#valor_unitario').prop( "disabled", true );
       $('#subtotal').prop( "disabled", true );
-      $('#subtotal').prop( "disabled", true );
       $('#total').prop( "disabled", true );
       $('#troco').prop( "disabled", true );
       $('#total_pagamento').prop( "disabled", true );

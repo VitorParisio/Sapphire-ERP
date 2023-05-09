@@ -10,10 +10,10 @@
         <div class="modal-body">
           <div class="pagamento_pdv">
             <select id="forma_pagamento" class="form-control forma_pagamento">
-              <option value="Dinheiro">Dinheiro</option>
-              <option value="Cartão de Crédito">Cartão de Crédito</option>
-              <option value="Cartão de Débito">Cartão de Débito</option>
-              <option value="Pix">Pix</option>
+              <option value="01">Dinheiro</option>
+              <option value="02">Cheque</option>
+              <option value="03">Cartão de Crédito</option>
+              <option value="04">Cartão de Débito</option>
             </select>
             <div class="valor_desconto">
               <input type="text" class="form-control" id="valor_recebido" placeholder="A RECEBER" autocomplete="off">

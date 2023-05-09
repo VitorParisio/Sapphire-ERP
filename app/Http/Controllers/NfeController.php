@@ -15,6 +15,7 @@ use App\Models\Product;
 use App\Models\ItemVenda;
 use App\Models\PDV;
 use App\Models\Nfe;
+use App\Models\Venda;
 use NFePHP\Mail\Mail;
 use stdClass;
 use Exception;
@@ -30,37 +31,57 @@ class NfeController extends Controller
 
     public function index()
     {
-        $dados = Nfe::join('emitentes', 'emitentes.id','=', 'nves.emitente_id')
-        ->join('destinatarios', 'destinatarios.id','=', 'nves.destinatario_id')
-        ->join('item_vendas', 'item_vendas.id','=', 'nves.item_venda_id')
+        $dados = Nfe::join('destinatarios', 'destinatarios.id','=', 'nves.destinatario_id')
         ->select('*', 'nves.id AS nota_id')
         ->get();
-        
+
         return view('nfe.index', compact('dados'));
     }
 
     public function create()
-    {
-        $emitentes     = Emitente::all();
-        $destinatarios = Destinatario::all();
-        $produtos      = Product::all();
+    { 
+        $nota_fiscal = new Nfe();
+        $nota_fiscal->save();
 
-        return view('nfe.create', compact('emitentes', 'destinatarios', 'produtos'));
+        $emitentes      = Emitente::all();
+        $destinatarios  = Destinatario::all();
+        $produtos       = Product::all();
+        $id_nota_fiscal = $nota_fiscal->id;
+
+        return view('nfe.create', compact('emitentes', 'destinatarios', 'produtos', 'id_nota_fiscal'));
     }
 
     public function cadastraNfe(Request $request)
     {
-        $item = ItemVenda::where('product_id', $request->produto_id)->first();
-        
-        $nota_fiscal = new Nfe();
+        $data = $request->all();
 
-        $nota_fiscal->emitente_id     = $request->select_emitente;
-        $nota_fiscal->destinatario_id = $request->select_destinatario;
-        $nota_fiscal->item_venda_id   = $item->id;
-        $nota_fiscal->serie_nfe       = 1;
-        $nota_fiscal->nro_nfe         = 88;
-        $nota_fiscal->status_id       = 2;
-        $nota_fiscal->save();
+        
+        $valor_recebido_formatado = str_replace('.', '', $request->valor_recebido);
+        $total_venda_formatado    = str_replace('.', '', $request->total_venda);
+        //$desconto_formatado     = str_replace('.', '', $request->desconto);
+        $troco_formatado          = str_replace('.', '', $request->troco);
+
+        $data['valor_recebido'] = str_replace(',', '.', $valor_recebido_formatado);
+        $data['total_venda']    = str_replace(',', '.', $total_venda_formatado);
+        $data['troco']          = str_replace(',', '.', $troco_formatado);
+        $data['desconto']       = 0.00;
+        
+        $venda                  = new Venda();
+        $venda->nfe_id          = $request->nfe_id;
+        $venda->forma_pagamento = $request->forma_pagamento;
+        $venda->valor_recebido  = $data['valor_recebido'];
+        $venda->troco           = $data['troco'];
+        $venda->total_venda     = $data['total_venda'];
+        
+        $venda->save();
+
+        Nfe::where('id', $request->nfe_id)->update([
+            "status_id"       => 2,
+            "emitente_id"     => $request->select_emitente,
+            "destinatario_id" => $request->select_destinatario,
+            "serie_nfe"       => 1,
+            "nro_nfe"         => 90,
+        ]);  
 
         return response()->json(['message' => 'Nota fiscal gerada com sucesso.']);
 
@@ -70,14 +91,20 @@ class NfeController extends Controller
     {   
         
         $nota = Nfe::where('id', $id)->first();
-       
+      
         if($nota->status_id == 2)
         {
             $emitente     = Emitente::where('id', $nota->emitente_id)->first();
+
             $destinatario = Destinatario::where('id', $nota->destinatario_id)->first();
+
             $item         = ItemVenda::join('products', 'products.id', '=', 'item_vendas.product_id')
-            ->where('item_vendas.id', $nota->item_venda_id)->first();
-   
+            ->where('item_vendas.nfe_id', $id)->get();
+
+            $venda        = Venda::where("nfe_id", $id)
+            ->select('forma_pagamento', 'valor_recebido', 'troco')
+            ->first();
+            
             $config = [
                 "atualizacao" => date('Y-m-d h:i:s'), // Data e hora de atualização
                 "tpAmb"       => (int) $nota->ambiente, // Tipo de ambiente (1 - Produção, 2 - Homologação)
@@ -192,93 +219,98 @@ class NfeController extends Controller
             ##### FIM Node Destinatarios NFE ######
 
             //prod OBRIGATÓRIA
-            $stdProd = new stdClass();
-            $stdProd->item = $item->id;
-            $stdProd->cProd = $item->id;
-            $stdProd->cEAN = "SEM GTIN";
-            $stdProd->xProd = $item->nome;
-            $stdProd->NCM = $item->ncm;
-            //$stdProd->cBenef = 'ab222222';
-            $stdProd->EXTIPI = '';
-            $stdProd->CFOP = $item->cfop; //Vendas de produção própria ou de terceiros
-            $stdProd->uCom = $item->ucom;
-            $stdProd->qCom = $item->qtd;
-            $stdProd->vUnCom = $item->preco_venda;
-            $stdProd->vProd = $item->sub_total;
-            $stdProd->cEANTrib = "SEM GTIN"; //'6361425485451';
-            $stdProd->uTrib = $item->utrib;
-            $stdProd->qTrib = $item->qtd;
-            $stdProd->vUnTrib = $item->vuntrib;
-            $stdProd->indTot = $item->indTot;
-            $nfe->tagprod($stdProd);
-        
-            //Informações adicionais do produto
-            $tag = new stdClass();
-            $tag->item = $item->id;
-            $tag->infAdProd = $item->descricao;
-            $nfe->taginfAdProd($tag);
-        
-            //Imposto
-            $stdImposto = new stdClass();
-            $stdImposto->item = $item->id; //item da NFe
-            $stdImposto->vTotTrib = $item->sub_total;
-            $nfe->tagimposto($stdImposto);
+            $itens = 0;
+            foreach($item as $lisItem):
+                $itens++;
 
-            //ICMS 
-            $stdICMS = new stdClass();
-            $stdICMS->item = $item->id; //item da NFe
-            $stdICMS->orig = 0;
-            $stdICMS->CSOSN = 102;
-            $stdICMS->pCredSN = 0.00;
-            $stdICMS->vCredICMSSN = 0.00;
-            $stdICMS->modBCST = null;
-            $stdICMS->pMVAST = null;
-            $stdICMS->pRedBCST = null;
-            $stdICMS->vBCST = null;
-            $stdICMS->pICMSST = null;
-            $stdICMS->vICMSST = null;
-            $stdICMS->vBCFCPST = null; //incluso no layout 4.00
-            $stdICMS->pFCPST = null; //incluso no layout 4.00
-            $stdICMS->vFCPST = null; //incluso no layout 4.00
-            $stdICMS->vBCSTRet = null;
-            $stdICMS->pST = null;
-            $stdICMS->vICMSSTRet = null;
-            $stdICMS->vBCFCPSTRet = null; //incluso no layout 4.00
-            $stdICMS->pFCPSTRet = null; //incluso no layout 4.00
-            $stdICMS->vFCPSTRet = null; //incluso no layout 4.00
-            $stdICMS->modBC = null;
-            $stdICMS->vBC = null;
-            $stdICMS->pRedBC = null;
-            $stdICMS->pICMS = null;
-            $stdICMS->vICMS = null;
-            $stdICMS->pRedBCEfet = null;
-            $stdICMS->vBCEfet = null;
-            $stdICMS->pICMSEfet = null;
-            $stdICMS->vICMSEfet = null;
-            $stdICMS->vICMSSubstituto = null;
-            $nfe->tagICMSSN($stdICMS);
-           
-            //PIS
-            $stdPIS = new stdClass();
-            $stdPIS->item = $item->id; //item da NFe
-            $stdPIS->CST = '99';
-            //$stdPIS->vBC = 1200;
-            //$stdPIS->pPIS = 0;
-            $stdPIS->vPIS = 0.00;
-            $stdPIS->qBCProd = 0;
-            $stdPIS->vAliqProd = 0;
-            $nfe->tagPIS($stdPIS);
-        
-            //COFINS
-            $stdCOFINS = new stdClass();
-            $stdCOFINS->item = $item->id; //item da NFe
-            $stdCOFINS->CST = '99';
-            $stdCOFINS->vBC = null;
-            $stdCOFINS->pCOFINS = null;
-            $stdCOFINS->vCOFINS = 0.00;
-            $stdCOFINS->qBCProd = 0;
-            $stdCOFINS->vAliqProd = 0;
-            $nfe->tagCOFINS($stdCOFINS);
+                $stdProd = new stdClass();
+                $stdProd->item = $itens;
+                $stdProd->cProd = $lisItem->id;
+                $stdProd->cEAN = "SEM GTIN";
+                $stdProd->xProd = $lisItem->nome;
+                $stdProd->NCM = $lisItem->ncm;
+                //$stdProd->cBenef = 'ab222222';
+                $stdProd->EXTIPI = '';
+                $stdProd->CFOP = $lisItem->cfop; //Vendas de produção própria ou de terceiros
+                $stdProd->uCom = $lisItem->ucom;
+                $stdProd->qCom = $lisItem->qtd;
+                $stdProd->vUnCom = $lisItem->preco_venda;
+                $stdProd->vProd = $lisItem->sub_total;
+                $stdProd->cEANTrib = "SEM GTIN"; //'6361425485451';
+                $stdProd->uTrib = $lisItem->utrib;
+                $stdProd->qTrib = $lisItem->qtd;
+                $stdProd->vUnTrib = $lisItem->vuntrib;
+                $stdProd->indTot = $lisItem->indTot;
+                $nfe->tagprod($stdProd);
+            
+                //Informações adicionais do produto
+                $tag = new stdClass();
+                $tag->item = $itens;
+                $tag->infAdProd = $lisItem->descricao;
+                $nfe->taginfAdProd($tag);
+            
+                //Imposto
+                $stdImposto = new stdClass();
+                $stdImposto->item = $itens; //item da NFe
+                $stdImposto->vTotTrib = 0.00;
+                $nfe->tagimposto($stdImposto);
+
+                //ICMS 
+                $stdICMS = new stdClass();
+                $stdICMS->item = $itens; //item da NFe
+                $stdICMS->orig = 0;
+                $stdICMS->CSOSN = 102;
+                $stdICMS->pCredSN = 0.00;
+                $stdICMS->vCredICMSSN = 0.00;
+                $stdICMS->modBCST = null;
+                $stdICMS->pMVAST = null;
+                $stdICMS->pRedBCST = null;
+                $stdICMS->vBCST = null;
+                $stdICMS->pICMSST = null;
+                $stdICMS->vICMSST = null;
+                $stdICMS->vBCFCPST = null; //incluso no layout 4.00
+                $stdICMS->pFCPST = null; //incluso no layout 4.00
+                $stdICMS->vFCPST = null; //incluso no layout 4.00
+                $stdICMS->vBCSTRet = null;
+                $stdICMS->pST = null;
+                $stdICMS->vICMSSTRet = null;
+                $stdICMS->vBCFCPSTRet = null; //incluso no layout 4.00
+                $stdICMS->pFCPSTRet = null; //incluso no layout 4.00
+                $stdICMS->vFCPSTRet = null; //incluso no layout 4.00
+                $stdICMS->modBC = null;
+                $stdICMS->vBC = null;
+                $stdICMS->pRedBC = null;
+                $stdICMS->pICMS = null;
+                $stdICMS->vICMS = null;
+                $stdICMS->pRedBCEfet = null;
+                $stdICMS->vBCEfet = null;
+                $stdICMS->pICMSEfet = null;
+                $stdICMS->vICMSEfet = null;
+                $stdICMS->vICMSSubstituto = null;
+                $nfe->tagICMSSN($stdICMS);
+            
+                //PIS
+                $stdPIS = new stdClass();
+                $stdPIS->item = $itens; //item da NFe
+                $stdPIS->CST = '99';
+                //$stdPIS->vBC = 1200;
+                //$stdPIS->pPIS = 0;
+                $stdPIS->vPIS = 0.00;
+                $stdPIS->qBCProd = 0;
+                $stdPIS->vAliqProd = 0;
+                $nfe->tagPIS($stdPIS);
+            
+                //COFINS
+                $stdCOFINS = new stdClass();
+                $stdCOFINS->item = $itens; //item da NFe
+                $stdCOFINS->CST = '99';
+                $stdCOFINS->vBC = null;
+                $stdCOFINS->pCOFINS = null;
+                $stdCOFINS->vCOFINS = 0.00;
+                $stdCOFINS->qBCProd = 0;
+                $stdCOFINS->vAliqProd = 0;
+                $nfe->tagCOFINS($stdCOFINS);
+            endforeach;
 
             //icmstot OBRIGATÓRIA
             $stdICMStot = new stdClass();
@@ -288,16 +320,16 @@ class NfeController extends Controller
             $stdFrete = new stdClass();
             $stdFrete->modFrete = 9;
             $nfe->tagtransp($stdFrete);
-
+            
             //pag OBRIGATÓRIA
             $stdFormPagamento = new stdClass();
-            $stdFormPagamento->vTroco = 0;
+            $stdFormPagamento->vTroco = $venda->troco;
             $nfe->tagpag($stdFormPagamento);
            
             //detPag OBRIGATÓRIA
             $stdDetFormPagamento = new stdClass();
-            $stdDetFormPagamento->tPag = '01';
-            $stdDetFormPagamento->vPag = $item->sub_total;
+            $stdDetFormPagamento->tPag = $venda->forma_pagamento;
+            $stdDetFormPagamento->vPag = $venda->valor_recebido;
             $nfe->tagdetpag($stdDetFormPagamento);
 
             //infadicNFE
@@ -445,7 +477,8 @@ class NfeController extends Controller
                 ]);  
             }
             return response()->json(['message' => 'Nota fiscal transmitida com sucesso.']);
-        }else
+        }
+        else
         {
             return response()->json(['message' => 'Nota fiscal já em digitação.']);
         }
@@ -496,7 +529,7 @@ class NfeController extends Controller
 
     }
 
-    public function imprimiNfe(Request $request)
+    public function imprimeNfe(Request $request)
     {
         $nota = Nfe::where('id', $request->id)->first();
         

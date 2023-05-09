@@ -35,7 +35,7 @@ Route::get('/', function () {
     Route::post('cadastra_nfe', [NfeController::class, 'cadastraNfe'])->name('cadastra.nfe');
     Route::get('gera_nfe/{id}', [NfeController::class, 'geraNfe'])->name('gera.nfe');
     Route::get('consulta_nfe', [NfeController::class, 'consultaNfe'])->name('consulta.nfe');
-    Route::get('imprime_nfe', [NfeController::class, 'imprimeNfe'])->name('imprimi.nfe');
+    Route::get('imprime_nfe/{id}', [NfeController::class, 'imprimeNfe'])->name('imprimi.nfe');
     Route::get('cancela_nfe', [NfeController::class, 'cancelaNfe'])->name('cancelar.nfe');
     Route::get('carta_correcao_nfe', [NfeController::class, 'cartaCorrecaoNfe'])->name('carta.correcao.nfe');
     //Route::get('email_nfe', [NfeController::class, 'emailNfe'])->name('email.nfe');
@@ -66,11 +66,12 @@ Route::get('/', function () {
    
     Route::get('/getproduto/{cod_barra}', [ItemVendaController::class, 'index'])->name('item_vendas.get_produto');
     //Route::post('/addproduto', [ItemVendaController::class, 'store'])->name('item_vendas.add_produto');
-    Route::post('/add_produto_nfe', [ItemVendaController::class, 'store'])->name('item_vendas.add_produto_nfe');
+    Route::post('/add_produto_nfe', [ItemVendaController::class, 'storeNfe'])->name('item_vendas.add_produto_nfe');
     Route::delete('/deletaprodutocod/{item_venda_id}/{product_id}/{qtd}', [ItemVendaController::class, 'destroy'])->name('item_vendas.deletaprotudocod');
     Route::get('/totalpagamento', [ItemVendaController::class, 'totalPagamento'])->name('item_vendas.total_pagamento');
     Route::delete('/deletaprodutos', [ItemVendaController::class, 'removeProdutos'])->name('item_vendas.deleta_produtos');
-    Route::get('/estoque_negativo', [ItemVendaController::class, 'estoqueNegativo'])->name('intem_vendas.estoque_negativo');
+    Route::get('/estoque_negativo_nfe', [ItemVendaController::class, 'estoqueNegativoNfe'])->name('intem_vendas.estoque_negativo');
+    //Route::get('/estoque_negativo', [ItemVendaController::class, 'estoqueNegativo'])->name('intem_vendas.estoque_negativo');
 
     //Route::get('/vender', [VendasController::class, 'index'])->name('vender.vendas');
     //Route::get('/pdv', [VendasController::class, 'pdv'])->name('pdv.vendas');

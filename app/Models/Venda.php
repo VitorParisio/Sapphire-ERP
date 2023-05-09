@@ -11,7 +11,7 @@ class Venda extends Model
 
     protected $table = 'vendas';
 
-    protected $fillable = ['total_venda', 'forma_pagamento', 'valor_recebido', 'desconto', 'troco'];
+    protected $fillable = ['nfe_id', 'total_venda', 'forma_pagamento', 'valor_recebido', 'desconto', 'troco'];
 
     
 }

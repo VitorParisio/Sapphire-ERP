@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ItemVenda;
 use App\Models\PDV;
+use App\Models\Nfe;
 
 class ItemVendaController extends Controller
 {
@@ -93,15 +94,15 @@ class ItemVendaController extends Controller
     //     }
     // }
 
-    function store(Request $request)
+    function storeNfe(Request $request)
     {
         $product_id = $request->produto_id;
+        $nfe_id     = $request->nfe_id;
         $qtd        = $request->qtd > 0 ? $request->qtd : 1;
-        $output     = '';
 
         $produto = Product::where('id', $product_id)->first();
-        
-        $item = ItemVenda::get();
+        $nota    = Nfe::where('id', $nfe_id)->first();
+        $item    = ItemVenda::get();
         
         foreach($item as $data)
         {   
@@ -117,27 +118,14 @@ class ItemVendaController extends Controller
 
                 $produto->where('id', $product_id)->update(['estoque' => $produto->estoque]);
 
-                $dados = PDV::join('products', 'products.id', '=', 'p_d_v_s.product_id')
-                ->join('item_vendas', 'item_vendas.id', '=', 'p_d_v_s.item_venda_id')
-                ->get(); 
-        
-                foreach($dados as $dado)
-                {
-                    $img_prod = $dado->img ? '<img src="storage/'.$dado->img.'" alt="img_item" style="width:60px; height:60px; border-radius:30px;"/>' : '<i class="fas fa-image fa-3x" style="font-size:50px"></i>';
-                    $output = '<li>'.$img_prod.'</li>
-                               <li>'.$dado->nome.'</li>
-                               <li>'.$dado->qtd.'</li>
-                               <li>'.$dado->sub_total.'</li>';
-                }
-                
-                return response()->json($output);
+                return;
             }
         }
-       
         if ($qtd == 1)
         {
             $item_venda             = new ItemVenda();
             $item_venda->product_id = $produto->id;
+            $item_venda->nfe_id     = $nota->id;
             $item_venda->sub_total  = $produto->preco_venda * $qtd;
             $item_venda->data_venda = date("Y-m-d");
             $item_venda->save();
@@ -156,6 +144,7 @@ class ItemVendaController extends Controller
         {
             $item_venda             = new ItemVenda();
             $item_venda->product_id = $produto->id;
+            $item_venda->nfe_id     = $nota->id;
             $item_venda->qtd        = $qtd;
             $item_venda->sub_total  = $produto->preco_venda * $qtd;
             $item_venda->data_venda = date("Y-m-d");
@@ -172,24 +161,9 @@ class ItemVendaController extends Controller
             $produto->where('id', $product_id)->update(['estoque' => $produto->estoque]);
         }
 
-        $dados = PDV::join('products', 'products.id', '=', 'p_d_v_s.product_id')
-        ->join('item_vendas', 'item_vendas.id', '=', 'p_d_v_s.item_venda_id')
-        ->get(); 
-
-        foreach($dados as $dado)
-        {
-            $img_prod = $dado->img ? '<img src="storage/'.$dado->img.'" alt="img_item" style="width:60px; height:60px; border-radius:30px;"/>' : '<i class="fas fa-image fa-3x" style="font-size:50px"></i>';
-            $output = '<li>'.$img_prod.'</li>
-                       <li>'.$dado->nome.'</li>
-                       <li>'.$dado->qtd.'</li>
-                       <li>'.$dado->sub_total.'</li>';
-        }
-        
-        return response()->json($output);
     }
 
-
-    function destroy(Request $request, $item_venda_id, $product_id, $qtd)
+    function destroy($item_venda_id, $product_id, $qtd)
     {
         $produto = Product::where('id', $product_id)->first();
         $item    = ItemVenda::where('id', $item_venda_id)->first();
@@ -198,6 +172,30 @@ class ItemVendaController extends Controller
 
         $recupera_qtd = $produto->estoque + $qtd;
         $produto->update(['estoque' => $recupera_qtd]); 
+    }
+
+    function estoqueNegativoNfe(Request $request)
+    {
+        $produto_id       = $request->produto_id;
+        $qtd              = $request->qtd > 0 ? $request->qtd : 1;
+        $estoque_negativo = false;
+
+        $produto = Product::select('nome', 'id', 'estoque', 'preco_venda')
+        ->where('id', $produto_id)->first();
+
+        if ($produto != null){
+            if ($produto->estoque < $qtd)
+            {
+                $estoque_negativo = true;
+                return response()->json($estoque_negativo);
+            }
+            else{
+                return response()->json($estoque_negativo);
+            }
+        }else{
+            return response()->json(['error' => 'Produto não cadastrado']);
+        }
+
     }
 
     function estoqueNegativo(Request $request)

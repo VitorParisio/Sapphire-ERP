@@ -143,9 +143,9 @@ function getProduto(cod_barra)
 
 function totalPagamento(){
     var forma_pagamento = $('#forma_pagamento').val();
-    var valor_recebido = $('#valor_recebido').val().replaceAll(".", "").replaceAll(",", ".");
-    //var desconto       = $('#desconto').val().replaceAll(".", "").replaceAll(",", ".");
-    var troco          = 0.00;
+    var valor_recebido  = $('#valor_recebido').val().replaceAll(".", "").replaceAll(",", ".");
+    //var desconto      = $('#desconto').val().replaceAll(".", "").replaceAll(",", ".");
+    var troco           = 0.00;
 
     $.ajax(
         {

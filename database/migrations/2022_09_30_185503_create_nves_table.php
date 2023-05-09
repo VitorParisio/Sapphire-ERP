@@ -15,10 +15,9 @@ class CreateNvesTable extends Migration
     {
         Schema::create('nves', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('emitente_id');
-            $table->unsignedBigInteger('destinatario_id');
-            $table->unsignedBigInteger('item_venda_id');
-            $table->tinyInteger('status_id');
+            $table->unsignedBigInteger('emitente_id')->nullable();
+            $table->unsignedBigInteger('destinatario_id')->nullable();
+            $table->tinyInteger('status_id')->nullable();
             $table->integer('nro_nfe')->nullable();
             $table->string('serie_nfe')->nullable();
             $table->string('dhRecbto')->nullable();
@@ -41,7 +40,6 @@ class CreateNvesTable extends Migration
             $table->decimal('vTroco', 10,2)->nullable();
             $table->foreign('emitente_id')->references('id')->on('emitentes')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('destinatario_id')->references('id')->on('destinatarios')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('item_venda_id')->references('id')->on('item_vendas')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

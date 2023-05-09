@@ -11,7 +11,7 @@ class Nfe extends Model
 
     protected $table = 'nves';
 
-    public $fillable = ['emitente_id', 'destinatario_id', 'item_venda_id', 'status_id', 'nro_nfe', 'serie_nfe', 'finNFe', 'path_xml', 'path_file', 'nProt', 'chave_nfe', 'dhRecbto', 'dhRegEvento', 'xMotivo', 'digVal', 'cStat', 'xEvento', 'ambiente', 'dataRecibo', 'horaRecibo', 'modFrete', 'vTroco'];
+    public $fillable = ['emitente_id', 'destinatario_id', 'status_id', 'nro_nfe', 'serie_nfe', 'finNFe', 'path_xml', 'path_file', 'nProt', 'chave_nfe', 'dhRecbto', 'dhRegEvento', 'xMotivo', 'digVal', 'cStat', 'xEvento', 'ambiente', 'dataRecibo', 'horaRecibo', 'modFrete', 'vTroco'];
 
     // public function emitente(){
     //     return $this->hasMany('App\Models\ItemVenda', 'product_id');
@@ -19,6 +19,11 @@ class Nfe extends Model
 
     // public function itemVendas(){
     //     return $this->hasMany('App\Models\ItemVenda', 'product_id');
+    // }
+
+    // public function itemVenda()
+    // {
+    //     return $this->hasMany(itemVenda::class,'nfe_id', 'id');
     // }
 
 }

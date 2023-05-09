@@ -15,11 +15,13 @@ class CreateVendasTable extends Migration
     {
         Schema::create('vendas', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('nfe_id');
             $table->decimal('total_venda', 10,2)->default(0.00);
             $table->decimal('valor_recebido', 10,2)->default(0.00);
             $table->decimal('desconto', 10,2)->default(0.00);
             $table->decimal('troco', 10,2)->default(0.00);
             $table->string('forma_pagamento');
+            $table->foreign('nfe_id')->references('id')->on('nves')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

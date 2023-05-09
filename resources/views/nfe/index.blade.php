@@ -14,6 +14,15 @@
 @stop
 @section('content')
     <div class="card card-primary notas_fiscais">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-left:10px;margin-top:15px; margin-right:10px;">
+            <div>
+                <a href="cadastrar_nota" class="btn btn-success"><i class="fas fa-plus"></i> Cadastrar</a>
+            </div>
+            <div>
+                <input type="text">
+            </div>
+        </div>
+        <hr>  
         <div class="card-body lista_nota_fiscal">
             <table class="table-striped tb_notas_fiscais">
                 <thead>
@@ -114,6 +123,19 @@
                 location.reload(true);
             });
                  
+            }
+        });
+    }
+
+    function imprimeNfe(id)
+    {
+        $.ajax({
+            url:"/imprime_nfe/"+id,
+            method: 'GET',
+            success:function(data)
+            {
+              window.open("/imprime_nfe/"+id, "IMIPRIMIR DANFE", "width=800,height=800");
+              return false;
             }
         });
     }
