@@ -40,22 +40,56 @@ class NfeController extends Controller
 
     public function create()
     { 
-        $nota_fiscal = new Nfe();
-        $nota_fiscal->save();
+       
+        $nota_fiscal     = new Nfe();
+        $slc_ult_nro_nfe = Nfe::orderBy('id', 'desc')->limit(1)->first();
+        
+        if ($slc_ult_nro_nfe == null)
+        {   
+           
+            $nota_fiscal->save();
+            
+            $emitentes      = Emitente::all();
+            $destinatarios  = Destinatario::all();
+            $produtos       = Product::all();
+            $id_nota_fiscal = $nota_fiscal->id;    
 
-        $emitentes      = Emitente::all();
-        $destinatarios  = Destinatario::all();
-        $produtos       = Product::all();
-        $id_nota_fiscal = $nota_fiscal->id;
 
-        return view('nfe.create', compact('emitentes', 'destinatarios', 'produtos', 'id_nota_fiscal'));
+            return view('nfe.create', compact('emitentes', 'destinatarios', 'produtos', 'id_nota_fiscal'));
+        }
+        else
+        {
+           
+            if ($slc_ult_nro_nfe->emitente_id == null && 
+            $slc_ult_nro_nfe->destinatario_id == null &&
+            $slc_ult_nro_nfe->status_id  == null &&
+            $slc_ult_nro_nfe->serie_nfe  == null &&
+            $slc_ult_nro_nfe->nro_nfe  == null)
+            {
+                $slc_ult_nro_nfe->delete();
+                
+            }
+
+            $nota_fiscal->save();
+           
+            $emitentes      = Emitente::all();
+            $destinatarios  = Destinatario::all();
+            $produtos       = Product::all();
+            $id_nota_fiscal = $nota_fiscal->id; 
+
+            return view('nfe.create', compact('emitentes', 'destinatarios', 'produtos', 'id_nota_fiscal'));
+        }
+        
     }
 
     public function cadastraNfe(Request $request)
     {
-        $data = $request->all();
-
+        $data     = $request->all();
+        $notas_fiscais = Nfe::all();
         
+        if ($request->troco < 0)
+            return response()->json(['valores_incorretos' => 'Valores não correspondem-se.']);
+
         $valor_recebido_formatado = str_replace('.', '', $request->valor_recebido);
         $total_venda_formatado    = str_replace('.', '', $request->total_venda);
         //$desconto_formatado     = str_replace('.', '', $request->desconto);
@@ -75,16 +109,36 @@ class NfeController extends Controller
         
         $venda->save();
 
+        if ($notas_fiscais->count() == 1)
+        {
+            Nfe::where('id', $request->nfe_id)->update([
+                "status_id"       => 2,
+                "emitente_id"     => $request->select_emitente,
+                "destinatario_id" => $request->select_destinatario,
+                "serie_nfe"       => 1,
+                "nro_nfe"         => 97
+            ]);  
+
+            return response()->json(['message' => 'Nota fiscal gerada com sucesso.']);
+        }
+
+        $nmro_nfe = Nfe::select("nro_nfe")
+        ->orderBy('id', 'desc')
+        ->skip(1)
+        ->limit(1)
+        ->first();
+       
+        $ult_numero_nfe = $nmro_nfe->nro_nfe + 1;
+        
         Nfe::where('id', $request->nfe_id)->update([
             "status_id"       => 2,
             "emitente_id"     => $request->select_emitente,
             "destinatario_id" => $request->select_destinatario,
             "serie_nfe"       => 1,
-            "nro_nfe"         => 90,
+            "nro_nfe"         => $ult_numero_nfe
         ]);  
-
+       
         return response()->json(['message' => 'Nota fiscal gerada com sucesso.']);
-
     }
 
     public function geraNfe($id)
@@ -95,12 +149,12 @@ class NfeController extends Controller
         if($nota->status_id == 2)
         {
             $emitente     = Emitente::where('id', $nota->emitente_id)->first();
-
+        
             $destinatario = Destinatario::where('id', $nota->destinatario_id)->first();
-
+           
             $item         = ItemVenda::join('products', 'products.id', '=', 'item_vendas.product_id')
             ->where('item_vendas.nfe_id', $id)->get();
-
+        
             $venda        = Venda::where("nfe_id", $id)
             ->select('forma_pagamento', 'valor_recebido', 'troco')
             ->first();

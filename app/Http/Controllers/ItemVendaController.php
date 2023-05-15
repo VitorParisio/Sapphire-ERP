@@ -99,10 +99,11 @@ class ItemVendaController extends Controller
         $product_id = $request->produto_id;
         $nfe_id     = $request->nfe_id;
         $qtd        = $request->qtd > 0 ? $request->qtd : 1;
-
+ 
         $produto = Product::where('id', $product_id)->first();
         $nota    = Nfe::where('id', $nfe_id)->first();
-        $item    = ItemVenda::get();
+       
+        $item    = ItemVenda::where("nfe_id", $nfe_id)->get();
         
         foreach($item as $data)
         {   

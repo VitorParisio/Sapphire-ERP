@@ -93,7 +93,7 @@
             $('#consulta_nfe_modal').modal('show');
 
             $tr = $(this).closest('tr');
-            console.log($tr)
+            
             var data = $tr.children("td").map(function(){
                 return $(this).html();
             }).get();
