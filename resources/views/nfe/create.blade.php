@@ -16,7 +16,7 @@
     <div class="card card-primary">
         <div class="card-body">
             <div class="col-md-12">
-                <input type="text" id="id_nota_fiscal" value="{{$id_nota_fiscal}}">
+                <input type="hidden" id="id_nota_fiscal" value="{{$id_nota_fiscal}}">
                 <label style="width:100%" for="select_emitente">Empresa*
                     <select class="form-control select_emitente" id="select_emitente" name="emitente_id">
                         <option value="0">Selecione...</option>

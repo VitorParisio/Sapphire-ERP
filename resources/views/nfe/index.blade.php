@@ -16,7 +16,7 @@
     <div class="card card-primary notas_fiscais">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-left:10px;margin-top:15px; margin-right:10px;">
             <div>
-                <a href="cadastrar_nota" class="btn btn-success"><i class="fas fa-plus"></i> Cadastrar</a>
+                <a href="cadastrar_nota" class="btn btn-primary"><i class="fas fa-plus"></i> Nova nota</a>
             </div>
             <div>
                 <input type="text">

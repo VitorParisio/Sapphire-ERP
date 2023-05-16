@@ -14,32 +14,34 @@
 @stop
 @section('content')
     <div class="card card-primary card-tabs">
+        <div class="tabcontainer">
+            <div>
+                <ul class="tabheading">
+                    <li class="active" rel="tab1" >
+                        <a href="#">
+                            <small><i class="fas fa-plus fa-x3"></i> Adicionar cliente</small>
+                        </a>
+                    </li>
+                    <!-- <li rel="tab2">
+                        <a href="#">
+                            <small><i class="fas fa-list fa-x3"></i> Listar empresas</small>
+                        </a> 
+                    </li> -->
+                    <!-- <li rel="tab3">
+                        <a href="#">
+                            <small><i class="fas fa-list fa-x3"></i> Listar produto</small>
+                        </a>
+                    </li>
+                    <li rel="tab4">
+                        <a href="#">
+                            <small><i class="fas fa-clipboard-list fa-x3"></i> Total itens</small>
+                        </a>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
         <div class="card-body">
             <div class="tabcontainer">
-                <div>
-                    <ul class="tabheading">
-                        <li class="active" rel="tab1" >
-                            <a href="#">
-                                <small><i class="fas fa-plus fa-x3"></i> Adicionar cliente</small>
-                            </a>
-                        </li>
-                        <!-- <li rel="tab2">
-                            <a href="#">
-                                <small><i class="fas fa-list fa-x3"></i> Listar empresas</small>
-                            </a> 
-                        </li> -->
-                        <!-- <li rel="tab3">
-                            <a href="#">
-                                <small><i class="fas fa-list fa-x3"></i> Listar produto</small>
-                            </a>
-                        </li>
-                        <li rel="tab4">
-                            <a href="#">
-                                <small><i class="fas fa-clipboard-list fa-x3"></i> Total itens</small>
-                            </a>
-                        </li> -->
-                    </ul>
-                </div>
                 <div class="tabbody active" id="tab1" style="display: block;">  
                     <div class="adicionar_cliente">
                         <form id="form_cadastro_cliente" action="{{route('store.clientes')}}" method="post" enctype="multipart/form-data">

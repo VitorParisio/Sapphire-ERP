@@ -116,7 +116,7 @@ class NfeController extends Controller
                 "emitente_id"     => $request->select_emitente,
                 "destinatario_id" => $request->select_destinatario,
                 "serie_nfe"       => 1,
-                "nro_nfe"         => 97
+                "nro_nfe"         => 98
             ]);  
 
             return response()->json(['message' => 'Nota fiscal gerada com sucesso.']);

@@ -14,32 +14,34 @@
 @stop
 @section('content')
     <div class="card card-primary card-tabs">
+        <div class="tabcontainer">
+            <div>
+                <ul class="tabheading">
+                    <li class="active" rel="tab1" >
+                        <a href="#">
+                            <small><i class="fas fa-plus fa-x3"></i> Adicionar cliente</small>
+                        </a>
+                    </li>
+                    <!-- <li rel="tab2">
+                        <a href="#">
+                            <small><i class="fas fa-list fa-x3"></i> Listar empresas</small>
+                        </a> 
+                    </li> -->
+                    <!-- <li rel="tab3">
+                        <a href="#">
+                            <small><i class="fas fa-list fa-x3"></i> Listar produto</small>
+                        </a>
+                    </li>
+                    <li rel="tab4">
+                        <a href="#">
+                            <small><i class="fas fa-clipboard-list fa-x3"></i> Total itens</small>
+                        </a>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
         <div class="card-body">
             <div class="tabcontainer">
-                <div>
-                    <ul class="tabheading">
-                        <li class="active" rel="tab1" >
-                            <a href="#">
-                                <small><i class="fas fa-plus fa-x3"></i> Adicionar empresa</small>
-                            </a>
-                        </li>
-                        <!-- <li rel="tab2">
-                            <a href="#">
-                                <small><i class="fas fa-list fa-x3"></i> Listar empresas</small>
-                            </a> 
-                        </li> -->
-                        <!-- <li rel="tab3">
-                            <a href="#">
-                                <small><i class="fas fa-list fa-x3"></i> Listar produto</small>
-                            </a>
-                        </li>
-                        <li rel="tab4">
-                            <a href="#">
-                                <small><i class="fas fa-clipboard-list fa-x3"></i> Total itens</small>
-                            </a>
-                        </li> -->
-                    </ul>
-                </div>
                 <div class="tabbody active" id="tab1" style="display: block;">  
                     <div style="display: flex; justify-content:space-between; align-items: flex-start; margin-bottom: 5px; margin-top: -10px;">
                         <!-- <input type="text" name="search_category" id="search_category" style="position: relative; outline:none; border:1px solid #848484;" placeholder="Pesquisar categoria..." autocomplete="off" /> -->
