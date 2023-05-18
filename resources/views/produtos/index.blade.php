@@ -24,12 +24,12 @@
                     </li>
                     <li rel="tab2">
                         <a href="#">
-                            <small><i class="fas fa-plus fa-x3"></i> Adicionar produto</small>
+                            <small><i class="fas fa-plus fa-x3"></i> Adicionar</small>
                         </a> 
                     </li>
                     <li rel="tab3">
                         <a href="#">
-                            <small><i class="fas fa-list fa-x3"></i> Listar produto</small>
+                            <small><i class="fas fa-list fa-x3"></i> Lista</small>
                         </a>
                     </li>
                     <li rel="tab4">

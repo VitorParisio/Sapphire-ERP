@@ -10,7 +10,9 @@ class DestinatarioController extends Controller
 {
     public function index()
     {
-        return view('destinatarios.index');
+        $destinatarios = Destinatario::all();
+
+        return view('destinatarios.index', compact('destinatarios'));
     }
 
     public function store(Request $request)
@@ -19,12 +21,12 @@ class DestinatarioController extends Controller
         $data      = $request->all();
         $validator = Validator::make($data, [
             'nome'              => 'required|regex:/^[a-z A-Z 0-9 "-]*$/|min:2',
-            'cpf_cnpj'          => 'required|regex:/^[0-9]+$/|min:7',
-            'rg_ie'             => 'required|numeric',
+            'cpf_cnpj'          => 'required|regex:/^[0-9]+$/|min:7|unique:destinatarios,cpf_cnpj',
+            'rg_ie'             => 'required|numeric|unique:destinatarios,rg_ie',
             'cep'               => 'required|regex:/^[0-9]+$/|max:8',
             'rua'               => 'required|regex:/^[a-z A-Z 0-9]*$/',
             'numero'            => 'required|numeric',
-            'complemento'       => 'nullable',
+            'complemento'       => 'nullable|regex:/^[a-z A-Z 0-9 "-]*$/',
             'bairro'            => 'required|regex:/^[a-z A-Z "-]+$/',
             'cidade'            => 'required|regex:/^[a-z A-Z]+$/',
             'uf'                => 'nullable|regex:/^[A-Z]+$/|max:2',
@@ -40,6 +42,8 @@ class DestinatarioController extends Controller
             'cpf_cnpj.required'         => 'Campo "CPF/CNPJ" deve ser preenchido.',
             'cpf_cnpj.regex'            => 'Digitar apenas números no campo "CPF/CNPJ".',
             'cpf_cnpj.min'              => 'Poucos dígitos no campo "CPF/CNPJ".',
+            'cpf_cnpj.unique'           => 'CPF ou CNPJ já cadastrado.',
+            'rg_ie.unique'              => 'RG ou Insc. Estadual já cadastrada.',
             'rg_ie.required'            => 'Campo "RG/Inscrição Estadual" deve ser preenchido.',
             'rg_ie.numeric'             => 'Digite apenas números no campo "RG/Inscrição Estadual".',
             'cnae.numeric'              => 'Digite apenas números no campo "CNAE".',
@@ -63,9 +67,8 @@ class DestinatarioController extends Controller
             'cibge.numeric'             => 'Digitar apenas números no campo "cIBGE".',
             'cibge.max'                 => 'Máximo de 7 dígitos no campo "cIBGE',
             'telefone.numeric'          => 'Digite apenas números no campo "Telefone".',
-            'certificado_a1.required'   => 'Campo "Certificado Digital" deve ser preenchido.',
-            'certificado_a1.mimetypes'  => 'Campo "Certificado Digital" aceita as extensões .pfx e .p12',
-            'senha_certificado.required'=> 'Campo "Senha (certificado)" deve ser preenchido.'
+            'email.unique'              => 'E-mail já cadastrado.',
+            'email.email'               => 'Digite um e-mail válido.'
         ]);
 
         if ($validator->fails()) {

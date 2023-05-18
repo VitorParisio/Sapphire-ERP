@@ -219,7 +219,6 @@ class ProductController extends Controller
         ';
       }
 
-
       $data = array(
         'output'            => $output,
         'total_product'     => $total_itens,

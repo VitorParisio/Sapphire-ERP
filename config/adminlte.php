@@ -347,7 +347,7 @@ return [
                 'icon' => 'fas fa-clone'
                 ],
                 [
-                'text' => 'Cadastrar Nota',
+                'text' => 'Cadastrar nota',
                 'url'  => '/cadastrar_nota',
                 'icon' => 'fas fa-plus'
                 ],

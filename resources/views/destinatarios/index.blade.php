@@ -106,7 +106,6 @@
                                     </label>
                                 </div>
                             </div>
-                            <hr>
                             <div style="display:flex; gap:4px; margin-top:10px;">
                                 <button type="submit" style="border: none; background: #3f6792; color: #FFF;">Adicionar</button><br>
                                 <input type="reset" value="Cancel" class="btn btn-danger" style="">
@@ -367,7 +366,8 @@
                             icon: "success"
                         }).then(() =>{
                             $('#form_cadastro_cliente').find('input[type="text"]').val("");
-
+                            $('#form_cadastro_cliente').find('input[id="uf"]').val("PE");
+                             
                             // getCategoria();
                             // getProduto();
                             // selectCategoria();

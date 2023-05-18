@@ -19,16 +19,16 @@ class EmitenteController extends Controller
        
         $data      = $request->all();
         $validator = Validator::make($data, [
-            'cnpj'              => 'required|regex:/^[0-9]+$/|max:14|min:11',
+            'cnpj'              => 'required|regex:/^[0-9]+$/|max:14|min:11|unique:emitentes,cnpj',
             'razao_social'      => 'required|regex:/^[a-z A-Z 0-9 "-]*$/|min:2',
             'nome_fantasia'     => 'required|regex:/^[a-z A-Z 0-9 "-]*$/|min:2',
-            'ie'                => 'required|numeric',
+            'ie'                => 'required|numeric|unique:emitentes,ie',
             'im'                => 'nullable|numeric',
             'cnae'              => 'nullable|numeric',
             'cep'               => 'required|regex:/^[0-9]+$/|max:8',
             'rua'               => 'required|regex:/^[a-z A-Z 0-9]*$/',
             'numero'            => 'required|numeric',
-            'complemento'       => 'nullable',
+            'complemento'       => 'nullable|regex:/^[a-z A-Z 0-9 "-]*$/',
             'bairro'            => 'required|regex:/^[a-z A-Z "-]+$/',
             'cidade'            => 'required|regex:/^[a-z A-Z]+$/',
             'uf'                => 'nullable|regex:/^[A-Z]+$/|max:2',
@@ -43,6 +43,8 @@ class EmitenteController extends Controller
             'cnpj.regex'                => 'Digitar apenas números no campo "CNPJ/CPF".',
             'cnpj.max'                  => 'Excedeu o limite de digitos no campo "CNPJ/CPF".',
             'cnpj.min'                  => 'Poucos dígitos no campo "CNPJ/CPF".',
+            'cnpj.unique'               => 'CNPJ já cadastrado.',
+            'cnpj.unique'               => 'Insc. Estadual já cadastrada.',
             'razao_social.required'     => 'Campo "Razão Social" deve ser preenchido.',
             'razao_social.regex'        => 'Digite apenas letras e/ou números no campo "Razão Social".',
             'razao_social.min'          => 'Poucos dígitos no campo "Razão Social".',
@@ -58,6 +60,7 @@ class EmitenteController extends Controller
             'cep.max'                   => 'Excedeu o limite de digitos no campo "Cep".',
             'rua.required'              => 'Campo "Logradouro" deve ser preenchido.',
             'rua.regex'                 => 'Digite apenas letras e/ou números no campo "Logradouro".',
+            'complemento.regex'         => 'Digite apenas letras e/ou números no campo "Complemento".',
             'numero.required'           => 'Campo "Número" deve ser preenchido.',
             'numero.numeric'            => 'Digite apenas números no campo "Número".',
             'bairro.required'           => 'Campo "Bairro" deve ser preenchido.',
@@ -99,4 +102,74 @@ class EmitenteController extends Controller
 
         return response()->json(['message' => 'Empresa cadastrada com sucesso.']);
     }
+
+    function getEmpresa(Request $request){
+        $query              = $request->get('query');
+        $output             = '';
+        $total_row          = '';
+    
+        if ($request->ajax())
+        {
+          if ($query != '')
+          {
+            $empresas = Emitente::where('razao_social','LIKE','%'.$query.'%')
+            ->get(); 
+          }
+          else
+          {
+            $empresas = Emitente::orderBy('id', 'ASC')->get();
+          }
+    
+          $total_row   = $empresas->count();
+          $total_empresas = Emitente::all()->count();
+    
+          if ($total_row > 0)
+          {
+            foreach($empresas as $row)
+            {
+              $im = $row->im == null ? "<i>Não definido</i>" : $row->im;
+              $cnae = $row->cnae == null ? "<i>Não definido</i>" : $row->cnae;
+              $complemento = $row->complemento == null ? "<i>Não definido</i>" : $row->complemento;
+
+              $output .='
+                <tr>
+                  <td>'.$row->id.'</td>
+                  <td>'.$row->cnpj.'</td>
+                  <td>'.ucfirst($row->razao_social).'</td>
+                  <td>'.$row->ie.'</td>
+                  <td>'.$row->cidade.'</td>
+                  <td style="display:none;">'.ucfirst($row->nome_fantasia).'</td>
+                  <td style="display:none;">'.$im.'</td>
+                  <td style="display:none;">'.$cnae.'</td>
+                  <td style="display:none;">'.$row->cep.'</td>
+                  <td style="display:none;">'.$row->rua.'</td>
+                  <td style="display:none;">'.$row->numero.'</td>
+                  <td style="display:none;">'.$complemento.'</td>
+                  <td style="display:none;">'.$row->bairro.'</td>
+                  <td style="display:none;">'.$row->uf.'</td>
+                  <td><a href="#" class="dtls_btn"><i class="fas fa-eye" title="Detalhes do produto"></i></a></td>
+                  <td><a href="#" class="edt_btn"><i class="fas fa-edit" title="Editar produto"></i></a></td>
+                  <td><a href="#" class="del_btn"><i class="fas fa-trash" title="Excluir produto"></i></a></td>
+                </tr>
+              ';
+            }
+          }
+          else
+          {
+            $output ='
+              <tr>
+                <td colspan="7" style="font-weight:100; font-size: 19px"><i>Empresa não encontrada.</i></td>
+              </tr>
+            ';
+          }
+    
+          $data = array(
+            'output'            => $output,
+            'total_empresas'     => $total_empresas,
+          );
+    
+          return response()->json($data);
+        }
+      }
+    
 }

@@ -500,6 +500,7 @@
 
 .table thead tr{
     background: teal;
+    color:#FFF;
 }
 
 .table thead tr, tbody td{

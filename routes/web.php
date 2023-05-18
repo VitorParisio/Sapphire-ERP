@@ -43,6 +43,7 @@ Route::get('/', function () {
 
     Route::get('/empresas', [EmitenteController::class, 'index'])->name('index.empresa');
     Route::post('/empresas', [EmitenteController::class, 'store'])->name('store.empresa');
+    Route::get('/empresas/page', [EmitenteController::class, 'getEmpresa'])->name('empresa.search_empresa');
 
     Route::get('/clientes', [DestinatarioController::class, 'index'])->name('index.clientes');
     Route::post('/clientes', [DestinatarioController::class, 'store'])->name('store.clientes');

@@ -19,14 +19,14 @@
                 <ul class="tabheading">
                     <li class="active" rel="tab1" >
                         <a href="#">
-                            <small><i class="fas fa-plus fa-x3"></i> Adicionar cliente</small>
+                            <small><i class="fas fa-plus fa-x3"></i> Adicionar</small>
                         </a>
                     </li>
-                    <!-- <li rel="tab2">
+                    <li rel="tab2">
                         <a href="#">
-                            <small><i class="fas fa-list fa-x3"></i> Listar empresas</small>
+                            <small><i class="fas fa-list fa-x3"></i> Lista</small>
                         </a> 
-                    </li> -->
+                    </li>
                     <!-- <li rel="tab3">
                         <a href="#">
                             <small><i class="fas fa-list fa-x3"></i> Listar produto</small>
@@ -135,55 +135,34 @@
                         </form>
                     </div>
                 </div>
-                <!-- <div class="tabbody" id="tab2" style="display: none;">
-                    <form id="form_cadastro_produto" action="{{route('produtos.store')}}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row cadastro_produtos_inputs">
-                            <div class="col-md-3">
-                                <label for="cod_barra_add">Código barra:
-                                    <input type="text" class="form-control" name="cod_barra" id="cod_barra_add" placeholder="" value="{{ old('cod_barra')}}" autocomplete="off">
-                                </label>
-                                <label for="fornecedores">Fornecedores:
-                                    <input type="text" class="form-control" name="" id="" value="" autocomplete="off">
-                                </label>
+                <div class="tabbody" id="tab2" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <div style="display: flex; justify-content: space-between; flex-wrap:wrap; align-items:center;">
+                                <h3 class="card-title">Minhas empresas</h3><br>
+                                <input class="search_empresa" id="search_empresa" name="search_empresa" type="text" placeholder="Empresa" style="outline: none" autocomplete="off">
                             </div>
-                            <div class="col-md-3">
-                                <label for="select_categoria">Categorias
-                                    <select class="form-control select_categoria" id="select_categoria" name="category_id"></select>
-                                </label>
-                                <label for="nome">Produto:
-                                    <input type="text" class="form-control" name="nome" id="nome" value="{{old('nome')}}"  autocomplete="off">
-                                </label>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="preco_compra">Preço Custo (R$):
-                                    <input type="text" class="form-control" name="preco_compra" id="preco_compra" value="{{old('preco_compra')}}" style="text-align: right" autocomplete="off">
-                                </label>
-                                <label for="preco_venda">Preço Venda (R$):
-                                    <input type="text" class="form-control" name="preco_venda" id="preco_venda" value="{{old('preco_venda')}}" style="text-align: right" autocomplete="off">
-                                </label>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="estoque">Estoque:
-                                    <input type="text" class="form-control" name="estoque" id="estoque" placeholder="" value="{{old('estoque')}}" autocomplete="off">
-                                </label>
-                                <label for="descricao">Descrição:
-                                    <input type="text" class="form-control" name="descricao" id="descricao" placeholder="" value="{{old('descricao')}}" autocomplete="off">
-                                </label>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="validade">Validade:
-                                    <input type="date" class="form-control datetimepicker-input" data-target="#reservationdate" name="validade" id="validade" value="{{old('validade')}}">
-                                </label>
-                            </div>
-                            
                         </div>
-                        <div style="display:flex; gap:4px;">
-                            <button type="submit" style="border: none; background: #3f6792; color: #FFF;">Adicionar</button><br>
-                            <input type="reset" value="Cancel" class="btn btn-danger" style="">
-                        </div>
-                    </form>
-                </div> -->
+                        <div class="card-body">
+                        <span id="total_empresas" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:100"></span>
+                            <table class="table table-striped table-bordered lista_empresa">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>CNPJ</th>
+                                        <th>Razão Social</th>
+                                        <th>Insc. Estadual</th>
+                                        <th>Localidade</th>
+                                        <th colspan=3>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div> 
+                    </div>
+                   
+                </div>  
                 <!-- <div class="tabbody" id="tab3" style="display: none;">
                     <div class="card">
                         <div class="card-header">
@@ -249,7 +228,10 @@
             </div>  -->
         </div>
         <div>
-            @include('modals.categoria.editar')
+            @include('modals.emitente.detalhe')
+        </div>
+        <div>
+            @include('modals.emitente.editar')
         </div>
     </div>
 @stop
@@ -270,56 +252,55 @@
         // });
 
 
-        // $(document).delegate(".dtls_btn","click",function(){
-        //     $('#detalhe_produto_modal').modal('show');
+        $(document).delegate(".dtls_btn","click",function(){
+            $('#detalhe_empresa_modal').modal('show');
 
-        //     $tr = $(this).closest('tr');
+            $tr = $(this).closest('tr');
 
-        //     var data = $tr.children("td").map(function(){
-        //         return $(this).html();
-        //     }).get();
+            var data = $tr.children("td").map(function(){
+                return $(this).html();
+            }).get();
 
-        //     var validade_split = data[8].split('-');
-        //     var validade_formatada = validade_split[2]+'/'+validade_split[1]+'/'+validade_split[0];
+            $('.id_empresa_detalhe').html(data[0]);
+            $('.cnpj_detalhe').html(data[1]);
+            $('.razao_detalhe').html(data[2]);
+            $('.ie_detalhe').html(data[3]);
+            $('.cidade').html(data[4]);
+            $('.fantasia_detalhe').html(data[5]);
+            $('.im_detalhe').html(data[6]);
+            $('.cnae_detalhe').html(data[7]);
+            $('.cep').html(data[8]);
+            $('.logradouro').html(data[9]);
+            $('.numero').html(data[10]);
+            $('.complemento').html(data[11]);
+            $('.bairro').html(data[12]);
+            $('.uf').html(data[13]);
+        });
 
-        //     $('.img_detalhe').html(data[0]);
-        //     $('.id_detalhe').html(data[1]);
-        //     $('.produto_detalhe').html(data[2]);
-        //     $('.preco_custo_detalhe').html(data[3]);
-        //     $('.preco_venda_detalhe').html(data[4]);
-        //     $('.estoque_detalhe').html(data[5]);
-        //     $('.descricao_detalhe').html(data[6]);
-        //     $('.unidade_detalhe').html(data[7]);
-        //     $('.validade_detalhe').html(validade_formatada);
-        //     $('.cod_barra_detalhe').html(data[9]);
-        // });
-
-        // $(document).delegate(".edt_btn","click",function(){
-        //     $('#editar_produto_modal').modal('show');
+        $(document).delegate(".edt_btn","click",function(){
+            $('#editar_empresa_modal').modal('show');
             
-        //     $tr = $(this).closest('tr');
+            $tr = $(this).closest('tr');
 
-        //     var data = $tr.children("td").map(function(){
-        //         return $(this).html();
-        //     }).get();
+            var data = $tr.children("td").map(function(){
+                return $(this).html();
+            }).get();
 
-        //     var preco_compra = data[3].slice(3);
-        //     var preco_venda = data[4].slice(3);
-
-        //     $('.img_editar').html(data[0]);
-        //     $('.id_editar').val(data[1]);
-        //     $('.produto_editar').val(data[2]);
-        //     $('.preco_compra_editar').val(preco_compra);
-        //     $('.preco_venda_editar').val(preco_venda);
-        //     $('.estoque_editar').val(data[5]);
-        //     $('.descricao_editar').val(data[6]);
-        //     $('.unidade_editar').val(data[7]);
-        //     $('.validade_editar').val(data[8]);
-        //     $('.cod_barra_editar').val(data[9]);
-
-        //     selectCategoria(data[1]);
+            $('.cnpj_editar').val(data[1]);
+            $('.razao_editar').val(data[2]);
+            $('.ie_editar').val(data[3]);
+            $('.cidade').html(data[4]);
+            $('.fantasia_editar').html(data[5]);
+            $('.im_editar').html(data[6]);
+            $('.cnae_editar').html(data[7]);
+            $('.cep').html(data[8]);
+            $('.logradouro').html(data[9]);
+            $('.numero').html(data[10]);
+            $('.complemento').html(data[11]);
+            $('.bairro').html(data[12]);
+            $('.uf').html(data[13]);
             
-        // });
+        });
 
         // $(document).delegate(".del_btn","click",function(){
         //     $tr = $(this).closest('tr');
@@ -390,6 +371,7 @@
                             $('#form_cadastro_empresa').find('input[type="text"]').val("");
                             $('#form_cadastro_empresa').find('input[type="file"]').val("");
                             $('#form_cadastro_empresa').find('input[type="password"]').val("");
+                            $('#form_cadastro_empresa').find('input[id="uf"]').val("PE");
                             // getCategoria();
                             // getProduto();
                             // selectCategoria();
@@ -439,54 +421,54 @@
         // });
 
 
-        $(document).delegate(".del_cate","click",function(){
-            $tr = $(this).closest('tr');
+        // $(document).delegate(".del_cate","click",function(){
+        //     $tr = $(this).closest('tr');
 
-            var data = $tr.children("td").map(function(){
-                return $(this).html();
-            }).get();
+        //     var data = $tr.children("td").map(function(){
+        //         return $(this).html();
+        //     }).get();
 
-            $id = data[0];
+        //     $id = data[0];
 
-            swal("Todos os produtos desta categoria serão removidos. Tem certeza que deseja remover?", {
-                buttons: {
-                    yes: {
-                        text: "Sim",
-                        value: "yes"
-                    },
-                    no: {
-                        text: "Não",
-                        value: "no"
-                    },
+        //     swal("Todos os produtos desta categoria serão removidos. Tem certeza que deseja remover?", {
+        //         buttons: {
+        //             yes: {
+        //                 text: "Sim",
+        //                 value: "yes"
+        //             },
+        //             no: {
+        //                 text: "Não",
+        //                 value: "no"
+        //             },
                     
-                },
-                icon:"warning" 
-            }).then((value) => {
-                if (value === "yes") {
-                    $.ajax({
-                        url:'/categoria_delete/'+$id,
-                        type: 'DELETE',
-                        success:function(data)
-                        {
-                            swal({
-                                type: "warning",
-                                text: data.message,
-                                icon: "success",
-                                showCancelButton: false,
-                                confirmButtonColor: "#DD6B55",
-                                closeOnConfirm: false
-                            }).then(() => {
-                                $('.errors').html("");
-                                getCategoria();
-                                getProduto();
-                                selectCategoria();
-                            });  
-                        }
-                    });
-                }
-                return false;
-            });
-        });
+        //         },
+        //         icon:"warning" 
+        //     }).then((value) => {
+        //         if (value === "yes") {
+        //             $.ajax({
+        //                 url:'/categoria_delete/'+$id,
+        //                 type: 'DELETE',
+        //                 success:function(data)
+        //                 {
+        //                     swal({
+        //                         type: "warning",
+        //                         text: data.message,
+        //                         icon: "success",
+        //                         showCancelButton: false,
+        //                         confirmButtonColor: "#DD6B55",
+        //                         closeOnConfirm: false
+        //                     }).then(() => {
+        //                         $('.errors').html("");
+        //                         getCategoria();
+        //                         getProduto();
+        //                         selectCategoria();
+        //                     });  
+        //                 }
+        //             });
+        //         }
+        //         return false;
+        //     });
+        // });
 
         $('.tabheading li').click(function () {
             
@@ -513,27 +495,27 @@
         })
 
         // getCategoria()
-        // getProduto();
+        getEmpresa();
         // listaTotalItens();
         // selectCategoria();
     });
 
-    // function getProduto(query = '')
-    // {   
+    function getEmpresa(query = '')
+    {   
         
-    //     $.ajax({
-    //         url:"{{ route('produtos.search_product') }}",
-    //         method: 'GET',
-    //         dataType: 'json',
-    //         data:{query: query},
-    //         success:function(data)
-    //         {   
-    //             $('.lista_produto tbody').html(data.output);
-    //             $('#total_produtos').text('Total de itens: '+data.total_product);
+        $.ajax({
+            url:"{{ route('empresa.search_empresa') }}",
+            method: 'GET',
+            dataType: 'json',
+            data:{query: query},
+            success:function(data)
+            {   
+                $('.lista_empresa tbody').html(data.output);
+                $('#total_empresas').text('Total de empresas: '+data.total_empresas);
                  
-    //         }
-    //     });
-    // }
+            }
+        });
+    }
 
     // function selectCategoria(id = '')
     // {

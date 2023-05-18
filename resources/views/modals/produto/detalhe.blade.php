@@ -14,7 +14,6 @@
             <span class="produto_detalhe"></span>
             <span class="img_detalhe"></span> 
           </div>
-          
           <div class="dados_detalhe">
             <div style="display:flex; justify-content: space-between">
               <div>

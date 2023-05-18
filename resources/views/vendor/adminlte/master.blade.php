@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="author" content="StoneSoft - Vitor Parísio">
-    <meta name="keywords" content="stonesoft, sapphire, saphira, safira">
+    <meta name="author" content="SmartNet - Vitor Parísio">
+    <meta name="keywords" content="sapphire, saphira, safira, smartnet sapphira, smartnet, smart safira">
 
     {{-- Custom Meta Tags --}}
     @yield('meta_tags')
@@ -90,6 +90,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
         <script src="{{asset('js/notifications.js')}}"></script>
+        <script>
+            // $(document).keydown(function (event) {
+            //     if (event.keyCode == 123) { // Prevent F12
+            //         return false;
+            //     } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) { // Prevent Ctrl+Shift+I        
+            //         return false;
+            //     }
+            // });
+       </script>
         @stack('scripts')
 
         {{-- Configured Scripts --}}
