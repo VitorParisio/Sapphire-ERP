@@ -38,6 +38,10 @@
     margin: 0;
 }
 
+input{
+    outline: none;
+}
+
 
 /* ----------------------------------------------------- */
 
@@ -232,7 +236,8 @@
 }
 
 .detalhes_produto > .dados_detalhe,
-.editar_produto > .dados_editar {
+.editar_produto > .dados_editar,
+.editar_empresa > .dados_editar {
     width: 100%;
 }
 
@@ -269,14 +274,14 @@
  }
 
 .editar_produto > div > form > input[type="file"],
-
-#img_produto_input, #file_empresa_input{
+#img_produto_input, #file_empresa_input, #file_empresa_input_editar{
     display: none;
 }
 
 .img_produto_input, 
 .file_empresa_input,
-.cadastro_clientes_inputs{
+.cadastro_clientes_inputs,
+.file_empresa_input_editar{
     display: flex;
     border-bottom: 1px solid rgba(0,0,0,0.2);
     align-items: center;
@@ -284,7 +289,8 @@
 }
 
 .img_produto_input > span:nth-child(1),
-.file_empresa_input > span:nth-child(1){
+.file_empresa_input > span:nth-child(1),
+.file_empresa_input_editar > span:nth-child(1){
     cursor: pointer;
     background: teal;
     color: #FFF;
@@ -292,7 +298,8 @@
 }
 
 .img_produto_input > span:nth-child(2),
-.file_empresa_input > span:nth-child(2){
+.file_empresa_input > span:nth-child(2),
+.file_empresa_input_editar > span:nth-child(2){
     width: 100%;
     cursor: pointer;
     color: #615e5e;

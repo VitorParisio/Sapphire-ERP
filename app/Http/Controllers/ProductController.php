@@ -93,7 +93,7 @@ class ProductController extends Controller
       'preco_venda'  => 'required',
       'estoque'      => 'required|numeric',
       'validade'     => 'date|nullable',
-      'img'          => 'image|max:2048'
+      'img'          => 'image|max:1024'
     ],
     [
       'category_id.required' => 'Preencher o campo "Categoria."',
@@ -111,7 +111,7 @@ class ProductController extends Controller
       'estoque.required'     => 'Preencher o campo "Estoque."',
       'estoque.numeric'      => 'Digitar apenas números no campo "Estoque".',
       'validade.date'        => 'Data inválida.',
-      'img.max'              => 'Tamanho máximo de 2MB (2048KB).'
+      'img.max'              => 'Tamanho máximo de 1MB (1024KB).'
     ]);
 
     if ($validator->fails()) {

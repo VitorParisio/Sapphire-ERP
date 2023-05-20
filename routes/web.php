@@ -44,6 +44,7 @@ Route::get('/', function () {
     Route::get('/empresas', [EmitenteController::class, 'index'])->name('index.empresa');
     Route::post('/empresas', [EmitenteController::class, 'store'])->name('store.empresa');
     Route::get('/empresas/page', [EmitenteController::class, 'getEmpresa'])->name('empresa.search_empresa');
+    Route::post('/update_empresa/{id}', [EmitenteController::class, 'update'])->name('empresa.update');
 
     Route::get('/clientes', [DestinatarioController::class, 'index'])->name('index.clientes');
     Route::post('/clientes', [DestinatarioController::class, 'store'])->name('store.clientes');
@@ -57,7 +58,7 @@ Route::get('/', function () {
 
     Route::get('/produtos', [ProductController::class, 'index'])->name('produtos');
     Route::post('/produtos', [ProductController::class, 'store'])->name('produtos.store');
-    Route::post('/update_produto/{id}', [ProductController::class, 'update'])->name('produtos.update_img');
+    Route::post('/update_produto/{id}', [ProductController::class, 'update'])->name('produtos.update');
     Route::delete('/delete_produto/{id}', [ProductController::class, 'destroy'])->name('produtos.delete');
     Route::get('/produtos/page', [ProductController::class, 'getProduct'])->name('produtos.search_product');
     Route::get('/produtos/item', [ProductController::class, 'searchItem'])->name('produtos.search_item');

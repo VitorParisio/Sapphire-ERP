@@ -162,7 +162,7 @@
                         <hr>
                         <div style="display:flex; gap:4px; margin-top:15px;">
                             <button type="submit" style="border: none; background: #3f6792; color: #FFF;">Adicionar</button><br>
-                            <input type="reset" value="Cancel" class="btn btn-danger" style="">
+                            <input type="reset" value="Cancel" class="btn btn-danger">
                         </div>
                     </form>
                 </div>

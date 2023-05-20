@@ -98,7 +98,7 @@
                                         <input type="text" class="form-control" name="cep" id="cep" placeholder="" value="{{old('cep')}}" autocomplete="off" onblur="pesquisacep(this.value);"  maxlength="9">
                                     </label>
                                     <label for="rua">Logradouro*
-                                        <input type="text" class="form-control" name="rua" id="rua" placeholder="" value="{{old('rua')}}" autocomplete="off">
+                                        <input type="text" class="form-control" name="rua" id="rua" placeholder="" value="{{old('rua')}}" autocomplete="off" disabled>
                                     </label>
                                 </div>
                                 <div class="col-md-3">
@@ -111,10 +111,10 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label for="bairro">Bairro*
-                                        <input type="text" class="form-control" name="bairro" id="bairro" placeholder="" value="{{old('bairro')}}" autocomplete="off">
+                                        <input type="text" class="form-control" name="bairro" id="bairro" placeholder="" value="{{old('bairro')}}" autocomplete="off" disabled>
                                     </label>
                                     <label for="cidade">Cidade*
-                                        <input type="text" class="form-control" name="cidade" id="cidade" placeholder="" value="{{old('cidade')}}" autocomplete="off">
+                                        <input type="text" class="form-control" name="cidade" id="cidade" placeholder="" value="{{old('cidade')}}" autocomplete="off" disabled>
                                     </label>
                                 </div>
                                 <div class="col-md-3">
@@ -122,15 +122,12 @@
                                         <input type="text" class="form-control" name="uf" id="uf" placeholder="" value="PE" autocomplete="off" disabled>
                                         <input type="hidden" name="cibge" type="text" id="ibge" value="2610707" /></label><br />
                                     </label>
-                                    <label for="telefone">Telefone
-                                        <input type="text" class="form-control" name="telefone" id="telefone" placeholder="" value="{{old('telefone')}}" autocomplete="off">
-                                    </label>
                                 </div>
                             </div>
                             <hr>
                             <div style="display:flex; gap:4px; margin-top:10px;">
                                 <button type="submit" style="border: none; background: #3f6792; color: #FFF;">Adicionar</button><br>
-                                <input type="reset" value="Cancel" class="btn btn-danger" style="">
+                                <input type="reset" value="Cancel" class="btn btn-danger">
                             </div>
                         </form>
                     </div>
@@ -227,12 +224,12 @@
                 </div>  
             </div>  -->
         </div>
-        <div>
-            @include('modals.emitente.detalhe')
-        </div>
-        <div>
-            @include('modals.emitente.editar')
-        </div>
+    </div>
+    <div>
+        @include('modals.emitente.detalhe')
+    </div>
+    <div>
+        @include('modals.emitente.editar')
     </div>
 @stop
 @push('scripts')
@@ -251,6 +248,10 @@
         //     searchCategory(value);
         // });
 
+        $("label").find("#rua").attr('disabled','disabled');
+        $("label").find("#bairro" ).prop( "disabled", true );
+        $("label").find("#cidade" ).prop( "disabled", true );
+        $("label").find("#uf" ).prop( "disabled", true );
 
         $(document).delegate(".dtls_btn","click",function(){
             $('#detalhe_empresa_modal').modal('show');
@@ -286,19 +287,20 @@
                 return $(this).html();
             }).get();
 
+            $('.id_editar').val(data[0]);
             $('.cnpj_editar').val(data[1]);
             $('.razao_editar').val(data[2]);
             $('.ie_editar').val(data[3]);
-            $('.cidade').html(data[4]);
-            $('.fantasia_editar').html(data[5]);
-            $('.im_editar').html(data[6]);
-            $('.cnae_editar').html(data[7]);
-            $('.cep').html(data[8]);
-            $('.logradouro').html(data[9]);
-            $('.numero').html(data[10]);
-            $('.complemento').html(data[11]);
-            $('.bairro').html(data[12]);
-            $('.uf').html(data[13]);
+            $('.cidade_editar').val(data[4]);
+            $('.fantasia_editar').val(data[5]);
+            $('.im_editar').val(data[6]);
+            $('.cnae_editar').val(data[7]);
+            $('.cep_editar').val(data[8]);
+            $('.logradouro_editar').val(data[9]);
+            $('.numero_editar').val(data[10]);
+            $('.complemento_editar').val(data[11]);
+            $('.bairro_editar').val(data[12]);
+            $('.uf_editar').val(data[13]);
             
         });
 
@@ -385,40 +387,41 @@
             });
         });
 
-        // $(document).on('submit', '#form_edit_produto', function(e){
-        //     e.preventDefault();
+        $(document).on('submit', '#form_edit_empresa', function(e){
+            e.preventDefault();
+           
+            var id              = $('.id_editar').val();
+            var editFormEmpresa = new FormData($('#form_edit_empresa')[0]);
             
-        //     var id              = $('.id_editar').val();
-        //     var editFormProduto = new FormData($('#form_edit_produto')[0]);
-            
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '/update_produto/'+id,
-        //         data: editFormProduto,
-        //         processData: false,  
-        //         contentType: false,  
-        //         dataType: 'json',
-        //         success: function(data)
-        //         {
-        //             if($.isEmptyObject(data.error)){
-        //                 swal({
-        //                     text: data.message,
-        //                     icon: "success"
-        //                 }).then(() =>{
-        //                     $('#editar_produto_modal').modal('hide');
-        //                     $(".errors").html("");
-        //                     getCategoria();
-        //                     getProduto();
-        //                     selectCategoria()
-        //                 });
-        //             }else{
-        //                 $.each(data.error, function( index, value) {
-        //                     $(".errors_editar_produto").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
-        //                 });
-        //             }
-        //         }
-        //     });
-        // });
+            $.ajax({
+                type: 'POST',
+                url: '/update_empresa/'+id,
+                data: editFormEmpresa,
+                processData: false,  
+                contentType: false,  
+                dataType: 'json',
+                success: function(data)
+                {
+                    if($.isEmptyObject(data.error)){
+                        swal({
+                            text: data.message,
+                            icon: "success"
+                        }).then(() =>{
+                            $('#editar_empresa_modal').modal('hide');
+                            $(".errors").html("");
+                            $(".errors_editar_empresa").html("");
+                            // getCategoria();
+                            getEmpresa();
+                            // selectCategoria()
+                        });
+                    }else{
+                        $.each(data.error, function( index, value) {
+                            $(".errors_editar_empresa").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
+                        });
+                    }
+                }
+            });
+        });
 
 
         // $(document).delegate(".del_cate","click",function(){
@@ -484,13 +487,16 @@
 
         $('.close').click(function(){
             $('.errors').html("");
-            $(".errors_editar_categoria").html("");
-            $(".errors_editar_produto").html("");
-            selectCategoria();
+            $(".errors_editar_empresa").html("");
         });
 
         $('#file_empresa_input').change(function(e){
             $('.file_empresa_input span').next().text(e.target.files[0].name);
+
+        })
+
+        $('#file_empresa_input_editar').change(function(e){
+            $('.file_empresa_input_editar span').next().text(e.target.files[0].name);
 
         })
 

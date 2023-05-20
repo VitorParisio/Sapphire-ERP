@@ -11,51 +11,91 @@
         <div class="editar_empresa">
           <div class="dados_editar">
             <form id="form_edit_empresa" method="POST" enctype="multipart/form-data">
-              <label for="certificado_digital_editar">
-                <span class="texto">Editar Certificado</span> 
-              </label>
-              <input type="file" name="certificado_digital" id="certificado_digital_editar">
-              <div style="display:flex; justify-content: space-between">
+            @csrf
+              <div style="display:flex; justify-content: space-between;">
                 <input type="hidden" class="id_editar" />
                 <div>
-                  <label for="cnpj_editar">CNPJ:</label>
+                  <label for="cnpj_editar">CNPJ:*</label>
                   <input type="text" class="cnpj_editar" id="cnpj_editar" name="cnpj"/>
                 </div>
-                <div>
-                  <label for="ie_editar">Isnc. Estadual:</label>
-                  <input type="text" class="ie_editar" id="ie_editar" name="ie"/>
+                <div style="text-align:right">
+                  <label for="ie_editar">Isnc. Estadual:*</label>
+                  <input type="text" class="ie_editar" id="ie_editar" name="ie" style="text-align:right"/>
                 </div>
               </div>
               <div style="display:flex; justify-content: space-between">
                 <div>
-                  <label for="razao_editar">Razão Social:</label>
-                  <input type="text" class="razao_editar_editar" id="razao_editar" name="razao_social"/>
+                  <label for="razao_editar">Razão Social:*</label>
+                  <input type="text" class="razao_editar" id="razao_editar" name="razao_social"/>
                 </div>
-                <div>
-                  <label for="preco_venda">Preço venda:</label>
-                  <input type="text" class="preco_venda_editar" id="preco_venda" name="preco_venda"/>
-                </div>
-              </div>
-              <div style="display:flex; justify-content: space-between">
-                <div>
-                  <label for="estoque">Estoque:</label>
-                  <input type="text" class="estoque_editar" id="estoque" name="estoque"/>
-                </div>
-                <div>
-                  <label for="descricao">Descrição:</label>
-                  <input type="text" class="descricao_editar" id="descricao" name="descricao"/>
+                <div style="text-align:right">
+                  <label for="nome_fantasia">Fantasia:*</label>
+                  <input type="text" class="fantasia_editar" id="nome_fantasia" name="nome_fantasia" style="text-align:right"/>
                 </div>
               </div>
               <div style="display:flex; justify-content: space-between">
                 <div>
-                  <label for="select_categoria">Categoria:</label>
-                  <select type="text" class="select_categoria" id="select_categoria" name="category_id"></select>
+                  <label for="im">Isnc. Municipal:</label>
+                  <input type="text" class="im_editar" id="im_editar" name="im"/>
                 </div>
-                <div>
-                  <label for="validade">Validade:</label>
-                  <input type="date" class="validade_editar" id="validade" name="validade"/>
+                <div style="text-align:right">
+                  <label for="cnae">CNAE:</label>
+                  <input type="text" class="cnae_editar" id="cnae_editar" name="cnae" style="text-align:right"/>
                 </div>
               </div>
+              <div style="display:flex; justify-content: space-between">
+                <div>
+                  <input type="file" name="certificado_a1" id="file_empresa_input_editar">
+                  <label for="file_empresa_input_editar">
+                    <span class="texto">Certificado:</span> 
+                  </label>
+                  <label for="file_empresa_input_editar" class="file_empresa_input_editar">
+                    <span>Procurar</span>
+                    <span>Selecionar certificado</span>
+                  </label>
+                </div>
+                <div style="text-align:right">
+                  <label for="senha_certificado_editar">Senha (certificado):
+                      <input type="password" name="senha_certificado" id="senha_certificado_editar" value="" style="text-align: right">
+                  </label>
+                </div>
+              </div>
+              <hr>
+              <div style="display:flex; justify-content: space-between">
+                <div>
+                  <label for="cep_editar">CEP:*</label>
+                  <input type="text" class="cep_editar" id="cep_editar" name="cep"/>
+                </div>
+                <div style="text-align:right">
+                  <label for="logradouro_editar">Logradouro:*</label>
+                  <input type="text" class="logradouro_editar" id="logradouro_editar" name="rua" style="text-align:right"/>
+                </div>
+              </div>
+              <div style="display:flex; justify-content: space-between">
+                <div>
+                  <label for="numero_editar">Número:*</label>
+                  <input type="text" class="numero_editar" id="numero_editar" name="numero"/>
+                </div>
+                <div style="text-align:right">
+                  <label for="complemento_editar">Complemento:</label>
+                  <input type="text" class="complemento_editar" id="complemento_editar" name="complemento" style="text-align:right"/>
+                </div>
+              </div>
+              <div style="display:flex; justify-content: space-between">
+                <div>
+                  <label for="bairro_editar">Bairro:*</label>
+                  <input type="text" class="bairro_editar" id="bairro_editar" name="bairro"/>
+                </div>
+                <div style="text-align:right">
+                  <label for="cidade_editar">Cidade:*</label>
+                  <input type="text" class="cidade_editar" id="cidade_editar" name="cidade" style="text-align:right"/>
+                </div>
+              </div>
+              <div>
+                <label for="uf_editar">UF:*</label><br>
+                <input type="text" class="uf_editar" id="uf_editar" name="uf"/>
+              </div>
+              <hr>
               <button type="submit" class="btn btn-primary">Editar</button>
             </form>
           </div>
