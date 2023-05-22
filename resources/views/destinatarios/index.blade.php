@@ -19,14 +19,14 @@
                 <ul class="tabheading">
                     <li class="active" rel="tab1" >
                         <a href="#">
-                            <small><i class="fas fa-plus fa-x3"></i> Adicionar cliente</small>
+                            <small><i class="fas fa-plus fa-x3"></i> Adicionar</small>
                         </a>
                     </li>
-                    <!-- <li rel="tab2">
+                    <li rel="tab2">
                         <a href="#">
-                            <small><i class="fas fa-list fa-x3"></i> Listar empresas</small>
+                            <small><i class="fas fa-list fa-x3"></i> Lista</small>
                         </a> 
-                    </li> -->
+                    </li>
                     <!-- <li rel="tab3">
                         <a href="#">
                             <small><i class="fas fa-list fa-x3"></i> Listar produto</small>
@@ -113,55 +113,40 @@
                         </form>
                     </div>
                 </div>
-                <!-- <div class="tabbody" id="tab2" style="display: none;">
-                    <form id="form_cadastro_produto" action="{{route('produtos.store')}}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row cadastro_produtos_inputs">
-                            <div class="col-md-3">
-                                <label for="cod_barra_add">Código barra:
-                                    <input type="text" class="form-control" name="cod_barra" id="cod_barra_add" placeholder="" value="{{ old('cod_barra')}}" autocomplete="off">
-                                </label>
-                                <label for="fornecedores">Fornecedores:
-                                    <input type="text" class="form-control" name="" id="" value="" autocomplete="off">
-                                </label>
+                <div class="tabbody" id="tab2" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <div style="display: flex; justify-content: space-between; flex-wrap:wrap; align-items:center;">
+                                <h3 class="card-title">Meus clientes</h3><br>
+                                <input class="search_cliente" id="search_cliente" name="search_cliente" type="text" placeholder="Cliente" style="outline: none" autocomplete="off">
                             </div>
-                            <div class="col-md-3">
-                                <label for="select_categoria">Categorias
-                                    <select class="form-control select_categoria" id="select_categoria" name="category_id"></select>
-                                </label>
-                                <label for="nome">Produto:
-                                    <input type="text" class="form-control" name="nome" id="nome" value="{{old('nome')}}"  autocomplete="off">
-                                </label>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="preco_compra">Preço Custo (R$):
-                                    <input type="text" class="form-control" name="preco_compra" id="preco_compra" value="{{old('preco_compra')}}" style="text-align: right" autocomplete="off">
-                                </label>
-                                <label for="preco_venda">Preço Venda (R$):
-                                    <input type="text" class="form-control" name="preco_venda" id="preco_venda" value="{{old('preco_venda')}}" style="text-align: right" autocomplete="off">
-                                </label>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="estoque">Estoque:
-                                    <input type="text" class="form-control" name="estoque" id="estoque" placeholder="" value="{{old('estoque')}}" autocomplete="off">
-                                </label>
-                                <label for="descricao">Descrição:
-                                    <input type="text" class="form-control" name="descricao" id="descricao" placeholder="" value="{{old('descricao')}}" autocomplete="off">
-                                </label>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="validade">Validade:
-                                    <input type="date" class="form-control datetimepicker-input" data-target="#reservationdate" name="validade" id="validade" value="{{old('validade')}}">
-                                </label>
-                            </div>
-                            
                         </div>
-                        <div style="display:flex; gap:4px;">
-                            <button type="submit" style="border: none; background: #3f6792; color: #FFF;">Adicionar</button><br>
-                            <input type="reset" value="Cancel" class="btn btn-danger" style="">
+                        <div class="card-body">
+                        <span id="total_produtos" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:100"></span>
+                            <table class="table table-striped table-bordered lista_produto">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Cliente</th>
+                                        <th>CPF/CNPJ</th>
+                                        <th>RG/Insc. Estadual</th>
+                                        <th>Cidade</th>
+                                        <th colspan=3>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div> 
                         </div>
-                    </form>
-                </div> -->
+                        <div>
+                            @include('modals.cliente.detalhe')
+                        </div>
+                        <div>
+                            @include('modals.cliente.editar')
+                        </div>
+                        </div>    
+                </div> 
                 <!-- <div class="tabbody" id="tab3" style="display: none;">
                     <div class="card">
                         <div class="card-header">

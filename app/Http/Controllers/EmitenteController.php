@@ -265,7 +265,7 @@ class EmitenteController extends Controller
       $emitente->cidade            = $data['cidade'];
       $emitente->uf                = $data['uf'];
 
-      if ($request->certificado_a1 != null)
+      if ($request->certificado_a1 != null && $request->senha_certificado != null)
       {
         if ($request->certificado_a1->isValid())
         {
@@ -276,7 +276,7 @@ class EmitenteController extends Controller
   
           $nome_certificado = Str::of($request->razao_social)->slug('-'). '.' .$request->certificado_a1->getClientOriginalExtension();
   
-          $certificado_atualizado = $request->certificado_a1->storeAs('certificados', $nome_certificado);
+          $certificado_atualizado      = $request->certificado_a1->storeAs('certificados', $nome_certificado);
           $emitente->certificado_a1    = $certificado_atualizado;
           $emitente->senha_certificado = $data['senha_certificado'];
         }
@@ -290,4 +290,15 @@ class EmitenteController extends Controller
   
         return response()->json(['message' => 'Empresa atualizada com sucesso!']);
     }
+
+    function destroy($id){
+
+      if (!$produto = Emitente::find($id))
+        return redirect()->back();
+  
+      $produto->delete();
+  
+      return response()->json(['message' => 'Empresa removida com sucesso!']);
+    }
+  
 }

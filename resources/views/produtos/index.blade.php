@@ -320,7 +320,7 @@
 
             $id = data[1];
 
-            swal("Tem certeza que deseja removê-lo?", {
+            swal("Tem certeza que deseja remover o produto?", {
                 buttons: {
                     yes: {
                         text: "Sim",

@@ -45,6 +45,7 @@ Route::get('/', function () {
     Route::post('/empresas', [EmitenteController::class, 'store'])->name('store.empresa');
     Route::get('/empresas/page', [EmitenteController::class, 'getEmpresa'])->name('empresa.search_empresa');
     Route::post('/update_empresa/{id}', [EmitenteController::class, 'update'])->name('empresa.update');
+    Route::delete('/delete_empresa/{id}', [EmitenteController::class, 'destroy'])->name('empresa.delete');
 
     Route::get('/clientes', [DestinatarioController::class, 'index'])->name('index.clientes');
     Route::post('/clientes', [DestinatarioController::class, 'store'])->name('store.clientes');

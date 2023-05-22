@@ -44,7 +44,6 @@
             <div class="tabcontainer">
                 <div class="tabbody active" id="tab1" style="display: block;">  
                     <div style="display: flex; justify-content:space-between; align-items: flex-start; margin-bottom: 5px; margin-top: -10px;">
-                        <!-- <input type="text" name="search_category" id="search_category" style="position: relative; outline:none; border:1px solid #848484;" placeholder="Pesquisar categoria..." autocomplete="off" /> -->
                     </div>
                     <div class="adicionar_empresa">
                         <form id="form_cadastro_empresa" action="{{route('store.empresa')}}" method="post" enctype="multipart/form-data">
@@ -98,7 +97,7 @@
                                         <input type="text" class="form-control" name="cep" id="cep" placeholder="" value="{{old('cep')}}" autocomplete="off" onblur="pesquisacep(this.value);"  maxlength="9">
                                     </label>
                                     <label for="rua">Logradouro*
-                                        <input type="text" class="form-control" name="rua" id="rua" placeholder="" value="{{old('rua')}}" autocomplete="off" disabled>
+                                        <input type="text" class="form-control" name="rua" id="rua" placeholder="" value="{{old('rua')}}" autocomplete="off" readonly>
                                     </label>
                                 </div>
                                 <div class="col-md-3">
@@ -111,15 +110,15 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label for="bairro">Bairro*
-                                        <input type="text" class="form-control" name="bairro" id="bairro" placeholder="" value="{{old('bairro')}}" autocomplete="off" disabled>
+                                        <input type="text" class="form-control" name="bairro" id="bairro" placeholder="" value="{{old('bairro')}}" autocomplete="off" readonly>
                                     </label>
                                     <label for="cidade">Cidade*
-                                        <input type="text" class="form-control" name="cidade" id="cidade" placeholder="" value="{{old('cidade')}}" autocomplete="off" disabled>
+                                        <input type="text" class="form-control" name="cidade" id="cidade" placeholder="" value="{{old('cidade')}}" autocomplete="off" readonly>
                                     </label>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="uf">UF*
-                                        <input type="text" class="form-control" name="uf" id="uf" placeholder="" value="PE" autocomplete="off" disabled>
+                                        <input type="text" class="form-control" name="uf" id="uf" placeholder="" value="PE" autocomplete="off" readonly>
                                         <input type="hidden" name="cibge" type="text" id="ibge" value="2610707" /></label><br />
                                     </label>
                                 </div>
@@ -243,15 +242,10 @@
             }
         });
 
-        // $('.search_category').on('keyup',function(){
-        //     var value = $(this).val();
-        //     searchCategory(value);
-        // });
-
-        $("label").find("#rua").attr('disabled','disabled');
-        $("label").find("#bairro" ).prop( "disabled", true );
-        $("label").find("#cidade" ).prop( "disabled", true );
-        $("label").find("#uf" ).prop( "disabled", true );
+        $('.search_empresa').on('keyup',function(){
+            var value = $(this).val();
+            searchCategory(value);
+        });
 
         $(document).delegate(".dtls_btn","click",function(){
             $('#detalhe_empresa_modal').modal('show');
@@ -304,51 +298,51 @@
             
         });
 
-        // $(document).delegate(".del_btn","click",function(){
-        //     $tr = $(this).closest('tr');
+        $(document).delegate(".del_btn","click",function(){
+            $tr = $(this).closest('tr');
 
-        //     var data = $tr.children("td").map(function(){
-        //         return $(this).html();
-        //     }).get();
+            var data = $tr.children("td").map(function(){
+                return $(this).html();
+            }).get();
 
-        //     $id = data[1];
+            $id = data[0];
 
-        //     swal("Tem certeza que deseja removê-lo?", {
-        //         buttons: {
-        //             yes: {
-        //                 text: "Sim",
-        //                 value: "yes"
-        //             },
-        //             no: {
-        //                 text: "Não",
-        //                 value: "no"
-        //             }
-        //         }
-        //     }).then((value) => {
-        //         if (value === "yes") {
-        //             $.ajax({
-        //                 url:'/delete_produto/'+$id,
-        //                 type: 'DELETE',
-        //                 success:function(data)
-        //                 {
-        //                     swal({
-        //                         type: "warning",
-        //                         text: data.message,
-        //                         icon: "success",
-        //                         showCancelButton: false,
-        //                         confirmButtonColor: "#DD6B55",
-        //                         closeOnConfirm: false
-        //                     }).then(() => {
-        //                         $('.errors').html("");
-        //                         getProduto();
+            swal("Tem certeza que deseja remover a empresa?", {
+                buttons: {
+                    yes: {
+                        text: "Sim",
+                        value: "yes"
+                    },
+                    no: {
+                        text: "Não",
+                        value: "no"
+                    }
+                }
+            }).then((value) => {
+                if (value === "yes") {
+                    $.ajax({
+                        url:'/delete_empresa/'+$id,
+                        type: 'DELETE',
+                        success:function(data)
+                        {
+                            swal({
+                                type: "warning",
+                                text: data.message,
+                                icon: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#DD6B55",
+                                closeOnConfirm: false
+                            }).then(() => {
+                                $('.errors').html("");
+                                getEmpresa();
                                 
-        //                     });  
-        //                 }
-        //             });
-        //         }
-        //         return false;
-        //     });
-        // });
+                            });  
+                        }
+                    });
+                }
+                return false;
+            });
+        });
 
         $(document).on('submit', '#form_cadastro_empresa', function(e){
             e.preventDefault();
@@ -371,11 +365,11 @@
                             icon: "success"
                         }).then(() =>{
                             $('#form_cadastro_empresa').find('input[type="text"]').val("");
-                            $('#form_cadastro_empresa').find('input[type="file"]').val("");
+                            $('.file_empresa_input span').next().text("Selecionar certificado");
                             $('#form_cadastro_empresa').find('input[type="password"]').val("");
                             $('#form_cadastro_empresa').find('input[id="uf"]').val("PE");
                             // getCategoria();
-                            // getProduto();
+                            getEmpresa();
                             // selectCategoria();
                         });
                     }else{
@@ -410,6 +404,8 @@
                             $('#editar_empresa_modal').modal('hide');
                             $(".errors").html("");
                             $(".errors_editar_empresa").html("");
+                            $('.file_empresa_input_editar span').next().text("Selecionar certificado");
+                            $('#form_edit_empresa').find('input[type="password"]').val("");
                             // getCategoria();
                             getEmpresa();
                             // selectCategoria()
@@ -422,56 +418,6 @@
                 }
             });
         });
-
-
-        // $(document).delegate(".del_cate","click",function(){
-        //     $tr = $(this).closest('tr');
-
-        //     var data = $tr.children("td").map(function(){
-        //         return $(this).html();
-        //     }).get();
-
-        //     $id = data[0];
-
-        //     swal("Todos os produtos desta categoria serão removidos. Tem certeza que deseja remover?", {
-        //         buttons: {
-        //             yes: {
-        //                 text: "Sim",
-        //                 value: "yes"
-        //             },
-        //             no: {
-        //                 text: "Não",
-        //                 value: "no"
-        //             },
-                    
-        //         },
-        //         icon:"warning" 
-        //     }).then((value) => {
-        //         if (value === "yes") {
-        //             $.ajax({
-        //                 url:'/categoria_delete/'+$id,
-        //                 type: 'DELETE',
-        //                 success:function(data)
-        //                 {
-        //                     swal({
-        //                         type: "warning",
-        //                         text: data.message,
-        //                         icon: "success",
-        //                         showCancelButton: false,
-        //                         confirmButtonColor: "#DD6B55",
-        //                         closeOnConfirm: false
-        //                     }).then(() => {
-        //                         $('.errors').html("");
-        //                         getCategoria();
-        //                         getProduto();
-        //                         selectCategoria();
-        //                     });  
-        //                 }
-        //             });
-        //         }
-        //         return false;
-        //     });
-        // });
 
         $('.tabheading li').click(function () {
             
@@ -500,10 +446,7 @@
 
         })
 
-        // getCategoria()
         getEmpresa();
-        // listaTotalItens();
-        // selectCategoria();
     });
 
     function getEmpresa(query = '')
@@ -523,89 +466,21 @@
         });
     }
 
-    // function selectCategoria(id = '')
-    // {
-    //     $.ajax({
-    //         type: 'GET',
-    //         url: '/select_categoria/'+id,
-    //         success:function(data)
-    //         {
-    //             $(".select_categoria option").remove("");
-    //             if (data.id > 0)
-    //                 $(".select_categoria").append(data.first_option);
-    //             else
-    //                 $(".select_categoria").append('<option value="0" style="font-weight: 100; font-style:italic;" selected>Selecione...</option>');
-
-    //             $.each(data.dados_categoria, function(index, value)
-    //             {
-    //                 $(".select_categoria").append('<option value="'+index+'">'+value+'</option>');
-                    
-    //             });
-    //         }
-    //     })
-    // }
-
-
-    // function searchItem(query = '')
-    // {
-    //     $.ajax({
-    //         url:"{{ route('produtos.search_item') }}",
-    //         method: 'GET',
-    //         dataType: 'json',
-    //         data:{query: query},
-    //         success:function(data)
-    //         {
-    //             $('.tb_total_itens tbody').html(data.itens_agrupados);
+    function searEmpresa(query = '')
+    {
+        $.ajax({
+            url:"{{ route('produtos.search_item') }}",
+            method: 'GET',
+            dataType: 'json',
+            data:{query: query},
+            success:function(data)
+            {
+                $('.tb_total_itens tbody').html(data.itens_agrupados);
                  
-    //         }
-    //     });
-    // }
+            }
+        });
+    }
 
-    // function listaTotalItens()
-    // {
-    //     $.ajax({
-    //         url:"{{ route('produtos.total_item') }}",
-    //         method: 'GET',
-    //         dataType: 'json',
-    //         success:function(data)
-    //             {
-    //                 var options = { 
-    //                 style: 'currency', 
-    //                 currency: 'BRL', 
-    //                 minimumFractionDigits: 2, 
-    //                 maximumFractionDigits: 3 
-    //             };
-
-    //             var formatNumber = new Intl.NumberFormat('pt-BR', options);
-
-    //             $('.tb_total_itens tbody').html("");
-
-    //             if (data.qtd_total_item == 0)
-    //             {
-    //                 $('.tb_total_itens tbody').html('\
-    //                     <tr>\
-    //                         <td colspan="6" style="font-weight:100; font-size:19px;"><i>Item não encontrado.</i></td>\
-    //                     </tr>\
-    //                 ');
-    //             }
-
-    //             $.each(data.itens_agrupados, function(index,value){
-
-    //                 var img_prod  = value.img ? '<img src="storage/'+value.img+'" alt="img_item" style="width:42px; height:42px; border-radius:30px;"/>' : '<i class="fas fa-image fa-3x"></i>';
-    //                 var estoque   = value.qtd_compra - value.total_itens;
-    //                 var sub_total = formatNumber.format(value.sub_total);
-                   
-    //                 $('.tb_total_itens tbody').append('<tr>\
-    //                     <td>'+img_prod+'</td>\
-    //                     <td>'+value.nome+'</td>\
-    //                     <td>'+value.qtd_compra+'</td>\
-    //                     <td>'+value.total_itens+'</td>\
-    //                     <td>'+estoque+'</td>\
-    //                     <td>'+sub_total+'</td></tr>'
-    //                 );
-    //            });
-    //         }
-    //     });
-    // }
+   
 </script>
 @endpush
