@@ -118,12 +118,12 @@
                         <div class="card-header">
                             <div style="display: flex; justify-content: space-between; flex-wrap:wrap; align-items:center;">
                                 <h3 class="card-title">Meus clientes</h3><br>
-                                <input class="search_cliente" id="search_cliente" name="search_cliente" type="text" placeholder="Cliente" style="outline: none" autocomplete="off">
+                                <input class="search_cliente" id="search_client" name="search_client" type="text" placeholder="Cliente" style="outline: none" autocomplete="off">
                             </div>
                         </div>
                         <div class="card-body">
-                        <span id="total_produtos" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:100"></span>
-                            <table class="table table-striped table-bordered lista_produto">
+                            <span id="total_clientes" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:100"></span>
+                            <table class="table table-striped table-bordered lista_cliente">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -138,14 +138,7 @@
                                 </tbody>
                             </table>
                         </div> 
-                        </div>
-                        <div>
-                            @include('modals.cliente.detalhe')
-                        </div>
-                        <div>
-                            @include('modals.cliente.editar')
-                        </div>
-                        </div>    
+                    </div>    
                 </div> 
                 <!-- <div class="tabbody" id="tab3" style="display: none;">
                     <div class="card">
@@ -212,7 +205,10 @@
             </div>  -->
         </div>
         <div>
-            @include('modals.categoria.editar')
+            @include('modals.destinatario.detalhe')
+        </div>
+        <div>
+            @include('modals.destinatario.editar')
         </div>
     </div>
 @stop
@@ -233,56 +229,55 @@
         // });
 
 
-        // $(document).delegate(".dtls_btn","click",function(){
-        //     $('#detalhe_produto_modal').modal('show');
+        $(document).delegate(".dtls_btn","click",function(){
+            $('#detalhe_cliente_modal').modal('show');
 
-        //     $tr = $(this).closest('tr');
+            $tr = $(this).closest('tr');
 
-        //     var data = $tr.children("td").map(function(){
-        //         return $(this).html();
-        //     }).get();
+            var data = $tr.children("td").map(function(){
+                return $(this).html();
+            }).get();
 
-        //     var validade_split = data[8].split('-');
-        //     var validade_formatada = validade_split[2]+'/'+validade_split[1]+'/'+validade_split[0];
+            $('.id_cliente_detalhe').html(data[0]);
+            $('.cliente_detalhe').html(data[1]);
+            $('.cpf_cnpj_detalhe').html(data[2]);
+            $('.rg_ie_detalhe').html(data[3]);
+            $('.cidade').html(data[4]);
+            $('.email_detalhe').html(data[5]);
+            $('.fone_detalhe').html(data[6]);
+            $('.cep').html(data[7]);
+            $('.logradouro').html(data[8]);
+            $('.numero').html(data[9]);
+            $('.complemento').html(data[10]);
+            $('.bairro').html(data[11]);
+            $('.uf').html(data[12]);
+        });
 
-        //     $('.img_detalhe').html(data[0]);
-        //     $('.id_detalhe').html(data[1]);
-        //     $('.produto_detalhe').html(data[2]);
-        //     $('.preco_custo_detalhe').html(data[3]);
-        //     $('.preco_venda_detalhe').html(data[4]);
-        //     $('.estoque_detalhe').html(data[5]);
-        //     $('.descricao_detalhe').html(data[6]);
-        //     $('.unidade_detalhe').html(data[7]);
-        //     $('.validade_detalhe').html(validade_formatada);
-        //     $('.cod_barra_detalhe').html(data[9]);
-        // });
 
-        // $(document).delegate(".edt_btn","click",function(){
-        //     $('#editar_produto_modal').modal('show');
+         $(document).delegate(".edt_btn","click",function(){
+             $('#editar_cliente_modal').modal('show');
             
-        //     $tr = $(this).closest('tr');
+             $tr = $(this).closest('tr');
 
-        //     var data = $tr.children("td").map(function(){
-        //         return $(this).html();
-        //     }).get();
+             var data = $tr.children("td").map(function(){
+                 return $(this).html();
+             }).get();
 
-        //     var preco_compra = data[3].slice(3);
-        //     var preco_venda = data[4].slice(3);
-
-        //     $('.img_editar').html(data[0]);
-        //     $('.id_editar').val(data[1]);
-        //     $('.produto_editar').val(data[2]);
-        //     $('.preco_compra_editar').val(preco_compra);
-        //     $('.preco_venda_editar').val(preco_venda);
-        //     $('.estoque_editar').val(data[5]);
-        //     $('.descricao_editar').val(data[6]);
-        //     $('.unidade_editar').val(data[7]);
-        //     $('.validade_editar').val(data[8]);
-        //     $('.cod_barra_editar').val(data[9]);
-
-        //     selectCategoria(data[1]);
+            $('.id_editar').val(data[0]);
+            $('.cliente_editar').val(data[1]);
+            $('.cpf_cnpj_editar').val(data[2]);
+            $('.rg_ie_editar').val(data[3]);
+            $('.email_editar').val(data[5]);
+            $('.fone_editar').val(data[6]);
+            $('.cep_editar').val(data[7]);
+            $('.logradouro_editar').val(data[8]);
+            $('.cidade_editar').val(data[4]);
+            $('.numero_editar').val(data[9]);
+            $('.complemento_editar').val(data[10]);
+            $('.bairro_editar').val(data[11]);
+            $('.uf_editar').val(data[12]);
             
-        // });
+         });
 
         // $(document).delegate(".del_btn","click",function(){
         //     $tr = $(this).closest('tr');
@@ -354,7 +349,7 @@
                             $('#form_cadastro_cliente').find('input[id="uf"]').val("PE");
                              
                             // getCategoria();
-                            // getProduto();
+                             getCliente();
                             // selectCategoria();
                         });
                     }else{
@@ -366,40 +361,39 @@
             });
         });
 
-        // $(document).on('submit', '#form_edit_produto', function(e){
-        //     e.preventDefault();
+        $(document).on('submit', '#form_edit_cliente', function(e){
+            e.preventDefault();
             
-        //     var id              = $('.id_editar').val();
-        //     var editFormProduto = new FormData($('#form_edit_produto')[0]);
+            var id              = $('.id_editar').val();
+            var editFormCliente = new FormData($('#form_edit_cliente')[0]);
             
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '/update_produto/'+id,
-        //         data: editFormProduto,
-        //         processData: false,  
-        //         contentType: false,  
-        //         dataType: 'json',
-        //         success: function(data)
-        //         {
-        //             if($.isEmptyObject(data.error)){
-        //                 swal({
-        //                     text: data.message,
-        //                     icon: "success"
-        //                 }).then(() =>{
-        //                     $('#editar_produto_modal').modal('hide');
-        //                     $(".errors").html("");
-        //                     getCategoria();
-        //                     getProduto();
-        //                     selectCategoria()
-        //                 });
-        //             }else{
-        //                 $.each(data.error, function( index, value) {
-        //                     $(".errors_editar_produto").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
-        //                 });
-        //             }
-        //         }
-        //     });
-        // });
+            $.ajax({
+                type: 'POST',
+                url: '/update_cliente/'+id,
+                data: editFormCliente,
+                processData: false,  
+                contentType: false,  
+                dataType: 'json',
+                success: function(data)
+                {
+                    if($.isEmptyObject(data.error)){
+                        swal({
+                            text: data.message,
+                            icon: "success"
+                        }).then(() =>{
+                            $('#editar_cliente_modal').modal('hide');
+                            $(".errors").html("");
+                            getCliente();
+                           
+                        });
+                    }else{
+                        $.each(data.error, function( index, value) {
+                            $(".errors_editar_cliente").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
+                        });
+                    }
+                }
+            });
+        });
 
 
         $(document).delegate(".del_cate","click",function(){
@@ -466,37 +460,32 @@
         $('.close').click(function(){
             $('.errors').html("");
             $(".errors_editar_categoria").html("");
-            $(".errors_editar_produto").html("");
+            $(".errors_editar_cliente").html("");
             selectCategoria();
         });
 
-        $('#file_empresa_input').change(function(e){
-            $('.file_empresa_input span').next().text(e.target.files[0].name);
-
-        })
-
         // getCategoria()
-        // getProduto();
+         getCliente();
         // listaTotalItens();
         // selectCategoria();
     });
 
-    // function getProduto(query = '')
-    // {   
+    function getCliente(query = '')
+    {   
         
-    //     $.ajax({
-    //         url:"{{ route('produtos.search_product') }}",
-    //         method: 'GET',
-    //         dataType: 'json',
-    //         data:{query: query},
-    //         success:function(data)
-    //         {   
-    //             $('.lista_produto tbody').html(data.output);
-    //             $('#total_produtos').text('Total de itens: '+data.total_product);
+        $.ajax({
+            url:"{{ route('clientes.search_client') }}",
+            method: 'GET',
+            dataType: 'json',
+            data:{query: query},
+            success:function(data)
+            {   
+                $('.lista_cliente tbody').html(data.output);
+                $('#total_clientes').text('Total de itens: '+data.total_client);
                  
-    //         }
-    //     });
-    // }
+            }
+        });
+    }
 
     // function selectCategoria(id = '')
     // {

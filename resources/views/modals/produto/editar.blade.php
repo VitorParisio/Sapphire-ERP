@@ -13,6 +13,7 @@
             <span class="img_editar"></span>
           </div>
           <div class="dados_editar">
+            <div class="errors_editar_produto"></div>
             <form id="form_edit_produto" method="POST" enctype="multipart/form-data">
               <label for="img_produto_editar">
                 <span class="texto">Atualizar imagem</span> 
@@ -64,7 +65,6 @@
           </div>
         </div>
       </div>
-      <div class="errors_editar_produto"></div>
     </div>
   </div>
 </div>

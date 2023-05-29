@@ -1,64 +1,43 @@
-<div class="modal fade" id="editar_empresa_modal" tabindex="-1" role="dialog" aria-labelledby="editar_empresa_title" aria-hidden="true">
+<div class="modal fade" id="editar_cliente_modal" tabindex="-1" role="dialog" aria-labelledby="editar_cliente_title" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editar_empresa_title"><i><b>Editar empresa</b></i></h5>
+        <h5 class="modal-title" id="editar_cliente_title"><i><b>Editar cliente</b></i></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div class="editar_empresa">
+        <div class="editar_cliente">
           <div class="dados_editar">
-          <div class="errors_editar_empresa"></div>
-            <form id="form_edit_empresa" method="POST" enctype="multipart/form-data">
-            @csrf
+          <div class="errors_editar_cliente"></div>
+            <form id="form_edit_cliente" method="POST">
+              @csrf
               <div style="display:flex; justify-content: space-between;">
                 <input type="hidden" class="id_editar" />
                 <div>
-                  <label for="cnpj_editar">CNPJ:*</label>
-                  <input type="text" class="cnpj_editar" id="cnpj_editar" name="cnpj" autocomplete="off"/>
+                  <label for="cliente_editar">Cliente:*</label>
+                  <input type="text" class="cliente_editar" id="cliente_editar" name="nome" autocomplete="off"/>
                 </div>
                 <div style="text-align:right">
-                  <label for="ie_editar">Isnc. Estadual:*</label>
-                  <input type="text" class="ie_editar" id="ie_editar" name="ie" style="text-align:right" autocomplete="off"/>
+                  <label for="cpf_cnpj_editar">CPF/CNPJ:*</label>
+                  <input type="text" class="cpf_cnpj_editar" id="cpf_cnpj_editar" name="cpf_cnpj" style="text-align:right" autocomplete="off"/>
                 </div>
               </div>
               <div style="display:flex; justify-content: space-between">
                 <div>
-                  <label for="razao_editar">Razão Social:*</label>
-                  <input type="text" class="razao_editar" id="razao_editar" name="razao_social" autocomplete="off"/>
+                  <label for="rg_ie_editar">RG/Isnc. Estadual:*</label>
+                  <input type="text" class="rg_ie_editar" id="rg_ie_editar" name="rg_ie" autocomplete="off"/>
                 </div>
                 <div style="text-align:right">
-                  <label for="nome_fantasia">Fantasia:*</label>
-                  <input type="text" class="fantasia_editar" id="nome_fantasia" name="nome_fantasia" style="text-align:right" autocomplete="off"/>
+                  <label for="email_editar">E-mail:*</label>
+                  <input type="text" class="email_editar" id="email_editar" name="email" style="text-align:right" autocomplete="off"/>
                 </div>
               </div>
               <div style="display:flex; justify-content: space-between">
                 <div>
-                  <label for="im">Isnc. Municipal:</label>
-                  <input type="text" class="im_editar" id="im_editar" name="im" autocomplete="off"/>
-                </div>
-                <div style="text-align:right">
-                  <label for="cnae">CNAE:</label>
-                  <input type="text" class="cnae_editar" id="cnae_editar" name="cnae" style="text-align:right" autocomplete="off"/>
-                </div>
-              </div>
-              <div style="display:flex; justify-content: space-between">
-                <div>
-                  <input type="file" name="certificado_a1" id="file_empresa_input_editar">
-                  <label for="file_empresa_input_editar">
-                    <span class="texto">Certificado:</span> 
-                  </label>
-                  <label for="file_empresa_input_editar" class="file_empresa_input_editar">
-                    <span>Procurar</span>
-                    <span>Selecionar certificado</span>
-                  </label>
-                </div>
-                <div style="text-align:right">
-                  <label for="senha_certificado_editar">Senha (certificado):
-                      <input type="password" name="senha_certificado" id="senha_certificado_editar" value="" style="text-align: right">
-                  </label>
+                  <label for="fone">Telefone:</label><br>
+                  <input type="text" class="fone_editar" id="fone_editar" name="fone" autocomplete="off"/>
                 </div>
               </div>
               <hr>

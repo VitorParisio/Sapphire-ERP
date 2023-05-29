@@ -1,57 +1,51 @@
-<div class="modal fade" id="detalhe_empresa_modal" tabindex="-1" role="dialog" aria-labelledby="detalhe_empresa_title" aria-hidden="true">
+<div class="modal fade" id="detalhe_cliente_modal" tabindex="-1" role="dialog" aria-labelledby="detalhe_cliente_title" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="detalhe_empresa_title"><i><b>Detalhes da empresa</b></i></h5>
+        <h5 class="modal-title" id="detalhe_cliente_title"><i><b>Detalhes do cliente</b></i></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div class="detalhes_empresa">
+        <div class="detalhes_cliente">
           <div class="dados_detalhe">
             <h5 style="background: teal; padding: 5px; color:#FFF;"><i class="fas fa-info-circle"></i> Informações</h5>
             <div style="display:flex; justify-content: space-between;">
               <div style="display:flex; flex-direction:column">
-                <label for="id_detalhe">ID:</label>
-                <span class="id_empresa_detalhe"></span>
+                <label for="id_cliente_detalhe">ID:</label>
+                <span class="id_cliente_detalhe"></span>
               </div>
               <div style="display:flex; flex-direction:column; text-align:right"> 
-                <label for="id_detalhe">CNPJ:</label>
-                <span class="cnpj_detalhe"></span>
+                <label for="cliente_detalhe">Cliente:</label>
+                <span class="cliente_detalhe"></span>
               </div>
             </div>
             <hr>
             <div style="display:flex; justify-content: space-between">
               <div style="display:flex; flex-direction:column">
-                <label for="razao_detalhe">Razão Social:</label>
-                <span class="razao_detalhe"></span>
+                <label for="cpf_cnpj_detalhe">CPF/CNPJ:</label>
+                <span class="cpf_cnpj_detalhe"></span>
               </div>
               <div style="display:flex; flex-direction:column; text-align:right">
-                <label for="fantasia_detalhe">Fantasia:</label>
-                <span class="fantasia_detalhe"></span>
+                <label for="rg_ie_detalhe">RG/Insc. Estadual:</label>
+                <span class="rg_ie_detalhe"></span>
               </div>
             </div>
             <hr>
             <div style="display:flex; justify-content: space-between">
               <div style="display:flex; flex-direction:column">
-                <label for="ie_detalhe">Inscrição Estadual:</label>
-                <span class="ie_detalhe"></span>
+                <label for="email_detalhe">E-mail:</label>
+                <span class="email_detalhe"></span>
               </div>
               <div style="display:flex; flex-direction:column; text-align:right">
-                <label for="im_detalhe">Inscrição Municipal:</label>
-                <span class="im_detalhe"></span>
+                <label for="fone_detalhe">Telefone:</label>
+                <span class="fone_detalhe"></span>
               </div>
             </div>
-            <hr>
-            <div style="display:flex; justify-content: space-between">
-              <div>
-                <label for="cnae_detalhe">CNAE:</label>
-                <span class="cnae_detalhe"></span>
-              </div>
           </div>
           <hr>
-          <div class="end_empresa_detalhe">
+          <div class="end_cliente_detalhe">
             <h5 style="background: teal; padding: 5px; color:#FFF;"><i class="fas fa-map-marker-alt"></i> Endereço</h5>
             <div style="display:flex; justify-content: space-between">
               <div style="display:flex; flex-direction:column">

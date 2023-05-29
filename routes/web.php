@@ -49,6 +49,9 @@ Route::get('/', function () {
 
     Route::get('/clientes', [DestinatarioController::class, 'index'])->name('index.clientes');
     Route::post('/clientes', [DestinatarioController::class, 'store'])->name('store.clientes');
+    Route::get('/clientes/page', [DestinatarioController::class, 'getCliente'])->name('clientes.search_client');
+    Route::post('/update_cliente/{id}', [DestinatarioController::class, 'update'])->name('cliente.update');
+    Route::delete('/delete_cliente/{id}', [DestinatarioController::class, 'destroy'])->name('cliente.delete');
 
     Route::get('/categorias', [CategoryController::class, 'index'])->name('categorias.index');
     Route::post('/categorias', [CategoryController::class, 'store'])->name('categorias.store');

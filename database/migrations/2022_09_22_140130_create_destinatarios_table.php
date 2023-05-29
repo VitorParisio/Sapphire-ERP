@@ -23,6 +23,7 @@ class CreateDestinatariosTable extends Migration
             $table->string('numero');
             $table->string('bairro');
             $table->string('cidade');
+            $table->string('complemento')->nullable();
             $table->string('uf')->default('PE');
             $table->string('cibge')->default('2610707');
             $table->string('cPais')->default('1058');

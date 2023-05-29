@@ -11,7 +11,7 @@ class Destinatario extends Model
 
     protected $table = 'destinatarios';
 
-    public $fillable = ['nome', 'rg_ie', 'cpf_cnpj', 'rua', 'numero', 'bairro', 'cibge', 'cidade', 'uf', 'cep', 'cPais', 'xPais', 'xCpl', 'fone', 'email'];
+    public $fillable = ['nome', 'rg_ie', 'cpf_cnpj', 'rua', 'numero', 'bairro', 'complemento', 'cibge', 'cidade', 'uf', 'cep', 'cPais', 'xPais', 'xCpl', 'fone', 'email'];
 
     public $timestamps = false;
 }
