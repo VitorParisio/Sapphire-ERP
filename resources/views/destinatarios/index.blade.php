@@ -80,7 +80,7 @@
                                         <input type="text" class="form-control" name="cep" id="cep" placeholder="" value="{{old('cep')}}" autocomplete="off" onblur="pesquisacep(this.value);"  maxlength="9">
                                     </label>
                                     <label for="rua">Logradouro*
-                                        <input type="text" class="form-control" name="rua" id="rua" placeholder="" value="{{old('rua')}}" autocomplete="off">
+                                        <input type="text" class="form-control" name="rua" id="rua" placeholder="" value="{{old('rua')}}" autocomplete="off" readonly>
                                     </label>
                                 </div>
                                 <div class="col-md-3">
@@ -93,16 +93,16 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label for="bairro">Bairro*
-                                        <input type="text" class="form-control" name="bairro" id="bairro" placeholder="" value="{{old('bairro')}}" autocomplete="off">
+                                        <input type="text" class="form-control" name="bairro" id="bairro" placeholder="" value="{{old('bairro')}}" autocomplete="off" readonly>
                                     </label>
                                     <label for="cidade">Cidade*
-                                        <input type="text" class="form-control" name="cidade" id="cidade" placeholder="" value="{{old('cidade')}}" autocomplete="off">
+                                        <input type="text" class="form-control" name="cidade" id="cidade" placeholder="" value="{{old('cidade')}}" autocomplete="off" readonly>
                                     </label>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="uf">UF*
-                                        <input type="text" class="form-control" name="uf" id="uf" placeholder="" value="PE" autocomplete="off" disabled>
-                                        <input type="hidden" name="cibge" type="text" id="ibge" value="2610707" /></label><br />
+                                        <input type="text" class="form-control" name="uf" id="uf" placeholder="" value="PE" autocomplete="off" readonly>
+                                        <input type="hidden" name="cibge" type="text" id="ibge" value="2610707" readonly/></label><br />
                                     </label>
                                 </div>
                             </div>

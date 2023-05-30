@@ -23,19 +23,10 @@
 }
 
 /* -------------------- NFe CSS ------------------------ */
-.tb_notas_fiscais{
+.tb_notas_fiscais,
+.list_produto_add {
     width: 100%;
     text-align: center;
-}
-
-.list_produto_add ul,
-.prod_add ul{
-    display: flex;
-    list-style: none;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0;
-    margin: 0;
 }
 
 input{

@@ -15,28 +15,30 @@
 @section('content')
     <div class="card card-primary">
         <div class="card-body">
-            <div class="col-md-12">
-                <input type="hidden" id="id_nota_fiscal" value="{{$id_nota_fiscal}}">
-                <label style="width:100%" for="select_emitente">Empresa*
-                    <select class="form-control select_emitente" id="select_emitente" name="emitente_id">
-                        <option value="0">Selecione...</option>
-                        @foreach($emitentes as $emitente)
-                            <option value="{{$emitente->id}}">{{$emitente->razao_social}}</option>
-                        @endforeach
-                    </select>
-                </label>
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="hidden" id="id_nota_fiscal" value="{{$id_nota_fiscal}}">
+                    <label style="width:100%" for="select_emitente">Empresa*
+                        <select class="form-control select_emitente" id="select_emitente" name="emitente_id">
+                            <option value="0">Selecione...</option>
+                            @foreach($emitentes as $emitente)
+                                <option value="{{$emitente->id}}">{{$emitente->razao_social}}</option>
+                            @endforeach
+                        </select>
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <label style="width:100%" for="select_destinatario">Cliente*
+                        <select class="form-control select_destinatario" id="select_destinatario" name="destinatario_id" >
+                            <option value="0">Selecione...</option>
+                            @foreach($destinatarios as $destinatarios)
+                                <option  value="{{$destinatarios->id}}">{{$destinatarios->nome}}</option>
+                            @endforeach
+                        </select>
+                    </label>
+                </div>
             </div>
-            <div class="col-md-12 mt-3">
-                <label style="width:100%" for="select_destinatario">Cliente*
-                    <select class="form-control select_destinatario" id="select_destinatario" name="destinatario_id" >
-                        <option value="0">Selecione...</option>
-                        @foreach($destinatarios as $destinatarios)
-                            <option  value="{{$destinatarios->id}}">{{$destinatarios->nome}}</option>
-                        @endforeach
-                    </select>
-                </label>
-            </div>
-            <div class="col-md-12 mt-3">
+            <div class="mt-3">
                 <label class="mr-3" style="width:60%" for="select_produto">Produto*
                     <select class="form-control select_produto" id="select_produto" name="item_venda_id">
                         <option value="0">Selecione...</option>

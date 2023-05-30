@@ -21,8 +21,8 @@ class DestinatarioController extends Controller
         $data      = $request->all();
         $validator = Validator::make($data, [
             'nome'              => 'required|regex:/^[a-z A-Z 0-9 "-]*$/|min:2',
-            'cpf_cnpj'          => 'required|regex:/^[0-9]+$/|min:7|unique:destinatarios,cpf_cnpj',
-            'rg_ie'             => 'required|numeric|unique:destinatarios,rg_ie',
+            'cpf_cnpj'          => 'required|regex:/^[0-9]+$/|min:11|unique:destinatarios,cpf_cnpj',
+            'rg_ie'             => 'required|numeric|min:7|unique:destinatarios,rg_ie',
             'cep'               => 'required|regex:/^[0-9]+$/|max:8',
             'rua'               => 'required|regex:/^[a-z A-Z 0-9]*$/',
             'numero'            => 'required|numeric',
@@ -45,6 +45,7 @@ class DestinatarioController extends Controller
             'rg_ie.unique'              => 'RG ou Insc. Estadual já cadastrada.',
             'rg_ie.required'            => 'Campo "RG/Inscrição Estadual" deve ser preenchido.',
             'rg_ie.numeric'             => 'Digite apenas números no campo "RG/Inscrição Estadual".',
+            'rg_ie.min'                 => 'Poucos dígitos no campo "RG/Inscrição Estadual".',
             'cep.regex'                 => 'Digite apenas números no campo "Cep".',
             'cep.required'              => 'Campo "Cep" deve ser preenchido.',
             'cep.max'                   => 'Excedeu o limite de digitos no campo "Cep".',
@@ -189,6 +190,7 @@ class DestinatarioController extends Controller
         'bairro.regex'              => 'Digitar apenas letras no campo "Bairro".',
         'cidade.required'           => 'Campo "Cidade" deve ser preenchido.',
         'cidade.regex'              => 'Digitar apenas letras no campo "Cidade".',
+        'complemento.regex'         => 'Digite apenas letras e/ou números no campo "Complemento".',
         'uf.max'                    => 'Digite a sigla do estado no campo "UF".',
         'uf.regex'                  => 'Digitar apenas a sigla do estado no campo "UF".',
         'cibge.numeric'             => 'Digitar apenas números no campo "cIBGE".',
