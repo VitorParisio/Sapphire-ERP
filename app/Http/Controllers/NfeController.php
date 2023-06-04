@@ -402,16 +402,18 @@ class NfeController extends Controller
                 echo 'Erros Encontrados:</b><br>';
             }
 
-            //Informações do técnico responsável
+            /** Informações do técnico responsável */
+
             $stdinfoResTec = new stdClass();
-            $stdinfoResTec->CNPJ = $emitente->cnpj; //CNPJ da pessoa jurídica responsável pelo sistema utilizado na emissão do documento fiscal eletrônico
-            $stdinfoResTec->xContato= 'Saymon Feio'; //Nome da pessoa a ser contatada
-            $stdinfoResTec->email = 'saymon_feio@hotmail.com'; //E-mail da pessoa jurídica a ser contatada
-            $stdinfoResTec->fone = '81983021847'; //Telefone da pessoa jurídica/física a ser contatada
+            $stdinfoResTec->CNPJ     = '07637528000115'; //CNPJ da pessoa jurídica responsável pelo sistema utilizado na emissão do documento fiscal eletrônico
+            $stdinfoResTec->xContato = 'Smartnet'; //Nome da pessoa a ser contatada
+            $stdinfoResTec->email    = 'smartlojanet@gmail.com'; //E-mail da pessoa jurídica a ser contatada
+            $stdinfoResTec->fone     = '8130101411'; //Telefone da pessoa jurídica/física a ser contatada
             // $stdinfoResTec->CSRT = 'G8063VRTNDMO886SFNK5LDUDEI24XJ22YIPO'; //Código de Segurança do Responsável Técnico
             // $stdinfoResTec->idCSRT = '01'; //Identificador do CSRT
+
             $nfe->taginfRespTec($stdinfoResTec);
-          
+            
             /** monta o xml */
             $nfe->monta();
             $XML = $nfe->getXML();
@@ -427,7 +429,7 @@ class NfeController extends Controller
             $data_geracao_mes = date('m');
             #######################################################
 
-            // INDETIFICAMOS QUAL ABIENTE PARA CRIAR A PASTA COM NOME DO MESMO.
+            // INDETIFICAMOS QUAL AMBIENTE PARA CRIAR A PASTA COM NOME DO MESMO.
             $PastaAmbi = $nota->ambiente;
             if ($PastaAmbi == 1):
                 $PastaAmbiente = 'producao';
