@@ -23,12 +23,12 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 Route::get('/', function () {
-    // return view('auth.login');
-    return view('home');
+    return view('auth.login');
+    // return view('home');
 });
 
-// Route::group(['middleware' => 'auth'], function () {
-    // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+ Route::group(['middleware' => 'auth'], function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     
     Route::get('notas_fiscais', [NfeController::class, 'index'])->name('index.nfe');
     Route::get('cadastrar_nota', [NfeController::class, 'create'])->name('create.nfe');
@@ -71,17 +71,18 @@ Route::get('/', function () {
     Route::get('/notifications', [ProductController::class, 'notifications'])->name('produtos.notifications');
    
     Route::get('/getproduto/{cod_barra}', [ItemVendaController::class, 'index'])->name('item_vendas.get_produto');
-    //Route::post('/addproduto', [ItemVendaController::class, 'store'])->name('item_vendas.add_produto');
     Route::post('/add_produto_nfe', [ItemVendaController::class, 'storeNfe'])->name('item_vendas.add_produto_nfe');
     Route::delete('/deletaprodutocod/{item_venda_id}/{product_id}/{qtd}', [ItemVendaController::class, 'destroy'])->name('item_vendas.deletaprotudocod');
     Route::get('/totalpagamento', [ItemVendaController::class, 'totalPagamento'])->name('item_vendas.total_pagamento');
     Route::delete('/deletaprodutos', [ItemVendaController::class, 'removeProdutos'])->name('item_vendas.deleta_produtos');
     Route::get('/estoque_negativo_nfe', [ItemVendaController::class, 'estoqueNegativoNfe'])->name('intem_vendas.estoque_negativo');
-    //Route::get('/estoque_negativo', [ItemVendaController::class, 'estoqueNegativo'])->name('intem_vendas.estoque_negativo');
 
+
+    //Route::get('/estoque_negativo', [ItemVendaController::class, 'estoqueNegativo'])->name('item_vendas.estoque_negativo');
+    //Route::post('/addproduto', [ItemVendaController::class, 'store'])->name('item_vendas.add_produto');
     //Route::get('/vender', [VendasController::class, 'index'])->name('vender.vendas');
     //Route::get('/pdv', [VendasController::class, 'pdv'])->name('pdv.vendas');
     //Route::post('/finalizavenda', [VendasController::class, 'finalizaVenda'])->name('finaliza_venda.vendas');
 
-// });
+ });
 

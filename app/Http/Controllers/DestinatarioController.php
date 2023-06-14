@@ -183,21 +183,21 @@ class DestinatarioController extends Controller
         'cep.required'              => 'Campo "Cep" deve ser preenchido.',
         'cep.max'                   => 'Excedeu o limite de digitos no campo "Cep".',
         'rua.required'              => 'Campo "Logradouro" deve ser preenchido.',
-        'rua.regex'                 => 'Digite apenas letras e/ou números no campo "Logradouro".',
+        'rua.regex'                 => 'Digitar apenas letras e/ou números no campo "Logradouro".',
         'numero.required'           => 'Campo "Número" deve ser preenchido.',
-        'numero.numeric'            => 'Digite apenas números no campo "Número".',
+        'numero.numeric'            => 'Digitar apenas números no campo "Número".',
         'bairro.required'           => 'Campo "Bairro" deve ser preenchido.',
         'bairro.regex'              => 'Digitar apenas letras no campo "Bairro".',
         'cidade.required'           => 'Campo "Cidade" deve ser preenchido.',
         'cidade.regex'              => 'Digitar apenas letras no campo "Cidade".',
-        'complemento.regex'         => 'Digite apenas letras e/ou números no campo "Complemento".',
-        'uf.max'                    => 'Digite a sigla do estado no campo "UF".',
+        'complemento.regex'         => 'Digitar apenas letras e/ou números no campo "Complemento".',
+        'uf.max'                    => 'Digitar a sigla do estado no campo "UF".',
         'uf.regex'                  => 'Digitar apenas a sigla do estado no campo "UF".',
         'cibge.numeric'             => 'Digitar apenas números no campo "cIBGE".',
         'cibge.max'                 => 'Máximo de 7 dígitos no campo "cIBGE',
-        'telefone.numeric'          => 'Digite apenas números no campo "Telefone".',
+        'telefone.numeric'          => 'Digitar apenas números no campo "Telefone".',
         'email.unique'              => 'E-mail já cadastrado.',
-        'email.email'               => 'Digite um e-mail válido.'
+        'email.email'               => 'Digitar um e-mail válido.'
     ]);
     
       if ($validator->fails()) {
@@ -206,18 +206,18 @@ class DestinatarioController extends Controller
                 ]);
       }
 
-      $destinatario->nome              = $data['nome'];
-      $destinatario->cpf_cnpj          = $data['cpf_cnpj'];
-      $destinatario->rg_ie             = $data['rg_ie'];
-      $destinatario->fone              = $data['fone'];
-      $destinatario->email             = $data['email'];
-      $destinatario->cep               = $data['cep'];
-      $destinatario->rua               = $data['rua'];
-      $destinatario->numero            = $data['numero'];
-      $destinatario->complemento       = $data['complemento'];
-      $destinatario->bairro            = $data['bairro'];
-      $destinatario->cidade            = $data['cidade'];
-      $destinatario->uf                = $data['uf'];
+      $destinatario->nome        = $data['nome'];
+      $destinatario->cpf_cnpj    = $data['cpf_cnpj'];
+      $destinatario->rg_ie       = $data['rg_ie'];
+      $destinatario->fone        = $data['fone'];
+      $destinatario->email       = $data['email'];
+      $destinatario->cep         = $data['cep'];
+      $destinatario->rua         = $data['rua'];
+      $destinatario->numero      = $data['numero'];
+      $destinatario->complemento = $data['complemento'];
+      $destinatario->bairro      = $data['bairro'];
+      $destinatario->cidade      = $data['cidade'];
+      $destinatario->uf          = $data['uf'];
 
       $destinatario->update();
   

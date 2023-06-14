@@ -19,35 +19,71 @@ class ProductController extends Controller
 
   function store(Request $request){
 
-    $data      = $request->all();
+    $data = $request->all();
+
+    $data['ucom']  = "UNID";
+    $data['utrib'] = "UNID";
 
     $validator = Validator::make($data, [
-      'category_id'  => 'required|numeric|not_in:0|',
-      'cod_barra'    => 'nullable|numeric|unique:products,cod_barra',
-      'nome'         => 'required|regex:/^[a-z A-Z "-]+$/|min:2|max:100|unique:products,nome',
-      'preco_compra' => 'required',
-      'preco_venda'  => 'required',
-      'estoque'      => 'required|numeric',
-      'validade'     => 'date|nullable',
-      'img'          => 'image|max:2048'
+      'category_id'    => 'required|numeric|not_in:0|',
+      'cod_barra'      => 'nullable|numeric|unique:products,cod_barra',
+      'ceantrib'       => 'nullable|numeric|unique:products,ceantrib',
+      'ncm'            => 'required|numeric|min:8',
+      'nome'           => 'required|regex:/^[a-z A-Z "-]+$/|min:2|max:100|unique:products,nome',
+      'preco_compra'   => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+      'preco_venda'    => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+      'vuntrib'        => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+      'preco_minimo'   => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+      'estoque'        => 'required|numeric',
+      'qtrib'          => 'required|numeric',
+      'ucom'           => 'required|regex:/^[a-z A-Z]+$/',
+      'utrib'          => 'required|regex:/^[a-z A-Z]+$/',
+      'validade'       => 'date|nullable',
+      'extipi'         => 'nullable|numeric',
+      'estoque_minimo' => 'required|numeric',
+      'descricao'      => 'nullable|regex:/^[a-z A-Z 0-9 "-]*$/',
+      'img'            => 'image|max:2048|mimes:jpg,jpeg,png'
     ],
     [
-      'category_id.required' => 'Preencher o campo "Categoria."',
-      'category_id.numeric'  => 'Selecione uma categoria existente.',
-      'category_id.not_in'   => 'Preencher o campo "Categoria."',
-      'cod_barra.numeric'    => 'Digitar apenas números no campo "Cód. barra".',
-      'cod_barra.unique'     => 'Código de barra já cadastrado.',
-      'nome.unique'          => 'Produto já cadastrado.',
-      'nome.required'        => 'Preencher o campo "Produto".',
-      'nome.max'             => 'Excedeu o limite de 100 caracteres.',
-      'nome.min'             => 'Palavra no mínimo com 2 caracteres.',
-      'nome.regex'           => 'Digite apenas letras no campo "Produto".',
-      'preco_compra.required'=> 'Preencher o campo "Preço custo."',
-      'preco_venda.required' => 'Preencher o campo "Preço venda."',
-      'estoque.required'     => 'Preencher o campo "Estoque."',
-      'estoque.numeric'      => 'Digitar apenas números no campo "Estoque".',
-      'validade.date'        => 'Data inválida.',
-      'img.max'              => 'Tamanho máximo de 2MB (2048KB).'
+      'category_id.required'   => 'Campo "Categoria" deve ser preenchido".',
+      'category_id.numeric'    => 'Selecione uma categoria existente.',
+      'category_id.not_in'     => 'Campo "Categoria" deve ser preenchido".',
+      'cod_barra.numeric'      => 'Digitar apenas números no campo "EAN".',
+      'cod_barra.unique'       => 'EAN já cadastrado.',
+      'ceantrib.numeric'       => 'Digitar apenas números no campo "EAN Unid. Tributável".',
+      'ceantrib.unique'        => 'EAN Unid. Tributável já cadastrado.',
+      'ncm.required'           => 'Campo "NCM" deve ser preenchido.',
+      'ncm.numeric'            => 'Digitar apenas números no campo "NCM".',
+      'ncm.min'                => 'Necessário 8 dígitos no campo "NCM".',
+      'ncm.max'                => 'Necessário 8 dígitos no campo "NCM".',
+      'nome.unique'            => 'Produto já cadastrado.',
+      'nome.required'          => 'Campo "Produto" deve ser preenchido".',
+      'nome.max'               => 'Excedeu o limite de 100 caracteres.',
+      'nome.min'               => 'Poucos dígitos no campo "Produto".',
+      'nome.regex'             => 'Digitar apenas letras no campo "Produto".',
+      'preco_compra.required'  => 'Campo "Valor custo" deve ser preenchido"',
+      'preco_compra.regex'     => 'Valor incorreto no campo "Valor custo."',
+      'preco_venda.required'   => 'Campo "Valor venda" deve ser preenchido".',
+      'preco_venda.regex'      => 'Valor incorreto no campo "Valor venda".',
+      'vuntrib.required'       => 'Campo "Valor Unid. Tributável" deve ser preenchido".',
+      'vuntrib.regex'          => 'Valor incorreto no campo "Valor Unid. Tributável".',
+      'preco_minimo.required'  => 'Campo "Valor Unid. Tributável" deve ser preenchido".',
+      'preco_minimo.regex'     => 'Valor incorreto no campo "Valor Unid. Tributável".',
+      'estoque.required'       => 'Campo "Qtd. Comercial" deve ser preenchido."',
+      'estoque.numeric'        => 'Digitar apenas números no campo "Qtd. Comercial".',
+      'qtrib.required'         => 'Campo "Qtd. Tributável" deve ser preenchido."',
+      'qtrib.numeric'          => 'Digitar apenas números no campo "Qtd. Tributável".',
+      'ucom.required'          => 'Campo "Unid. Comercial" deve ser preenchido."',
+      'ucom.regex'             => 'Digitar apenas letras no campo "Unid. Comercial".',
+      'utrib.required'         => 'Campo "Unid. Tributável" deve ser preenchido."',
+      'utrib.regex'            => 'Digitar apenas letras no campo "Unid. Tributável".',
+      'validade.date'          => 'Data inválida.',
+      'img.max'                => 'Tamanho máximo de 2MB (2048KB).',
+      'extipi.numeric'         => 'Digitar apenas números no campo "EXT IPI".',
+      'estoque_minimo.required'=> 'Campo "Estoque Mínimo" deve ser preenchido.',
+      'estoque_minimo.numeric' => 'Digitar apenas números no campo "Estoque Mínimo".',
+      'descricao'              => 'Digitar apenas letras e/ou números no campo "Descrição".',
+      'img.mimes'              => 'Campo "Imagem" aceita apenas as extensões .jpg, .jpeg e .png',
     ]);
 
     if ($validator->fails()) {
@@ -58,9 +94,13 @@ class ProductController extends Controller
 
     $preco_compra_formatado = str_replace('.', '', $request->preco_compra);
     $preco_venda_formatado  = str_replace('.', '', $request->preco_venda);
+    $vuntrib_formatado      = str_replace('.', '', $request->vuntrib);
+    $preco_minimo_formatado = str_replace('.', '', $request->preco_minimo);
 
     $data['preco_compra'] = str_replace(',', '.', $preco_compra_formatado);
     $data['preco_venda']  = str_replace(',', '.', $preco_venda_formatado);
+    $data['vuntrib']      = str_replace(',', '.', $vuntrib_formatado);
+    $data['preco_minimo'] = str_replace(',', '.', $preco_minimo_formatado);
     $data['qtd_compra']   = $request->estoque;
     
     if ($request->img != null)
@@ -84,35 +124,69 @@ class ProductController extends Controller
     
     $produto = Product::where('id', $id)
     ->first();
-      
+
     $validator = Validator::make($request->all(), [
-      'category_id'  => 'required|numeric|not_in:0|',
-      'cod_barra'    => 'numeric|unique:products,cod_barra,'.$produto->id,
-      'nome'         => 'required|regex:/^[a-z A-Z "-]+$/|min:2|max:100|unique:products,nome,'.$produto->id,
-      'preco_compra' => 'required',
-      'preco_venda'  => 'required',
-      'estoque'      => 'required|numeric',
-      'validade'     => 'date|nullable',
-      'img'          => 'image|max:1024'
+      'category_id'    => 'required|numeric|not_in:0|',
+      'cod_barra'      => 'nullable|numeric|unique:products,cod_barra'.$produto->id,
+      'ceantrib'       => 'nullable|numeric|unique:products,ceantrib'.$produto->id,
+      'ncm'            => 'required|numeric|min:8',
+      'nome'           => 'required|regex:/^[a-z A-Z "-]+$/|min:2|max:100|unique:products,nome'.$produto->id,
+      'preco_compra'   => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+      'preco_venda'    => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+      'vuntrib'        => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+      'preco_minimo'   => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+      'estoque'        => 'required|numeric',
+      'qtrib'          => 'required|numeric',
+      'ucom'           => 'required|regex:/^[a-z A-Z]+$/',
+      'utrib'          => 'required|regex:/^[a-z A-Z]+$/',
+      'validade'       => 'date|nullable',
+      'extipi'         => 'nullable|numeric',
+      'estoque_minimo' => 'required|numeric',
+      'descricao'      => 'nullable|regex:/^[a-z A-Z 0-9 "-]*$/',
+      'img'            => 'image|max:2048|mimes:jpg,jpeg,png'
     ],
     [
-      'category_id.required' => 'Preencher o campo "Categoria."',
-      'category_id.numeric'  => 'Selecionar uma categoria existente.',
-      'category_id.not_in'   => 'Preencher o campo "Categoria."',
-      'cod_barra.numeric'    => 'Digitar apenas números no campo "Cód. barra".',
-      'cod_barra.unique'     => 'Código de barra já cadastrado.',
-      'nome.unique'          => 'Produto já cadastrado.',
-      'nome.required'        => 'Preencher o campo "Produto".',
-      'nome.max'             => 'Excedeu o limite de 100 caracteres.',
-      'nome.min'             => 'Palavra no mínimo com 2 caracteres.',
-      'nome.regex'           => 'Digite apenas letras no campo "Produto".',
-      'preco_compra.required'=> 'Preencher o campo "Preço custo."',
-      'preco_venda.required' => 'Preencher o campo "Preço venda."',
-      'estoque.required'     => 'Preencher o campo "Estoque."',
-      'estoque.numeric'      => 'Digitar apenas números no campo "Estoque".',
-      'validade.date'        => 'Data inválida.',
-      'img.max'              => 'Tamanho máximo de 1MB (1024KB).'
+      'category_id.required'   => 'Campo "Categoria" deve ser preenchido".',
+      'category_id.numeric'    => 'Selecione uma categoria existente.',
+      'category_id.not_in'     => 'Campo "Categoria" deve ser preenchido".',
+      'cod_barra.numeric'      => 'Digitar apenas números no campo "EAN".',
+      'cod_barra.unique'       => 'EAN já cadastrado.',
+      'ceantrib.numeric'       => 'Digitar apenas números no campo "EAN Unid. Tributável".',
+      'ceantrib.unique'        => 'EAN Unid. Tributável já cadastrado.',
+      'ncm.required'           => 'Campo "NCM" deve ser preenchido.',
+      'ncm.numeric'            => 'Digitar apenas números no campo "NCM".',
+      'ncm.min'                => 'Necessário 8 dígitos no campo "NCM".',
+      'ncm.max'                => 'Necessário 8 dígitos no campo "NCM".',
+      'nome.unique'            => 'Produto já cadastrado.',
+      'nome.required'          => 'Campo "Produto" deve ser preenchido".',
+      'nome.max'               => 'Excedeu o limite de 100 caracteres.',
+      'nome.min'               => 'Poucos dígitos no campo "Produto".',
+      'nome.regex'             => 'Digitar apenas letras no campo "Produto".',
+      'preco_compra.required'  => 'Campo "Valor custo" deve ser preenchido"',
+      'preco_compra.regex'     => 'Valor incorreto no campo "Valor custo."',
+      'preco_venda.required'   => 'Campo "Valor venda" deve ser preenchido".',
+      'preco_venda.regex'      => 'Valor incorreto no campo "Valor venda".',
+      'vuntrib.required'       => 'Campo "Valor Unid. Tributável" deve ser preenchido".',
+      'vuntrib.regex'          => 'Valor incorreto no campo "Valor Unid. Tributável".',
+      'preco_minimo.required'  => 'Campo "Valor Unid. Tributável" deve ser preenchido".',
+      'preco_minimo.regex'     => 'Valor incorreto no campo "Valor Unid. Tributável".',
+      'estoque.required'       => 'Campo "Qtd. Comercial" deve ser preenchido."',
+      'estoque.numeric'        => 'Digitar apenas números no campo "Qtd. Comercial".',
+      'qtrib.required'         => 'Campo "Qtd. Tributável" deve ser preenchido."',
+      'qtrib.numeric'          => 'Digitar apenas números no campo "Qtd. Tributável".',
+      'ucom.required'          => 'Campo "Unid. Comercial" deve ser preenchido."',
+      'ucom.regex'             => 'Digitar apenas letras no campo "Unid. Comercial".',
+      'utrib.required'         => 'Campo "Unid. Tributável" deve ser preenchido."',
+      'utrib.regex'            => 'Digitar apenas letras no campo "Unid. Tributável".',
+      'validade.date'          => 'Data inválida.',
+      'img.max'                => 'Tamanho máximo de 2MB (2048KB).',
+      'extipi.numeric'         => 'Digitar apenas números no campo "EXT IPI".',
+      'estoque_minimo.required'=> 'Campo "Estoque Mínimo" deve ser preenchido.',
+      'estoque_minimo.numeric' => 'Digitar apenas números no campo "Estoque Mínimo".',
+      'descricao'              => 'Digitar apenas letras e/ou números no campo "Descrição".',
+      'img.mimes'              => 'Campo "Imagem" aceita apenas as extensões .jpg, .jpeg e .png',
     ]);
+
 
     if ($validator->fails()) {
       return response()->json([
@@ -122,15 +196,19 @@ class ProductController extends Controller
 
     $preco_compra_formatado = str_replace('.', '', $request->preco_compra);
     $preco_venda_formatado  = str_replace('.', '', $request->preco_venda);
+    $vuntrib_formatado      = str_replace('.', '', $request->vuntrib);
+    $preco_minimo_formatado = str_replace('.', '', $request->preco_minimo);
 
-    $produto->cod_barra        = $request->input('cod_barra');
-    $produto->nome             = $request->input('nome');
-    $produto->preco_compra     = str_replace(',', '.', $preco_compra_formatado);
-    $produto->preco_venda      = str_replace(',', '.', $preco_venda_formatado);
-    $produto->estoque          = $request->input('estoque');
-    $produto->descricao        = $request->input('descricao');
-    $produto->category_id      = $request->input('category_id');
-    $produto->validade         = $request->input('validade');
+    $produto->cod_barra    = $request->input('cod_barra');
+    $produto->nome         = $request->input('nome');
+    $produto->preco_compra = str_replace(',', '.', $preco_compra_formatado);
+    $produto->preco_venda  = str_replace(',', '.', $preco_venda_formatado);
+    $produto->vuntrib      = str_replace(',', '.', $vuntrib_formatado);
+    $produto->preco_minimo = str_replace(',', '.', $preco_minimo_formatado);
+    $produto->estoque      = $request->input('estoque');
+    $produto->descricao    = $request->input('descricao');
+    $produto->category_id  = $request->input('category_id');
+    $produto->validade     = $request->input('validade');
 
     if ($request->img != null)
     {

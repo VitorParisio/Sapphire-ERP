@@ -116,7 +116,7 @@ class NfeController extends Controller
                 "emitente_id"     => $request->select_emitente,
                 "destinatario_id" => $request->select_destinatario,
                 "serie_nfe"       => 1,
-                "nro_nfe"         => 1
+                "nro_nfe"         => 200
             ]);  
 
             return response()->json(['message' => 'Nota fiscal gerada com sucesso.']);
@@ -277,35 +277,35 @@ class NfeController extends Controller
             foreach($item as $lisItem):
                 $itens++;
 
-                $stdProd = new stdClass();
-                $stdProd->item = $itens;
-                $stdProd->cProd = $lisItem->id;
-                $stdProd->cEAN = "SEM GTIN";
-                $stdProd->xProd = $lisItem->nome;
-                $stdProd->NCM = $lisItem->ncm;
+                $stdProd           = new stdClass();
+                $stdProd->item     = $itens;
+                $stdProd->cProd    = $lisItem->id;
+                $stdProd->cEAN     = "SEM GTIN";
+                $stdProd->xProd    = $lisItem->nome;
+                $stdProd->NCM      = $lisItem->ncm;
                 //$stdProd->cBenef = 'ab222222';
-                $stdProd->EXTIPI = '';
-                $stdProd->CFOP = $lisItem->cfop; //Vendas de produção própria ou de terceiros
-                $stdProd->uCom = $lisItem->ucom;
-                $stdProd->qCom = $lisItem->qtd;
-                $stdProd->vUnCom = $lisItem->preco_venda;
-                $stdProd->vProd = $lisItem->sub_total;
+                $stdProd->EXTIPI   = $lisItem->extipi;
+                $stdProd->CFOP     = $lisItem->cfop; //Vendas de produção própria ou de terceiros
+                $stdProd->uCom     = $lisItem->ucom;
+                $stdProd->qCom     = $lisItem->qtd;
+                $stdProd->vUnCom   = $lisItem->preco_venda;
+                $stdProd->vProd    = $lisItem->sub_total;
                 $stdProd->cEANTrib = "SEM GTIN"; //'6361425485451';
-                $stdProd->uTrib = $lisItem->utrib;
-                $stdProd->qTrib = $lisItem->qtd;
-                $stdProd->vUnTrib = $lisItem->vuntrib;
-                $stdProd->indTot = $lisItem->indTot;
+                $stdProd->uTrib    = $lisItem->utrib;
+                $stdProd->qTrib    = $lisItem->qtd;
+                $stdProd->vUnTrib  = $lisItem->vuntrib;
+                $stdProd->indTot   = $lisItem->indTot;
                 $nfe->tagprod($stdProd);
             
                 //Informações adicionais do produto
-                $tag = new stdClass();
-                $tag->item = $itens;
+                $tag            = new stdClass();
+                $tag->item      = $itens;
                 $tag->infAdProd = $lisItem->descricao;
                 $nfe->taginfAdProd($tag);
             
                 //Imposto
-                $stdImposto = new stdClass();
-                $stdImposto->item = $itens; //item da NFe
+                $stdImposto           = new stdClass();
+                $stdImposto->item     = $itens; //item da NFe
                 $stdImposto->vTotTrib = 0.00;
                 $nfe->tagimposto($stdImposto);
 
@@ -395,6 +395,7 @@ class NfeController extends Controller
             /**erros do xml */
             if ($nfe->dom->errors) {
                 $resultado = '';
+                
                 foreach ($nfe->dom->errors as $key => $erros):
                     $resultado .= $erros . '<br>';
                     exit;
@@ -417,11 +418,12 @@ class NfeController extends Controller
             /** monta o xml */
             $nfe->monta();
             $XML = $nfe->getXML();
-     
+           
             $chave = $nfe->getChave();
        
             $st = new Standardize();
             $std = $st->toStd($XML);
+            
             //  return $std;    
             /// CRIAMOS AS DATA QUE COMPOEM O NOME DAS PASTAS
             $data_geracao_dia = date('d');
@@ -440,22 +442,21 @@ class NfeController extends Controller
             /** salvado o arquivo  xml gerado na pasta "temporaria" */
             $Pasta = "XML/NFe/{$emitente->cnpj}/{$PastaAmbiente}/temporaria/{$data_geracao_ano}/{$data_geracao_mes}/{$data_geracao_dia}";
             
-            if (is_dir($Pasta)) {
-
+            if (is_dir($Pasta)){
             } else {
                 mkdir($Pasta, 0777, true);
             }
             $arquivo_temp = $Pasta . '/' . $chave . '-nfe.xml';
          
             file_put_contents($arquivo_temp, $XML);
-            
+           
             /** assinando o xml */
             $response_assinado = $tools->signNFe(file_get_contents($arquivo_temp));
-            
+           
             /** salvado o xml assinado na pasta "assinadas" */
             $path_assinadas = "XML/NFe/{$emitente->cnpj}/{$PastaAmbiente}/assinados/{$data_geracao_ano}/{$data_geracao_mes}/{$data_geracao_dia}";
             $arquivo_assinado = $path_assinadas . '/' . $chave . '-nfe.xml';
-           
+         
             if (is_dir($path_assinadas)) {
             } else {
                 mkdir($path_assinadas, 0777, true);
@@ -467,26 +468,30 @@ class NfeController extends Controller
             try {
                 $idLote = str_pad(100, 15, '0', STR_PAD_LEFT); // Identificador do lote
                 $resp = $tools->sefazEnviaLote([$response_assinado], $idLote);
-
+               
                 $st = new Standardize();
                 $std = $st->toStd($resp);
 
                 if ($std->cStat != 103) {
                     //erro registrar e voltar
+                   
                     exit("[$std->cStat] $std->xMotivo");
                 }
+
                 $recibo = $std->infRec->nRec; // Vamos usar a variável $recibo para consultar o status da nota
+              
             } catch (Exception $e) {
                 //aqui você trata possiveis exceptions do envio
+
                 exit($e->getMessage());
             }
             ############ FIM PROTOCOLANDO XML ############
 
             $protocolo = $tools->sefazConsultaRecibo($recibo);
-           
+        
             $sts = new Standardize();
             $stdProt = $sts->toStd($protocolo);
-
+           
             $path_Protocolo = "XML/NFe/{$emitente->cnpj}/{$PastaAmbiente}/protocolo/{$data_geracao_ano}/{$data_geracao_mes}/{$data_geracao_dia}";
             $caminho_Protocolo = $path_Protocolo . '/' . $chave . '-nfe-protocolo.xml';
 
@@ -499,7 +504,7 @@ class NfeController extends Controller
 
             $caminho_aut = '';
             if ($stdProt->protNFe->infProt->cStat != 100) {
-
+                
                 return (['Resposta' => $stdProt]);
 
             } else {
@@ -512,12 +517,13 @@ class NfeController extends Controller
                 }
 
                 file_put_contents($caminho_aut, $xml_autorizado);
-
+              
                 $stdCl = new Standardize($xml_autorizado);
+                
                 // // $std = $stdCl->toStd();
                 $arr = $stdCl->toArray();
                 $data_xml_aut = $arr['protNFe']['infProt'];
-            
+                
                 Nfe::where('id', $nota->id)->update([
                     "status_id" => 4,
                     "dhRecbto"  => $data_xml_aut['dhRecbto'],

@@ -81,7 +81,7 @@
                         @csrf
                         <div class="row cadastro_produtos_inputs">
                             <div class="col-md-3">
-                                <label for="select_categoria">Categorias*
+                                <label for="select_categoria">Categoria*
                                     <select class="form-control select_categoria" id="select_categoria" name="category_id"></select>
                                 </label>
                                 <label for="nome">Produto*
@@ -120,8 +120,8 @@
                                 <label for="preco_venda">Valor Venda(R$)*
                                     <input type="text" class="form-control" name="preco_venda" id="preco_venda" value="{{old('preco_venda')}}" style="text-align: right" autocomplete="off">
                                 </label>
-                                <label for="preco_minimo">Valor Mínimo(R$)*
-                                    <input type="text" class="form-control" name="preco_minimo" id="preco_minimo" value="{{old('preco_minimo')}}" style="text-align: right" autocomplete="off">
+                                <label for="vuntrib">Valor Unid. Tributável(R$)*
+                                    <input type="text" class="form-control" name="vuntrib" id="vuntrib" value="{{old('vuntrib')}}" style="text-align: right" autocomplete="off">
                                 </label>
                             </div>
                             <div class="col-md-3">
@@ -135,13 +135,13 @@
                                 </label>
                             </div>
                             <div class="col-md-3">
-                                <label for="descricao">Descricão
+                                <label for="descricao">Descrição
                                     <input type="text" class="form-control" name="descricao" id="descricao" value="{{old('descricao')}}" autocomplete="off">
                                 </label>
                             </div>
                             <div class="col-md-3">
-                                <label for="vuntrib">Valor Unid. Tributável(R$)*
-                                    <input type="text" class="form-control" name="vuntrib" id="vuntrib" value="{{old('vuntrib')}}" style="text-align: right" autocomplete="off">
+                                <label for="preco_minimo">Valor Mínimo(R$)*
+                                    <input type="text" class="form-control" name="preco_minimo" id="preco_minimo" value="{{old('preco_minimo')}}" style="text-align: right" autocomplete="off">
                                 </label>
                             </div>
                             <div class="col-md-3">
@@ -182,8 +182,8 @@
                                         <th>#</th>
                                         <th>ID</th>
                                         <th>Produto</th>
-                                        <th>Preço Custo</th>
-                                        <th>Preço Venda</th>
+                                        <th>Valor Custo</th>
+                                        <th>Valor Venda</th>
                                         <th>Estoque</th>
                                         <th colspan=3>Ações</th>
                                     </tr>
@@ -381,7 +381,9 @@
                             $('#form_cadastro_produto').find('input[type="date"]').val("");
                             $('#form_cadastro_produto').find('input[type="file"]').val("");
                             $('#form_cadastro_produto').find('#ucom').val("UNID");
+                            $('#form_cadastro_produto').find('#ucom').prop("readonly",true);
                             $('#form_cadastro_produto').find('#utrib').val("UNID");
+                            $('#form_cadastro_produto').find('#utrib').prop("readonly",true);
 
                             getCategoria();
                             getProduto();

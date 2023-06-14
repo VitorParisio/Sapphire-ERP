@@ -16,7 +16,7 @@ return [
 
     'title' => 'Sapphire',
     'title_prefix' => 'Sapphire',
-    'title_postfix' => '- StoneSoft',
+    'title_postfix' => '- B2Code',
 
     /*
     |--------------------------------------------------------------------------
