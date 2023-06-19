@@ -10,8 +10,8 @@ class Category extends Model
     use HasFactory;
 
     protected $table    = 'categories';
-    public $timestamps  = false;
     protected $fillable = ['categoria', 'descricao'];
+    public $timestamps  = false;
 
     public function products(){
         return $this->hasMany('App\Models\Product', 'category_id');

@@ -300,7 +300,7 @@ class NfeController extends Controller
                 //Informações adicionais do produto
                 $tag            = new stdClass();
                 $tag->item      = $itens;
-                $tag->infAdProd = $lisItem->descricao;
+                $tag->infAdProd = $lisItem->descricao == '' ? 'S/ info. adicional' : $lisItem->descricao;
                 $nfe->taginfAdProd($tag);
             
                 //Imposto

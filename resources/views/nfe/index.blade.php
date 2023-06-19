@@ -70,7 +70,7 @@
                                         <a class="dropdown-item consulta-nfe"><i class="fas fa-search"></i> Consultar</a>
                                         <a class="dropdown-item" onclick="imprimeNfe('{{$dado->nota_id}}')"><i class="fas fa-print"></i> Imprimir DANFE</a>
                                         <a class="dropdown-item"><i class="fas fa-envelope-open-text"></i> Carta Correção</a>
-                                        <a class="dropdown-item"><i class="fas fa-ban"></i> Cancelamento</a>
+                                        <a class="dropdown-item cancelamento-nfe"><i class="fas fa-ban"></i> Cancelamento</a>
                                     </div>
                                 @endif
                             </div>
@@ -84,6 +84,9 @@
     <div>
         @include('modals.nfe.consulta')
     </div>
+    <div>
+        @include('modals.nfe.cancelamento')
+    </div>
 @stop
 @push('scripts')
 <script>
@@ -91,6 +94,24 @@
     $(function(){
         $('.consulta-nfe').on('click', function(){
             $('#consulta_nfe_modal').modal('show');
+
+            $tr = $(this).closest('tr');
+            
+            var data = $tr.children("td").map(function(){
+                return $(this).html();
+            }).get();
+
+            $('#chave_nfe').html(data[6]);
+            $('#protocolo_nfe').html(data[5]);
+            $('#digval_nfe').html(data[7]);
+            $('#data_recibo_nfe').html(data[8]);
+            $('#hora_recibo_nfe').html(data[9]);
+            $('#codigo_retorno_nfe').html(data[10]);
+            $('#motivo_retorno_nfe').html(data[2]);
+        })
+
+        $('.cancelamento-nfe').on('click', function(){
+            $('#cancelamento_nfe_modal').modal('show');
 
             $tr = $(this).closest('tr');
             

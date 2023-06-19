@@ -16,7 +16,7 @@ return [
 
     'title' => 'Sapphire',
     'title_prefix' => 'Sapphire',
-    'title_postfix' => '- B2Code',
+    'title_postfix' => '- SmartNet',
 
     /*
     |--------------------------------------------------------------------------
@@ -129,7 +129,7 @@ return [
     |
     */
 
-    'usermenu_enabled' => false,
+    'usermenu_enabled' => true,
     'usermenu_header' => false,
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,

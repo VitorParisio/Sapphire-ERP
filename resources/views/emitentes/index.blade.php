@@ -335,7 +335,6 @@
                             }).then(() => {
                                 $('.errors').html("");
                                 getEmpresa();
-                                
                             });  
                         }
                     });

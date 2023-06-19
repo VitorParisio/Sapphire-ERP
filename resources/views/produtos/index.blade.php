@@ -64,13 +64,13 @@
                         </div>
                         <div class="adicionar_categoria">
                             <div class="header_card_categoria">
-                                <span>Adicionar categoria</span>
+                            <i class="fas fa-plus"></i>&nbsp<span>Adicionar Categoria</span>
                             </div>
                             <div> 
-                                <label for="category">Categoria:</label>
-                                <input type="text" name="category" id="category" autocomplete="off">
-                                <label for="descricao_category">Descrição:</label>
-                                <textarea rows="5" name="category" id="descricao_category"></textarea>
+                                <label for="categoria">Categoria:</label>
+                                <input type="text" name="categoria" id="categoria" value="{{old('categoria')}}" autocomplete="off">
+                                <label for="descricao_categoria">Descrição:</label>
+                                <textarea rows="5" name="descricao" id="descricao_categoria" value="{{old('descricao')}}"></textarea>
                             </div>
                             <button class="btn_add_categoria" onclick="addCategoria()">Adicionar</button>
                         </div>
@@ -601,14 +601,12 @@
 
     function addCategoria()
     {  
-        var categoria = $('#category').val();
-        var descricao = $('#descricao_category').val();
+        var categoria = $('#categoria').val();
+        var descricao = $('#descricao_categoria').val();
 
         $(".errors").html("");  
 
         $.post('categorias', {categoria:categoria, descricao:descricao}, function(data){
-            $('#category').val("");
-            $('#descricao_category').val("");
 
             if($.isEmptyObject(data.error)){
                 swal({
@@ -617,6 +615,8 @@
                 }).then(() =>{
                     getCategoria();
                     selectCategoria();
+                    $('#categoria').val("");
+                    $('#descricao_categoria').val("");
                 });
             }else{
                 $.each(data.error, function( index, value) {

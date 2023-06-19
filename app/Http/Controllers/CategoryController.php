@@ -32,8 +32,8 @@ class CategoryController extends Controller
     function store(Request $request)
     {   
         $validator = Validator::make($request->all(), [
-            'categoria' => 'required|regex:/^[a-zA-Z]+$/|min:2|max:100|unique:categories,categoria,',
-            'descricao' => 'nullable|max:200'
+            'categoria' => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]+$/|min:2|max:100|unique:categories,categoria,',
+            'descricao' => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]+$/|max:200'
         ],
         [
             'categoria.required' => 'Campo "Categoria" deve ser preenchido.',
@@ -41,7 +41,7 @@ class CategoryController extends Controller
             'categoria.regex'    => 'Digitar apenas letras no campo "Categoria".',
             'categoria.min'      => 'Palavra no mínimo com 2 caracteres.',
             'categoria.max'      => 'Excedeu o limite de 100 caracteres.',
-            'categoria.string'   => 'Digitar apenas letras no campo "Categoria".',
+            'descricao.regex'    => 'Digite apenas letras e/ou números no campo "Descrição".',
             'descricao.max'      => 'Excedeu o limite de 200 caracteres.',
             
         ]);
@@ -64,19 +64,19 @@ class CategoryController extends Controller
     {
 
         if (!$categoria = Category::find($id))
-                return redirect()->back();
+            return redirect()->back();
 
         $validator = Validator::make($request->all(), [
-            'categoria' => 'required|regex:/^[a-z A-Z]+$/|min:2|max:100|unique:categories,categoria,'.$categoria->id,
-            'descricao' => 'nullable|max:200'
+            'categoria' => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]+$/|min:2|max:100|unique:categories,categoria,'.$categoria->id,
+            'descricao' => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]+$/|max:200'
         ],
         [
             'categoria.required' => 'Campo "Categoria" deve ser preenchido.',
             'categoria.unique'   => 'Categoria já cadastrada.',
-            'categoria.regex'    => 'Digite apenas letras no campo "Categoria".',
+            'categoria.regex'    => 'Digite apenas letras e/ou números no campo "Categoria".',
             'categoria.min'      => 'Palavra no mínimo com 2 caracteres.',
             'categoria.max'      => 'Excedeu o limite de 100 caracteres.',
-            'categoria.string'   => 'Digitar apenas letras no campo "Categoria".',
+            'descricao.regex'    => 'Digite apenas letras e/ou números no campo "Descrição".',
             'descricao.max'      => 'Excedeu o limite de 200 caracteres.',
         ]);
 

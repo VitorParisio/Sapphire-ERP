@@ -17,10 +17,76 @@ class ProductController extends Controller
     return view('produtos.index');
   }
 
+  function getProduct(Request $request){
+    $query              = $request->get('query');
+    $output             = '';
+    $total_row          = '';
+
+    if ($request->ajax())
+    {
+      if ($query != '')
+      {
+        $produto = Category::join('products', 'categories.id', '=', 'products.category_id')
+        ->where('products.nome','LIKE','%'.$query.'%')
+        ->get(); 
+      }
+      else
+      {
+        $produto = Category::join('products', 'categories.id', '=', 'products.category_id')
+        ->orderBy('products.id', 'ASC')->get();
+      }
+
+      $total_row   = $produto->count();
+      $total_itens = Product::all()->count();
+
+      if ($total_row > 0)
+      {
+        foreach($produto as $row)
+        {
+          $img_prod = $row->img ? '<img src="storage/'.$row->img.'" alt="img_item" style="width:60px; height:60px; border-radius:30px;"/>' : '<i class="fas fa-image fa-3x" style="font-size:50px"></i>';
+          $output .='
+            <tr>
+              <td>'.$img_prod.'</td>
+              <td>'.$row->id.'</td>
+              <td>'.ucfirst($row->nome).'</td>
+              <td>R$ '.number_format($row->preco_compra, 2, ',', '.').'</td>
+              <td>R$ '.number_format($row->preco_venda, 2, ',', '.').'</td>
+              <td>'.$row->estoque.'</td>
+              <td style="display:none;">'.$row->descricao.'</td>
+              <td style="display:none;">'.$row->unidade.'</td>
+              <td style="display:none;">'.$row->validade.'</td>
+              <td style="display:none;">'.$row->cod_barra.'</td>
+              <td style="display:none;">'.$row->category_id.'</td>
+              <td style="display:none;">'.$row->categoria.'</td>
+              <td><a href="#" class="dtls_btn"><i class="fas fa-eye" title="Detalhes do produto"></i></a></td>
+              <td><a href="#" class="edt_btn"><i class="fas fa-edit" title="Editar produto"></i></a></td>
+              <td><a href="#" class="del_btn"><i class="fas fa-trash" title="Excluir produto"></i></a></td>
+            </tr>
+          ';
+        }
+      }
+      else
+      {
+        $output ='
+          <tr>
+            <td colspan="7" style="font-weight:100; font-size: 19px"><i>Produto não encontrado.</i></td>
+          </tr>
+        ';
+      }
+
+      $data = array(
+        'output'            => $output,
+        'total_product'     => $total_itens,
+      );
+
+      return response()->json($data);
+    }
+  }
+
   function store(Request $request){
 
     $data = $request->all();
-
+    
     $data['ucom']  = "UNID";
     $data['utrib'] = "UNID";
 
@@ -29,7 +95,7 @@ class ProductController extends Controller
       'cod_barra'      => 'nullable|numeric|unique:products,cod_barra',
       'ceantrib'       => 'nullable|numeric|unique:products,ceantrib',
       'ncm'            => 'required|numeric|min:8',
-      'nome'           => 'required|regex:/^[a-z A-Z "-]+$/|min:2|max:100|unique:products,nome',
+      'nome'           => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]+$/|min:2|max:100|unique:products,nome',
       'preco_compra'   => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
       'preco_venda'    => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
       'vuntrib'        => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
@@ -41,7 +107,7 @@ class ProductController extends Controller
       'validade'       => 'date|nullable',
       'extipi'         => 'nullable|numeric',
       'estoque_minimo' => 'required|numeric',
-      'descricao'      => 'nullable|regex:/^[a-z A-Z 0-9 "-]*$/',
+      'descricao'      => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]*$/',
       'img'            => 'image|max:2048|mimes:jpg,jpeg,png'
     ],
     [
@@ -121,6 +187,8 @@ class ProductController extends Controller
 
   function update(Request $request, $id)
   {
+    if (!$produto = Product::find($id))
+        return redirect()->back();
     
     $produto = Product::where('id', $id)
     ->first();
@@ -130,7 +198,7 @@ class ProductController extends Controller
       'cod_barra'      => 'nullable|numeric|unique:products,cod_barra'.$produto->id,
       'ceantrib'       => 'nullable|numeric|unique:products,ceantrib'.$produto->id,
       'ncm'            => 'required|numeric|min:8',
-      'nome'           => 'required|regex:/^[a-z A-Z "-]+$/|min:2|max:100|unique:products,nome'.$produto->id,
+      'nome'           => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]+$/|min:2|max:100|unique:products,nome'.$produto->id,
       'preco_compra'   => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
       'preco_venda'    => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
       'vuntrib'        => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
@@ -142,7 +210,7 @@ class ProductController extends Controller
       'validade'       => 'date|nullable',
       'extipi'         => 'nullable|numeric',
       'estoque_minimo' => 'required|numeric',
-      'descricao'      => 'nullable|regex:/^[a-z A-Z 0-9 "-]*$/',
+      'descricao'      => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]*$/',
       'img'            => 'image|max:2048|mimes:jpg,jpeg,png'
     ],
     [
@@ -233,77 +301,11 @@ class ProductController extends Controller
   function destroy($id){
 
     if (!$produto = Product::find($id))
-      return redirect()->back();
+        return redirect()->back();
 
     $produto->delete();
 
     return response()->json(['message' => 'Produto removido com sucesso!']);
-  }
-
-  function getProduct(Request $request){
-    $query              = $request->get('query');
-    $output             = '';
-    $total_row          = '';
-
-    if ($request->ajax())
-    {
-      if ($query != '')
-      {
-        $produto = Category::join('products', 'categories.id', '=', 'products.category_id')
-        ->where('products.nome','LIKE','%'.$query.'%')
-        ->get(); 
-      }
-      else
-      {
-        $produto = Category::join('products', 'categories.id', '=', 'products.category_id')
-        ->orderBy('products.id', 'ASC')->get();
-      }
-
-      $total_row   = $produto->count();
-      $total_itens = Product::all()->count();
-
-      if ($total_row > 0)
-      {
-        foreach($produto as $row)
-        {
-          $img_prod = $row->img ? '<img src="storage/'.$row->img.'" alt="img_item" style="width:60px; height:60px; border-radius:30px;"/>' : '<i class="fas fa-image fa-3x" style="font-size:50px"></i>';
-          $output .='
-            <tr>
-              <td>'.$img_prod.'</td>
-              <td>'.$row->id.'</td>
-              <td>'.ucfirst($row->nome).'</td>
-              <td>R$ '.number_format($row->preco_compra, 2, ',', '.').'</td>
-              <td>R$ '.number_format($row->preco_venda, 2, ',', '.').'</td>
-              <td>'.$row->estoque.'</td>
-              <td style="display:none;">'.$row->descricao.'</td>
-              <td style="display:none;">'.$row->unidade.'</td>
-              <td style="display:none;">'.$row->validade.'</td>
-              <td style="display:none;">'.$row->cod_barra.'</td>
-              <td style="display:none;">'.$row->category_id.'</td>
-              <td style="display:none;">'.$row->categoria.'</td>
-              <td><a href="#" class="dtls_btn"><i class="fas fa-eye" title="Detalhes do produto"></i></a></td>
-              <td><a href="#" class="edt_btn"><i class="fas fa-edit" title="Editar produto"></i></a></td>
-              <td><a href="#" class="del_btn"><i class="fas fa-trash" title="Excluir produto"></i></a></td>
-            </tr>
-          ';
-        }
-      }
-      else
-      {
-        $output ='
-          <tr>
-            <td colspan="7" style="font-weight:100; font-size: 19px"><i>Produto não encontrado.</i></td>
-          </tr>
-        ';
-      }
-
-      $data = array(
-        'output'            => $output,
-        'total_product'     => $total_itens,
-      );
-
-      return response()->json($data);
-    }
   }
 
   function searchItem(Request $request){

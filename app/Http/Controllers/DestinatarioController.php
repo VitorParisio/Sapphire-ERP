@@ -15,68 +15,6 @@ class DestinatarioController extends Controller
         return view('destinatarios.index', compact('destinatarios'));
     }
 
-    public function store(Request $request)
-    {
-       
-        $data      = $request->all();
-        $validator = Validator::make($data, [
-            'nome'              => 'required|regex:/^[a-z A-Z 0-9 "-]*$/|min:2',
-            'cpf_cnpj'          => 'required|regex:/^[0-9]+$/|min:11|unique:destinatarios,cpf_cnpj',
-            'rg_ie'             => 'required|numeric|min:7|unique:destinatarios,rg_ie',
-            'cep'               => 'required|regex:/^[0-9]+$/|max:8',
-            'rua'               => 'required|regex:/^[a-z A-Z 0-9]*$/',
-            'numero'            => 'required|numeric',
-            'complemento'       => 'nullable|regex:/^[a-z A-Z 0-9 "-]*$/',
-            'bairro'            => 'required|regex:/^[a-z A-Z "-]+$/',
-            'cidade'            => 'required|regex:/^[a-z A-Z]+$/',
-            'uf'                => 'nullable|regex:/^[A-Z]+$/|max:2',
-            'cibge'             => 'nullable|numeric',
-            'telefone'          => 'nullable|numeric',
-            'email'             => 'nullable|email|unique:destinatarios,email', 
-        ],
-        [
-            'nome.required'             => 'Campo "Cliente" deve ser preenchido.',
-            'nome.regex'                => 'Utilize apenas letras e/ou números no campo "Cliente".',
-            'nome.min'                  => 'Poucos dígitos no campo "Nome".',
-            'cpf_cnpj.required'         => 'Campo "CPF/CNPJ" deve ser preenchido.',
-            'cpf_cnpj.regex'            => 'Digitar apenas números no campo "CPF/CNPJ".',
-            'cpf_cnpj.min'              => 'Poucos dígitos no campo "CPF/CNPJ".',
-            'cpf_cnpj.unique'           => 'CPF ou CNPJ já cadastrado.',
-            'rg_ie.unique'              => 'RG ou Insc. Estadual já cadastrada.',
-            'rg_ie.required'            => 'Campo "RG/Inscrição Estadual" deve ser preenchido.',
-            'rg_ie.numeric'             => 'Digite apenas números no campo "RG/Inscrição Estadual".',
-            'rg_ie.min'                 => 'Poucos dígitos no campo "RG/Inscrição Estadual".',
-            'cep.regex'                 => 'Digite apenas números no campo "Cep".',
-            'cep.required'              => 'Campo "Cep" deve ser preenchido.',
-            'cep.max'                   => 'Excedeu o limite de digitos no campo "Cep".',
-            'rua.required'              => 'Campo "Logradouro" deve ser preenchido.',
-            'rua.regex'                 => 'Digite apenas letras e/ou números no campo "Logradouro".',
-            'numero.required'           => 'Campo "Número" deve ser preenchido.',
-            'numero.numeric'            => 'Digite apenas números no campo "Número".',
-            'bairro.required'           => 'Campo "Bairro" deve ser preenchido.',
-            'bairro.regex'              => 'Digitar apenas letras no campo "Bairro".',
-            'cidade.required'           => 'Campo "Cidade" deve ser preenchido.',
-            'cidade.regex'              => 'Digitar apenas letras no campo "Cidade".',
-            'uf.max'                    => 'Digite a sigla do estado no campo "UF".',
-            'uf.regex'                  => 'Digitar apenas a sigla do estado no campo "UF".',
-            'cibge.numeric'             => 'Digitar apenas números no campo "cIBGE".',
-            'cibge.max'                 => 'Máximo de 7 dígitos no campo "cIBGE',
-            'telefone.numeric'          => 'Digite apenas números no campo "Telefone".',
-            'email.unique'              => 'E-mail já cadastrado.',
-            'email.email'               => 'Digite um e-mail válido.'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors()->all()
-            ]);
-        }
-        
-        Destinatario::create($data);
-
-        return response()->json(['message' => 'Cliente cadastrado(a) com sucesso.']);
-    }
-
     function getCliente(Request $request)
     {
       $query              = $request->get('query');
@@ -121,9 +59,9 @@ class DestinatarioController extends Controller
                 <td style="display:none;">'.$complemento.'</td>
                 <td style="display:none;">'.$row->bairro.'</td>
                 <td style="display:none;">'.$row->uf.'</td>
-                <td><a href="#" class="dtls_btn"><i class="fas fa-eye" title="Detalhes do produto"></i></a></td>
-                <td><a href="#" class="edt_btn"><i class="fas fa-edit" title="Editar produto"></i></a></td>
-                <td><a href="#" class="del_btn"><i class="fas fa-trash" title="Excluir produto"></i></a></td>
+                <td><a href="#" class="dtls_btn"><i class="fas fa-eye" title="Detalhes do cliente"></i></a></td>
+                <td><a href="#" class="edt_btn"><i class="fas fa-edit" title="Editar cliente"></i></a></td>
+                <td><a href="#" class="del_btn"><i class="fas fa-trash" title="Excluir cliente"></i></a></td>
               </tr>
             ';
           }
@@ -146,59 +84,125 @@ class DestinatarioController extends Controller
       }
     } 
 
+    public function store(Request $request)
+    {
+      $data      = $request->all();
+
+      $validator = Validator::make($data, [
+          'nome'        => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ ]*$/|min:2',
+          'cpf_cnpj'    => 'required|regex:/^[0-9]+$/|min:11|unique:destinatarios,cpf_cnpj',
+          'rg_ie'       => 'required|numeric|min:7|unique:destinatarios,rg_ie',
+          'cep'         => 'required|regex:/^[0-9]+$/|max:8',
+          'rua'         => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/',
+          'numero'      => 'required|numeric',
+          'complemento' => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/',
+          'bairro'      => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]+$/',
+          'cidade'      => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ ]+$/',
+          'uf'          => 'nullable|regex:/^[A-Z]+$/|max:2',
+          'cibge'       => 'nullable|numeric',
+          'telefone'    => 'nullable|numeric',
+          'email'       => 'nullable|email|unique:destinatarios,email', 
+      ],
+      [
+          'nome.required'     => 'Campo "Cliente" deve ser preenchido.',
+          'nome.regex'        => 'Utilize apenas letras no campo "Cliente".',
+          'nome.min'          => 'Poucos dígitos no campo "Nome".',
+          'cpf_cnpj.required' => 'Campo "CPF/CNPJ" deve ser preenchido.',
+          'cpf_cnpj.regex'    => 'Digitar apenas números no campo "CPF/CNPJ".',
+          'cpf_cnpj.min'      => 'Poucos dígitos no campo "CPF/CNPJ".',
+          'cpf_cnpj.unique'   => 'CPF ou CNPJ já cadastrado.',
+          'rg_ie.unique'      => 'RG ou Insc. Estadual já cadastrada.',
+          'rg_ie.required'    => 'Campo "RG/Inscrição Estadual" deve ser preenchido.',
+          'rg_ie.numeric'     => 'Digite apenas números no campo "RG/Inscrição Estadual".',
+          'rg_ie.min'         => 'Poucos dígitos no campo "RG/Inscrição Estadual".',
+          'cep.regex'         => 'Digite apenas números no campo "Cep".',
+          'cep.required'      => 'Campo "Cep" deve ser preenchido.',
+          'cep.max'           => 'Excedeu o limite de digitos no campo "Cep".',
+          'rua.required'      => 'Campo "Logradouro" deve ser preenchido.',
+          'rua.regex'         => 'Digite apenas letras e/ou números no campo "Logradouro".',
+          'numero.required'   => 'Campo "Número" deve ser preenchido.',
+          'numero.numeric'    => 'Digite apenas números no campo "Número".',
+          'bairro.required'   => 'Campo "Bairro" deve ser preenchido.',
+          'bairro.regex'      => 'Digitar apenas letras e/ou números no campo "Bairro".',
+          'complemento.regex' => 'Digitar apenas letras e/ou números no campo "Complemento".',
+          'cidade.required'   => 'Campo "Cidade" deve ser preenchido.',
+          'cidade.regex'      => 'Digitar apenas letras no campo "Cidade".',
+          'uf.max'            => 'Digite a sigla do estado no campo "UF".',
+          'uf.regex'          => 'Digitar apenas a sigla do estado no campo "UF".',
+          'cibge.numeric'     => 'Digitar apenas números no campo "cIBGE".',
+          'cibge.max'         => 'Máximo de 7 dígitos no campo "cIBGE',
+          'telefone.numeric'  => 'Digite apenas números no campo "Telefone".',
+          'email.unique'      => 'E-mail já cadastrado.',
+          'email.email'       => 'Digite um e-mail válido.'
+      ]);
+
+      if ($validator->fails()) {
+          return response()->json([
+              'error' => $validator->errors()->all()
+          ]);
+      }
+      
+      Destinatario::create($data);
+
+      return response()->json(['message' => 'Cliente cadastrado(a) com sucesso.']);
+    }
+
     function update(Request $request, $id)
     {
+      if (!$destinatario = Destinatario::find($id))
+        return redirect()->back();
+        
       $data         = $request->all();
       $destinatario = Destinatario::where('id', $id)
       ->first();
         
-      $validator = Validator::make($data, [
-        'nome'              => 'required|regex:/^[a-z A-Z 0-9 "-]*$/|min:2',
-        'cpf_cnpj'          => 'required|regex:/^[0-9]+$/|max:14|min:7|unique:destinatarios,cpf_cnpj,'.$destinatario->id,
-        'rg_ie'             => 'required|numeric|unique:destinatarios,rg_ie,'.$destinatario->id,
-        'cep'               => 'required|regex:/^[0-9]+$/|max:8',
-        'rua'               => 'required|regex:/^[a-z A-Z 0-9]*$/',
-        'numero'            => 'required|numeric',
-        'complemento'       => 'nullable|regex:/^[a-z A-Z 0-9 "-]*$/',
-        'bairro'            => 'required|regex:/^[a-z A-Z "-]+$/',
-        'cidade'            => 'required|regex:/^[a-z A-Z]+$/',
-        'uf'                => 'nullable|regex:/^[A-Z]+$/|max:2',
-        'cibge'             => 'nullable|numeric',
-        'telefone'          => 'nullable|numeric',
-        'email'             => 'nullable|email|unique:destinatarios,email,'.$destinatario->id, 
-    ],
-    [
-        'nome.required'             => 'Campo "Cliente" deve ser preenchido.',
-        'nome.regex'                => 'Utilize apenas letras e/ou números no campo "Cliente".',
-        'nome.min'                  => 'Poucos dígitos no campo "Nome".',
-        'cpf_cnpj.required'         => 'Campo "CPF/CNPJ" deve ser preenchido.',
-        'cpf_cnpj.regex'            => 'Digitar apenas números no campo "CPF/CNPJ".',
-        'cpf_cnpj.min'              => 'Poucos dígitos no campo "CPF/CNPJ".',
-        'cpf_cnpj.max'              => 'Excedeu o limite de digitos no campo "CPF/CNPJ".',
-        'cpf_cnpj.unique'           => 'CPF ou CNPJ já cadastrado.',
-        'rg_ie.unique'              => 'RG ou Insc. Estadual já cadastrada.',
-        'rg_ie.required'            => 'Campo "RG/Inscrição Estadual" deve ser preenchido.',
-        'rg_ie.numeric'             => 'Digite apenas números no campo "RG/Inscrição Estadual".',
-        'cep.regex'                 => 'Digite apenas números no campo "Cep".',
-        'cep.required'              => 'Campo "Cep" deve ser preenchido.',
-        'cep.max'                   => 'Excedeu o limite de digitos no campo "Cep".',
-        'rua.required'              => 'Campo "Logradouro" deve ser preenchido.',
-        'rua.regex'                 => 'Digitar apenas letras e/ou números no campo "Logradouro".',
-        'numero.required'           => 'Campo "Número" deve ser preenchido.',
-        'numero.numeric'            => 'Digitar apenas números no campo "Número".',
-        'bairro.required'           => 'Campo "Bairro" deve ser preenchido.',
-        'bairro.regex'              => 'Digitar apenas letras no campo "Bairro".',
-        'cidade.required'           => 'Campo "Cidade" deve ser preenchido.',
-        'cidade.regex'              => 'Digitar apenas letras no campo "Cidade".',
-        'complemento.regex'         => 'Digitar apenas letras e/ou números no campo "Complemento".',
-        'uf.max'                    => 'Digitar a sigla do estado no campo "UF".',
-        'uf.regex'                  => 'Digitar apenas a sigla do estado no campo "UF".',
-        'cibge.numeric'             => 'Digitar apenas números no campo "cIBGE".',
-        'cibge.max'                 => 'Máximo de 7 dígitos no campo "cIBGE',
-        'telefone.numeric'          => 'Digitar apenas números no campo "Telefone".',
-        'email.unique'              => 'E-mail já cadastrado.',
-        'email.email'               => 'Digitar um e-mail válido.'
-    ]);
+       $validator = Validator::make($data, [
+            'nome'        => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ ]*$/|min:2',
+            'cpf_cnpj'    => 'required|regex:/^[0-9]+$/|min:11|unique:destinatarios,cpf_cnpj,'.$destinatario->id,
+            'rg_ie'       => 'required|numeric|min:7|unique:destinatarios,rg_ie,'.$destinatario->id,
+            'cep'         => 'required|regex:/^[0-9]+$/|max:8',
+            'rua'         => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/',
+            'numero'      => 'required|numeric',
+            'complemento' => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/',
+            'bairro'      => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]+$/',
+            'cidade'      => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ ]+$/',
+            'uf'          => 'nullable|regex:/^[A-Z]+$/|max:2',
+            'cibge'       => 'nullable|numeric',
+            'telefone'    => 'nullable|numeric',
+            'email'       => 'nullable|email|unique:destinatarios,email,'.$destinatario->id, 
+        ],
+        [
+          'nome.required'     => 'Campo "Cliente" deve ser preenchido.',
+          'nome.regex'        => 'Utilize apenas letras no campo "Cliente".',
+          'nome.min'          => 'Poucos dígitos no campo "Nome".',
+          'cpf_cnpj.required' => 'Campo "CPF/CNPJ" deve ser preenchido.',
+          'cpf_cnpj.regex'    => 'Digitar apenas números no campo "CPF/CNPJ".',
+          'cpf_cnpj.min'      => 'Poucos dígitos no campo "CPF/CNPJ".',
+          'cpf_cnpj.unique'   => 'CPF ou CNPJ já cadastrado.',
+          'rg_ie.unique'      => 'RG ou Insc. Estadual já cadastrada.',
+          'rg_ie.required'    => 'Campo "RG/Inscrição Estadual" deve ser preenchido.',
+          'rg_ie.numeric'     => 'Digite apenas números no campo "RG/Inscrição Estadual".',
+          'rg_ie.min'         => 'Poucos dígitos no campo "RG/Inscrição Estadual".',
+          'cep.regex'         => 'Digite apenas números no campo "Cep".',
+          'cep.required'      => 'Campo "Cep" deve ser preenchido.',
+          'cep.max'           => 'Excedeu o limite de digitos no campo "Cep".',
+          'rua.required'      => 'Campo "Logradouro" deve ser preenchido.',
+          'rua.regex'         => 'Digite apenas letras e/ou números no campo "Logradouro".',
+          'numero.required'   => 'Campo "Número" deve ser preenchido.',
+          'numero.numeric'    => 'Digite apenas números no campo "Número".',
+          'bairro.required'   => 'Campo "Bairro" deve ser preenchido.',
+          'bairro.regex'      => 'Digitar apenas letras e/ou números no campo "Bairro".',
+          'complemento.regex' => 'Digitar apenas letras e/ou números no campo "Complemento".',
+          'cidade.required'   => 'Campo "Cidade" deve ser preenchido.',
+          'cidade.regex'      => 'Digitar apenas letras no campo "Cidade".',
+          'uf.max'            => 'Digite a sigla do estado no campo "UF".',
+          'uf.regex'          => 'Digitar apenas a sigla do estado no campo "UF".',
+          'cibge.numeric'     => 'Digitar apenas números no campo "cIBGE".',
+          'cibge.max'         => 'Máximo de 7 dígitos no campo "cIBGE',
+          'telefone.numeric'  => 'Digite apenas números no campo "Telefone".',
+          'email.unique'      => 'E-mail já cadastrado.',
+          'email.email'       => 'Digite um e-mail válido.'
+        ]);
     
       if ($validator->fails()) {
         return response()->json([
@@ -222,5 +226,15 @@ class DestinatarioController extends Controller
       $destinatario->update();
   
       return response()->json(['message' => 'Cliente atualizado com sucesso!']);
+    }
+
+    function destroy($id){
+
+      if (!$destinatario = Destinatario::find($id))
+        return redirect()->back();
+  
+      $destinatario->delete();
+  
+      return response()->json(['message' => 'Cliente removido com sucesso!']);
     }
 }
