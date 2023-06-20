@@ -27,16 +27,6 @@
                             <small><i class="fas fa-list fa-x3"></i> Lista</small>
                         </a> 
                     </li>
-                    <!-- <li rel="tab3">
-                        <a href="#">
-                            <small><i class="fas fa-list fa-x3"></i> Listar produto</small>
-                        </a>
-                    </li>
-                    <li rel="tab4">
-                        <a href="#">
-                            <small><i class="fas fa-clipboard-list fa-x3"></i> Total itens</small>
-                        </a>
-                    </li> -->
                 </ul>
             </div>
         </div>
@@ -159,69 +149,7 @@
                     </div>
                    
                 </div>  
-                <!-- <div class="tabbody" id="tab3" style="display: none;">
-                    <div class="card">
-                        <div class="card-header">
-                            <div style="display: flex; justify-content: space-between; flex-wrap:wrap; align-items:center;">
-                                <h3 class="card-title">Meus produtos</h3><br>
-                                <input class="search_product" id="search_product" name="search_product" type="text" placeholder="Pesquisar..." style="outline: none" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="card-body">
-                        <span id="total_produtos" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:100"></span>
-                            <table class="table table-striped table-bordered lista_produto">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>ID</th>
-                                        <th>Produto</th>
-                                        <th>Preço Custo</th>
-                                        <th>Preço Venda</th>
-                                        <th>Estoque</th>
-                                        <th colspan=3>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div> 
-                    </div>
-                    <div>
-                        @include('modals.produto.detalhe')
-                    </div>
-                    <div>
-                        @include('modals.produto.editar')
-                    </div>
-                </div>                    -->
             </div>
-            <!-- <div class="tabbody" id="tab4" style="display: none;">
-                <div class="card">
-                    <div class="card-header">
-                        <div style="display: flex; justify-content: space-between; flex-wrap:wrap; align-items:center;">
-                            <h3 class="card-title">Total de itens</h3><br>
-                            <input class="search_item" id="search_item" name="search_item" type="text" placeholder="Pesquisar..." style="outline: none" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="total_itens">
-                            <table class="table-striped tb_total_itens">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Produto</th>
-                                        <th>Estoque inicial</th>
-                                        <th>Vendidos</th>
-                                        <th>Estoque atual</th>
-                                        <th>Sub-total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>  
-            </div>  -->
         </div>
     </div>
     <div>
@@ -364,6 +292,7 @@
                             icon: "success"
                         }).then(() =>{
                             $('#form_cadastro_empresa').find('input[type="text"]').val("");
+                            $('#form_cadastro_empresa').find('input[type="file"]').val("");
                             $('.file_empresa_input span').next().text("Selecionar certificado");
                             $('#form_cadastro_empresa').find('input[type="password"]').val("");
                             $('#form_cadastro_empresa').find('input[id="uf"]').val("PE");
@@ -403,11 +332,10 @@
                             $('#editar_empresa_modal').modal('hide');
                             $(".errors").html("");
                             $(".errors_editar_empresa").html("");
+                            $('#form_edit_empresa').find('input[type="file"]').val("");
                             $('.file_empresa_input_editar span').next().text("Selecionar certificado");
                             $('#form_edit_empresa').find('input[type="password"]').val("");
-                            // getCategoria();
                             getEmpresa();
-                            // selectCategoria()
                         });
                     }else{
                         $.each(data.error, function( index, value) {
@@ -433,18 +361,17 @@
         $('.close').click(function(){
             $('.errors').html("");
             $(".errors_editar_empresa").html("");
+            $('#form_edit_empresa').find('input[type="file"]').val("");
+            $('.file_empresa_input_editar span').next().text("Selecionar certificado");
         });
 
         $('#file_empresa_input').change(function(e){
             $('.file_empresa_input span').next().text(e.target.files[0].name);
-
         })
 
         $('#file_empresa_input_editar').change(function(e){
             $('.file_empresa_input_editar span').next().text(e.target.files[0].name);
-
         })
-
         getEmpresa();
     });
 
@@ -480,6 +407,5 @@
         });
     }
 
-   
 </script>
 @endpush

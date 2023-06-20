@@ -27,16 +27,6 @@
                             <small><i class="fas fa-list fa-x3"></i> Lista</small>
                         </a> 
                     </li>
-                    <!-- <li rel="tab3">
-                        <a href="#">
-                            <small><i class="fas fa-list fa-x3"></i> Listar produto</small>
-                        </a>
-                    </li>
-                    <li rel="tab4">
-                        <a href="#">
-                            <small><i class="fas fa-clipboard-list fa-x3"></i> Total itens</small>
-                        </a>
-                    </li> -->
                 </ul>
             </div>
         </div>
@@ -140,69 +130,7 @@
                         </div> 
                     </div>    
                 </div> 
-                <!-- <div class="tabbody" id="tab3" style="display: none;">
-                    <div class="card">
-                        <div class="card-header">
-                            <div style="display: flex; justify-content: space-between; flex-wrap:wrap; align-items:center;">
-                                <h3 class="card-title">Meus produtos</h3><br>
-                                <input class="search_product" id="search_product" name="search_product" type="text" placeholder="Pesquisar..." style="outline: none" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="card-body">
-                        <span id="total_produtos" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:100"></span>
-                            <table class="table table-striped table-bordered lista_produto">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>ID</th>
-                                        <th>Produto</th>
-                                        <th>Preço Custo</th>
-                                        <th>Preço Venda</th>
-                                        <th>Estoque</th>
-                                        <th colspan=3>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div> 
-                    </div>
-                    <div>
-                        @include('modals.produto.detalhe')
-                    </div>
-                    <div>
-                        @include('modals.produto.editar')
-                    </div>
-                </div>                    -->
             </div>
-            <!-- <div class="tabbody" id="tab4" style="display: none;">
-                <div class="card">
-                    <div class="card-header">
-                        <div style="display: flex; justify-content: space-between; flex-wrap:wrap; align-items:center;">
-                            <h3 class="card-title">Total de itens</h3><br>
-                            <input class="search_item" id="search_item" name="search_item" type="text" placeholder="Pesquisar..." style="outline: none" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="total_itens">
-                            <table class="table-striped tb_total_itens">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Produto</th>
-                                        <th>Estoque inicial</th>
-                                        <th>Vendidos</th>
-                                        <th>Estoque atual</th>
-                                        <th>Sub-total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>  
-            </div>  -->
         </div>
         <div>
             @include('modals.destinatario.detalhe')

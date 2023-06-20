@@ -59,15 +59,13 @@ class NfeController extends Controller
         }
         else
         {
-           
             if ($slc_ult_nro_nfe->emitente_id == null && 
             $slc_ult_nro_nfe->destinatario_id == null &&
             $slc_ult_nro_nfe->status_id  == null &&
             $slc_ult_nro_nfe->serie_nfe  == null &&
             $slc_ult_nro_nfe->nro_nfe  == null)
             {
-                $slc_ult_nro_nfe->delete();
-                
+                $slc_ult_nro_nfe->delete(); 
             }
 
             $nota_fiscal->save();
@@ -79,7 +77,6 @@ class NfeController extends Controller
 
             return view('nfe.create', compact('emitentes', 'destinatarios', 'produtos', 'id_nota_fiscal'));
         }
-        
     }
 
     public function cadastraNfe(Request $request)

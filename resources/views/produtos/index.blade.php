@@ -380,11 +380,12 @@
                             $('#form_cadastro_produto').find('input[type="text"]').val("");
                             $('#form_cadastro_produto').find('input[type="date"]').val("");
                             $('#form_cadastro_produto').find('input[type="file"]').val("");
+                            $('.img_produto_input span').next().text("Selecionar imagem");
                             $('#form_cadastro_produto').find('#ucom').val("UNID");
-                            $('#form_cadastro_produto').find('#ucom').prop("readonly",true);
                             $('#form_cadastro_produto').find('#utrib').val("UNID");
                             $('#form_cadastro_produto').find('#utrib').prop("readonly",true);
-
+                            $('#form_cadastro_produto').find('#ucom').prop("readonly",true);
+                            
                             getCategoria();
                             getProduto();
                             selectCategoria();
