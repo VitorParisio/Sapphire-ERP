@@ -165,8 +165,8 @@
 <script>
     $(function(){
         $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
@@ -273,7 +273,7 @@
 
         $(document).on('submit', '#form_cadastro_empresa', function(e){
             e.preventDefault();
-           
+        
             var addFormEmpresa = new FormData($('#form_cadastro_empresa')[0]);
             
             $.ajax({
@@ -296,9 +296,7 @@
                             $('.file_empresa_input span').next().text("Selecionar certificado");
                             $('#form_cadastro_empresa').find('input[type="password"]').val("");
                             $('#form_cadastro_empresa').find('input[id="uf"]').val("PE");
-                            // getCategoria();
                             getEmpresa();
-                            // selectCategoria();
                         });
                     }else{
                         $.each(data.error, function( index, value) {
@@ -311,10 +309,10 @@
 
         $(document).on('submit', '#form_edit_empresa', function(e){
             e.preventDefault();
-           
+            
             var id              = $('.id_editar').val();
             var editFormEmpresa = new FormData($('#form_edit_empresa')[0]);
-            
+           
             $.ajax({
                 type: 'POST',
                 url: '/update_empresa/'+id,
@@ -374,7 +372,6 @@
         })
         getEmpresa();
     });
-
     function getEmpresa(query = '')
     {   
         
@@ -392,7 +389,7 @@
         });
     }
 
-    function searEmpresa(query = '')
+    function searchEmpresa(query = '')
     {
         $.ajax({
             url:"{{ route('produtos.search_item') }}",

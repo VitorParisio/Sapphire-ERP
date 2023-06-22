@@ -16,6 +16,7 @@ use App\Models\ItemVenda;
 use App\Models\PDV;
 use App\Models\Nfe;
 use App\Models\Venda;
+use Illuminate\Support\Facades\Validator;
 use NFePHP\Mail\Mail;
 use stdClass;
 use Exception;
@@ -40,20 +41,17 @@ class NfeController extends Controller
 
     public function create()
     { 
-       
         $nota_fiscal     = new Nfe();
         $slc_ult_nro_nfe = Nfe::orderBy('id', 'desc')->limit(1)->first();
         
         if ($slc_ult_nro_nfe == null)
         {   
-           
             $nota_fiscal->save();
             
             $emitentes      = Emitente::all();
             $destinatarios  = Destinatario::all();
             $produtos       = Product::all();
             $id_nota_fiscal = $nota_fiscal->id;    
-
 
             return view('nfe.create', compact('emitentes', 'destinatarios', 'produtos', 'id_nota_fiscal'));
         }
@@ -113,7 +111,7 @@ class NfeController extends Controller
                 "emitente_id"     => $request->select_emitente,
                 "destinatario_id" => $request->select_destinatario,
                 "serie_nfe"       => 1,
-                "nro_nfe"         => 200
+                "nro_nfe"         => 300
             ]);  
 
             return response()->json(['message' => 'Nota fiscal gerada com sucesso.']);
@@ -520,7 +518,7 @@ class NfeController extends Controller
                 // // $std = $stdCl->toStd();
                 $arr = $stdCl->toArray();
                 $data_xml_aut = $arr['protNFe']['infProt'];
-                
+
                 Nfe::where('id', $nota->id)->update([
                     "status_id" => 4,
                     "dhRecbto"  => $data_xml_aut['dhRecbto'],
@@ -532,7 +530,7 @@ class NfeController extends Controller
                     "horaRecibo"=> date('H:i:s'),
                     "digVal"    => $data_xml_aut['digVal'],
                     "nProt"     => $data_xml_aut['nProt'],
-                    "cStat"     => $data_xml_aut['cStat']
+                    "cStat"     => $data_xml_aut['cStat'],
                 ]);  
             }
             return response()->json(['message' => 'Nota fiscal transmitida com sucesso.']);
@@ -545,8 +543,8 @@ class NfeController extends Controller
 
     public function consultaNfe(Request $request)
     {
-        $nota         = Nfe::where('id', $request->id)->first();
-        $emitente     = Emitente::where('id', $nota->emitente_id)->first();
+        $nota     = Nfe::where('id', $request->id)->first();
+        $emitente = Emitente::where('id', $nota->emitente_id)->first();
 
         $config = [
             "atualizacao" => date('Y-m-d h:i:s'), 
@@ -642,8 +640,39 @@ class NfeController extends Controller
 
     public function cancelaNfe(Request $request)
     {
+        if (!$nota = Nfe::find($request->id)) 
+            return redirect()->back();
+               
         $nota     = Nfe::where('id', $request->id)->first();
         $emitente = Emitente::where('id', $nota->emitente_id)->first();
+        $data     = $request->all();
+
+        $validator = Validator::make($data, [
+            'id'        => 'required|numeric|unique:nves,id,'.$nota->id,
+            'serie_nfe' => 'required|numeric',
+            'nro_nfe'   => 'required|numeric|unique:nves,nro_nfe,'.$nota->id,
+            'nProt'     => 'required|numeric|unique:nves,nProt,'.$nota->id,
+            'xJust'     => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/|min:15'
+          ],
+          [
+            'id.required'        => 'Campo "ID" deve ser preenchido.',
+            'id.numeric'         => 'Digitar apenas números no campo "ID".',
+            'id.unique'          => 'ID já cadastrado.',
+            'serie_nfe.required' => 'Campo "Série" deve ser preenchido.',
+            'serie_nfe.numeric'  => 'Digite apenas números no campo "Série".',
+            'nProt.required'     => 'Campo "Protocolo" deve ser preenchido.',
+            'nProt.numeric'      => 'Digitar apenas números no campo "Protocolo".',
+            'nProt.unique'       => 'Protocolo já cadastrado.',
+            'xJust.required'     => 'Campo "Justificativa" deve ser preenchido.',
+            'xJust.numeric'      => 'Digite apenas letras e/ou números no campo "Justificativa".',
+            'xJust.min'          => 'A justificativa deve conter no mínimo 15 caracteres',
+          ]);
+        
+          if ($validator->fails()) {
+            return response()->json([
+                    'error' => $validator->errors()->all()
+            ]);
+          }
 
         $config = [
             "atualizacao" => date('Y-m-d h:i:s'), 
@@ -661,33 +690,49 @@ class NfeController extends Controller
 
         $configJson = json_encode($config);
         
-        $certificadoDigital = file_get_contents($emitente->certificado_a1);
+        $certificadoDigital = file_get_contents('storage/'.$emitente->certificado_a1);
         $certificate        = Certificate::readPfx($certificadoDigital, $emitente->senha_certificado);
 
         $tools = new Tools($configJson, $certificate);
         $tools->model('55');
         
         try{
-            $chave = $nota->chave_nfe;
-            $justificativa = 'NFe com erros de digitação';
-            $nProt = $nota->nProt;
-            $response = $tools->sefazCancela($chave, $justificativa, $nProt);
+            $chave         = $nota->chave_nfe;
+            $justificativa = $request->xJust;
+            $nProt         = $nota->nProt;
+            $response      = $tools->sefazCancela($chave, $justificativa, $nProt);
 
             $stdCl = new Standardize($response);
-            // // $std = $stdCl->toStd();
-            $arr = $stdCl->toArray();
-            $eventos = $arr['retEvento']['infEvento'];
+            $std   = $stdCl->toStd();
+            //$arr = $stdCl->toArray();
 
-            Nfe::where('id', $nota->id)->update(
-                [
-                    'status'      => 0,
-                    'xMotivo'     => $eventos['xMotivo'],
-                    'xEvento'     => $eventos['xEvento'],
-                    'dhRegEvento' => $eventos['dhRegEvento'],
-                    'nProt'       => $eventos['nProt'],
-                    'cStat'       => $eventos['cStat'],
-                ]
-            );
+            //verifique se o evento foi processado
+            if ($std->cStat != 128) {
+                //houve alguma falha e o evento não foi processado
+                //TRATAR
+            } else {
+                $cStat = $std->retEvento->infEvento->cStat;
+
+                if ($cStat == '101' || $cStat == '135' || $cStat == '155') {
+                    //SUCESSO PROTOCOLAR A SOLICITAÇÂO ANTES DE GUARDAR
+                    $xml = Complements::toAuthorize($tools->lastRequest, $response);
+                    //grave o XML protocolado 
+                    Nfe::where('id', $nota->id)->update(
+                        [
+                            'status_id'   => 0,
+                            'xMotivo'     => $std->retEvento->infEvento->xEvento,
+                            'dhRegEvento' => $std->retEvento->infEvento->dhRegEvento,
+                            'nProt'       => $std->retEvento->infEvento->nProt,
+                            'cStat'       => $std->retEvento->infEvento->cStat,
+                        ]
+                    );
+
+                    return response()->json(['message' => 'Nota fiscal cancelada com sucesso.']);
+                } else {
+                    //houve alguma falha no evento 
+                    //TRATAR
+                }
+            }   
         } catch (\Exception $e) {
             echo $e->getMessage();
         }

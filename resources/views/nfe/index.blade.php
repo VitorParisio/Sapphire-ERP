@@ -58,11 +58,10 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item"><i class="fas fa-eye"></i> Visualizar</a>
                                         <a class="dropdown-item" onclick="transSefaz('{{$dado->nota_id}}')"><i class="fas fa-paper-plane"></i> Transmitir Sefaz</a>
                                     </div>
-                                @else
-                                <button type="button" class="btn btn-success btn-sm" style="font-size:13px">Concluída</button>
+                                @elseif ($dado->status_id == 4)
+                                    <button type="button" class="btn btn-success btn-sm" style="font-size:13px">Concluída</button>
                                     <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
@@ -72,6 +71,8 @@
                                         <a class="dropdown-item"><i class="fas fa-envelope-open-text"></i> Carta Correção</a>
                                         <a class="dropdown-item cancelamento-nfe"><i class="fas fa-ban"></i> Cancelamento</a>
                                     </div>
+                                @else
+                                    <button type="button" class="btn btn-danger btn-sm" style="font-size:13px">Cancelada</button>
                                 @endif
                             </div>
                         </td>
@@ -90,8 +91,13 @@
 @stop
 @push('scripts')
 <script>
-
     $(function(){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $('.consulta-nfe').on('click', function(){
             $('#consulta_nfe_modal').modal('show');
 
@@ -119,14 +125,49 @@
                 return $(this).html();
             }).get();
 
-            $('#chave_nfe').html(data[6]);
-            $('#protocolo_nfe').html(data[5]);
-            $('#digval_nfe').html(data[7]);
-            $('#data_recibo_nfe').html(data[8]);
-            $('#hora_recibo_nfe').html(data[9]);
-            $('#codigo_retorno_nfe').html(data[10]);
-            $('#motivo_retorno_nfe').html(data[2]);
+            $('#id_cancelamento').val(data[0]);
+            $('#serie_cancelamento').val(data[4]);
+            $('#numero_cancelamento').val(data[3]);
+            $('#protocolo_cancelamento').val(data[5]);
         })
+
+        $(document).on('submit', '#form_cancela_nfe', function(e){
+            e.preventDefault();
+
+            var cancelaFormNfe = new FormData($('#form_cancela_nfe')[0]);
+           
+            $.ajax({
+                type: 'POST',
+                url: '/cancela_nfe',
+                data: cancelaFormNfe,
+                processData: false,  
+                contentType: false,  
+                dataType: 'json',
+                success: function(data)
+                {
+                    if($.isEmptyObject(data.error)){
+                        swal({
+                            text: data.message,
+                            icon: "success"
+                        }).then(() =>{
+                            location.reload(true);
+                        });
+                    }else{
+                        $.each(data.error, function(index, value) {
+                            $(".errors_cancela_nfe").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
+                        });
+                    }
+                }
+            });
+        });
+
+        $('.close').click(function(){
+            $(".errors_cancela_nfe").html("");
+            $('#form_cancela_nfe').find('#id_cancelamento').prop("readonly",true);
+            $('#form_cancela_nfe').find('#numero_cancelamento').prop("readonly",true);
+            $('#form_cancela_nfe').find('#serie_cancelamento').prop("readonly",true);
+            $('#form_cancela_nfe').find('#protocolo_cancelamento').prop("readonly",true);
+        });
     });
 
     function transSefaz(id)
@@ -138,8 +179,8 @@
             success:function(data)
             {
                 swal({
-                text: data.message,
-                icon: "success"
+                    text: data.message,
+                    icon: "success"
             }).then(() =>{
                 location.reload(true);
             });
@@ -160,5 +201,6 @@
             }
         });
     }
+
 </script>
 @endpush

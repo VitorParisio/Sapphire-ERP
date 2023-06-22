@@ -316,56 +316,6 @@
             });
         });
 
-
-        $(document).delegate(".del_cate","click",function(){
-            $tr = $(this).closest('tr');
-
-            var data = $tr.children("td").map(function(){
-                return $(this).html();
-            }).get();
-
-            $id = data[0];
-
-            swal("Todos os produtos desta categoria serão removidos. Tem certeza que deseja remover?", {
-                buttons: {
-                    yes: {
-                        text: "Sim",
-                        value: "yes"
-                    },
-                    no: {
-                        text: "Não",
-                        value: "no"
-                    },
-                    
-                },
-                icon:"warning" 
-            }).then((value) => {
-                if (value === "yes") {
-                    $.ajax({
-                        url:'/categoria_delete/'+$id,
-                        type: 'DELETE',
-                        success:function(data)
-                        {
-                            swal({
-                                type: "warning",
-                                text: data.message,
-                                icon: "success",
-                                showCancelButton: false,
-                                confirmButtonColor: "#DD6B55",
-                                closeOnConfirm: false
-                            }).then(() => {
-                                $('.errors').html("");
-                                getCategoria();
-                                getProduto();
-                                selectCategoria();
-                            });  
-                        }
-                    });
-                }
-                return false;
-            });
-        });
-
         $('.tabheading li').click(function () {
             
             var tab_id = $(this).attr("rel");
@@ -380,7 +330,6 @@
 
         $('.close').click(function(){
             $('.errors').html("");
-            $(".errors_editar_categoria").html("");
             $(".errors_editar_cliente").html("");
         });
          getCliente();

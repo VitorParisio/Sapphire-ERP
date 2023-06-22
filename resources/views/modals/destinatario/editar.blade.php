@@ -10,7 +10,7 @@
       <div class="modal-body">
         <div class="editar_cliente">
           <div class="dados_editar">
-          <div class="errors_editar_cliente"></div>
+            <div class="errors_editar_cliente"></div>
             <form id="form_edit_cliente" method="POST">
               @csrf
               <div style="display:flex; justify-content: space-between;">

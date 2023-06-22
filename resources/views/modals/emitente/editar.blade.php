@@ -10,7 +10,7 @@
       <div class="modal-body">
         <div class="editar_empresa">
           <div class="dados_editar">
-          <div class="errors_editar_empresa"></div>
+            <div class="errors_editar_empresa"></div>
             <form id="form_edit_empresa" method="POST" enctype="multipart/form-data">
             @csrf
               <div style="display:flex; justify-content: space-between;">

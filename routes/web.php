@@ -36,7 +36,7 @@ Route::get('/', function () {
     Route::get('gera_nfe/{id}', [NfeController::class, 'geraNfe'])->name('gera.nfe');
     Route::get('consulta_nfe', [NfeController::class, 'consultaNfe'])->name('consulta.nfe');
     Route::get('imprime_nfe/{id}', [NfeController::class, 'imprimeNfe'])->name('imprimi.nfe');
-    Route::get('cancela_nfe', [NfeController::class, 'cancelaNfe'])->name('cancelar.nfe');
+    Route::post('cancela_nfe', [NfeController::class, 'cancelaNfe'])->name('cancelar.nfe');
     Route::get('carta_correcao_nfe', [NfeController::class, 'cartaCorrecaoNfe'])->name('carta.correcao.nfe');
     //Route::get('email_nfe', [NfeController::class, 'emailNfe'])->name('email.nfe');
     Route::get('status_sefaz', [NfeController::class, 'statusSefaz'])->name('status.sefaz');

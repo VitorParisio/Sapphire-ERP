@@ -149,7 +149,7 @@ class EmitenteController extends Controller
             'cibge.max'                 => 'Máximo de 7 dígitos no campo "cIBGE".',
             'telefone.numeric'          => 'Digite apenas números no campo "Telefone".',
             'certificado_a1.required'   => 'Campo "Certificado Digital" deve ser preenchido.',
-            'certificado_a1.mimetypes'  => 'Campo "Certificado Digital" aceita apenas as extensões .pfx e .p12.',
+            'certificado_a1.mimetypes'  => 'Campo "Certificado Digital" aceita apenas a extensão .pfx',
             'senha_certificado.required'=> 'Campo "Senha (certificado)" deve ser preenchido.'
         ]);
 
@@ -242,7 +242,7 @@ class EmitenteController extends Controller
         'cibge.numeric'             => 'Digitar apenas números no campo "cIBGE".',
         'cibge.max'                 => 'Máximo de 7 dígitos no campo "cIBGE',
         'telefone.numeric'          => 'Digite apenas números no campo "Telefone".',
-        'certificado_a1.mimetypes'  => 'Campo "Certificado Digital" aceita as extensões .pfx e .p12',
+        'certificado_a1.mimetypes'  => 'Campo "Certificado Digital" aceita a extensão .pfx',
       ]);
     
       if ($validator->fails()) {
