@@ -1,5 +1,9 @@
 @inject('navbarItemHelper', 'JeroenNoten\LaravelAdminLte\Helpers\NavbarItemHelper')
 
+{{-- Notification customize --}}
+@include('adminlte::partials.navbar.menu-item-comunication-widget')
+@include('adminlte::partials.navbar.menu-item-notification-widget')
+
 @if ($navbarItemHelper->isSearch($item))
 
     {{-- Search form --}}
@@ -19,13 +23,12 @@
         :enable-dropdown-mode="$item['dropdown_mode'] ?? null"
         :dropdown-footer-label="$item['dropdown_flabel'] ?? null"
     />
-
+    
 @elseif ($navbarItemHelper->isFullscreen($item))
 
     {{-- Fullscreen toggle widget --}}
     @include('adminlte::partials.navbar.menu-item-fullscreen-widget')
-    @include('adminlte::partials.navbar.menu-item-notification-widget')
-
+    
 @elseif ($navbarItemHelper->isDarkmode($item))
 
     {{-- Darkmode toggle widget --}}

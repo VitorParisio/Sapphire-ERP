@@ -112,7 +112,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <span id="total_clientes" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:100"></span>
+                            <span id="total_clientes" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
                             <table class="table table-striped table-bordered lista_cliente">
                                 <thead>
                                     <tr>
@@ -346,7 +346,7 @@
             success:function(data)
             {   
                 $('.lista_cliente tbody').html(data.output);
-                $('#total_clientes').text('Total de itens: '+data.total_client);
+                $('#total_clientes').text('Total de clientes: '+data.total_client);
                  
             }
         });

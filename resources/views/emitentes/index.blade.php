@@ -130,7 +130,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                        <span id="total_empresas" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:100"></span>
+                        <span id="total_empresas" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
                             <table class="table table-striped table-bordered lista_empresa">
                                 <thead>
                                     <tr>

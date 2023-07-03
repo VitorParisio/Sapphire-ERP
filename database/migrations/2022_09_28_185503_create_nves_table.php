@@ -22,6 +22,7 @@ class CreateNvesTable extends Migration
             $table->string('serie_nfe')->nullable();
             $table->string('dhRecbto')->nullable();
             $table->string('xMotivo')->nullable();
+            $table->string('xJust')->nullable();
             $table->string('chave_nfe')->nullable();
             $table->integer('finNFe')->default(1);
             $table->text('path_xml')->nullable();
@@ -30,6 +31,7 @@ class CreateNvesTable extends Migration
             $table->string('digVal')->nullable();
             $table->integer('cStat')->nullable();
             $table->string('xEvento')->nullable();
+            $table->tinyInteger('nSeqEvento')->nullable();
             $table->string('dataRecibo')->nullable();
             $table->string('horaRecibo')->nullable();
             $table->string('dhRegEvento')->nullable();

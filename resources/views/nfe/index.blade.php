@@ -19,12 +19,12 @@
                 <a href="cadastrar_nota" class="btn btn-primary"><i class="fas fa-plus"></i> Nova nota</a>
             </div>
             <div>
-                <input type="text">
+                <input type="text" placeholder="Cliente" style="outline: none">
             </div>
         </div>
         <hr>  
         <div class="card-body lista_nota_fiscal">
-            <table class="table-striped tb_notas_fiscais">
+            <table class="table table-striped tb_notas_fiscais">
                 <thead>
                     <tr>
                         <th>Código</th>
@@ -53,11 +53,12 @@
                         <td>
                             <div class="btn-group">
                                 @if($dado->status_id == 2)
-                                    <button type="button" class="btn btn-primary btn-sm" style="font-size:13px">Em digitação</button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button type="button" class="btn btn-secondary btn-sm" style="font-size:13px">Em digitação</button>
+                                    <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item itens-nota-nfe"><i class="fas fa-th-list"></i> Itens da nota</a>
                                         <a class="dropdown-item" onclick="transSefaz('{{$dado->nota_id}}')"><i class="fas fa-paper-plane"></i> Transmitir Sefaz</a>
                                     </div>
                                 @elseif ($dado->status_id == 4)
@@ -68,7 +69,7 @@
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item consulta-nfe"><i class="fas fa-search"></i> Consultar</a>
                                         <a class="dropdown-item" onclick="imprimeNfe('{{$dado->nota_id}}')"><i class="fas fa-print"></i> Imprimir DANFE</a>
-                                        <a class="dropdown-item"><i class="fas fa-envelope-open-text"></i> Carta Correção</a>
+                                        <a class="dropdown-item carta-correcao-nfe"><i class="fas fa-envelope-open-text"></i> Carta Correção</a>
                                         <a class="dropdown-item cancelamento-nfe"><i class="fas fa-ban"></i> Cancelamento</a>
                                     </div>
                                 @else
@@ -87,6 +88,9 @@
     </div>
     <div>
         @include('modals.nfe.cancelamento')
+    </div>
+    <div>
+        @include('modals.nfe.carta_correcao')
     </div>
 @stop
 @push('scripts')
@@ -116,6 +120,11 @@
             $('#motivo_retorno_nfe').html(data[2]);
         })
 
+        $('.itens-nota-nfe').on('click', function(){
+            $('#itens_nota_nfe_modal').modal('show');
+        })
+
+
         $('.cancelamento-nfe').on('click', function(){
             $('#cancelamento_nfe_modal').modal('show');
 
@@ -131,9 +140,23 @@
             $('#protocolo_cancelamento').val(data[5]);
         })
 
+        $('.carta-correcao-nfe').on('click', function(){
+            $('#carta_correcao_nfe_modal').modal('show');
+
+            $tr = $(this).closest('tr');
+            
+            var data = $tr.children("td").map(function(){
+                return $(this).html();
+            }).get();
+
+            $('#id_carta_correcao').val(data[0]);
+            $('#serie_carta_correcao').val(data[4]);
+            $('#numero_carta_correcao').val(data[3]);
+            $('#protocolo_carta_correcao').val(data[5]);
+        })
+
         $(document).on('submit', '#form_cancela_nfe', function(e){
             e.preventDefault();
-
             var cancelaFormNfe = new FormData($('#form_cancela_nfe')[0]);
            
             $.ajax({
@@ -161,30 +184,100 @@
             });
         });
 
+        $(document).on('submit', '#form_carta_correcao_nfe', function(e){
+            e.preventDefault();
+            var cartaCorrecaoFormNfe = new FormData($('#form_carta_correcao_nfe')[0]);
+           
+            $.ajax({
+                type: 'POST',
+                url: '/carta_correcao_nfe',
+                data: cartaCorrecaoFormNfe,
+                processData: false,  
+                contentType: false,  
+                dataType: 'json',
+                success: function(data)
+                {
+                    if($.isEmptyObject(data.error)){
+                        swal({
+                            text: data.message,
+                            icon: "success"
+                        }).then(() =>{
+                            location.reload(true);
+                        });
+                    }else{
+                        $.each(data.error, function(index, value) {
+                            $(".errors_carta_correcao_nfe").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
+                        });
+                    }
+                }
+            });
+        });
+
         $('.close').click(function(){
             $(".errors_cancela_nfe").html("");
             $('#form_cancela_nfe').find('#id_cancelamento').prop("readonly",true);
             $('#form_cancela_nfe').find('#numero_cancelamento').prop("readonly",true);
             $('#form_cancela_nfe').find('#serie_cancelamento').prop("readonly",true);
             $('#form_cancela_nfe').find('#protocolo_cancelamento').prop("readonly",true);
+
+            $('#form_carta_correcao_nfe').find('#id_carta_correcao').prop("readonly",true);
+            $('#form_carta_correcao_nfe').find('#numero_carta_correcao').prop("readonly",true);
+            $('#form_carta_correcao_nfe').find('#serie_carta_correcao').prop("readonly",true);
+            $('#form_carta_correcao_nfe').find('#protocolo_carta_correcao').prop("readonly",true);
         });
+
     });
+
+    // function itensNotNfe(id)
+    // {
+       
+    //     $.ajax({
+    //         url:"/itens_nota_nfe/"+id,
+    //         method: 'GET',
+    //         dataType: 'json',
+    //         success:function(data)
+    //         {
+    //             if($.isEmptyObject(data.error))
+    //             {   
+    //                 swal({
+    //                     text: data.message,
+    //                     icon: "success"
+    //                     }).then(() =>{
+    //                         location.reload(true);
+    //                     });
+    //             } else {
+    //                 swal({
+    //                     text: data.error,
+    //                     icon: "warning"
+    //                 });
+    //             }  
+    //         }
+    //     });
+    // }
 
     function transSefaz(id)
     {
+       
         $.ajax({
             url:"/gera_nfe/"+id,
             method: 'GET',
             dataType: 'json',
             success:function(data)
             {
-                swal({
-                    text: data.message,
-                    icon: "success"
-            }).then(() =>{
-                location.reload(true);
-            });
-                 
+                if($.isEmptyObject(data.error))
+                {   
+                    swal({
+                        text: data.message,
+                        icon: "success"
+                        }).then(() =>{
+                            location.reload(true);
+                        });
+                } else {
+                    swal({
+                        text: data.error,
+                        icon: "warning"
+                    });
+                }  
             }
         });
     }

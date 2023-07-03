@@ -40,10 +40,11 @@ class NfeController extends Controller
     }
 
     public function create()
-    { 
+    {  
         $nota_fiscal     = new Nfe();
         $slc_ult_nro_nfe = Nfe::orderBy('id', 'desc')->limit(1)->first();
-        
+        $count_qtd_itens = 0;
+
         if ($slc_ult_nro_nfe == null)
         {   
             $nota_fiscal->save();
@@ -58,16 +59,24 @@ class NfeController extends Controller
         else
         {
             if ($slc_ult_nro_nfe->emitente_id == null && 
-            $slc_ult_nro_nfe->destinatario_id == null &&
-            $slc_ult_nro_nfe->status_id  == null &&
-            $slc_ult_nro_nfe->serie_nfe  == null &&
-            $slc_ult_nro_nfe->nro_nfe  == null)
+                $slc_ult_nro_nfe->destinatario_id == null &&
+                $slc_ult_nro_nfe->status_id  == null &&
+                $slc_ult_nro_nfe->serie_nfe  == null &&
+                $slc_ult_nro_nfe->nro_nfe  == null)
             {
+                $count_qtd_itens = ItemVenda::select('nfe_id')->where('nfe_id', $slc_ult_nro_nfe->id)->count();
+                
                 $slc_ult_nro_nfe->delete(); 
             }
-
+          
             $nota_fiscal->save();
-           
+
+            $novo_id_nfe = Nfe::select('id')->orderBy('id', 'desc')->limit(1)->first();
+
+            ItemVenda::select('nfe_id')
+            ->orderBy('id', 'desc')->limit($count_qtd_itens)
+            ->update(['nfe_id' => $novo_id_nfe->id]);
+         
             $emitentes      = Emitente::all();
             $destinatarios  = Destinatario::all();
             $produtos       = Product::all();
@@ -79,21 +88,58 @@ class NfeController extends Controller
 
     public function cadastraNfe(Request $request)
     {
-        $data     = $request->all();
-        $notas_fiscais = Nfe::all();
+        $nota = Nfe::select("id")
+        ->orderBy('id', 'desc')
+        ->limit(1)
+        ->first();
+
+        if ($nota->id != $request->nfe_id) 
+            return response()->json('reload');
+
+        $data = $request->all();
+        $nota = Nfe::all();
+
+        $validator = Validator::make($data, [
+            'select_destinatario' => 'required|not_in:0|',
+            'select_emitente'     => 'required|not_in:0|',
+            'forma_pagamento'     => 'required|numeric',
+            'valor_recebido'      => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+            'troco'               => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+            'total_venda'         => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+        ],
+        [
+            'select_destinatario.required' => 'Campo "Cliente" deve ser preenchido.',
+            'select_destinatario.not_in'   => 'Campo "Cliente" deve ser preenchido.',
+            'select_emitente.required'     => 'Campo "Emitente" deve ser preenchido.',
+            'select_emitente.not_in'       => 'Campo "Emitente" deve ser preenchido.',
+            'forma_pagamento.required'     => 'Forma de pagamento deve ser preenchido.',
+            'forma_pagamento.numeric'      => 'Valor incorreto na forma de pagamento.',
+            'valor_recebido.required'      => 'Campo "A RECEBER" deve ser preenchido.',
+            'valor_recebido.regex'         => 'Valor incorreto no campo "Valor venda".',
+            'troco.required'               => 'Campo "TROCO" deve ser preechido.',
+            'troco.regex'                  => 'Valor incorreto no campo "TROCO".',
+            'total_venda.required'         => 'Campo "TOTAL" deve ser preenchido.',
+            'total_venda.regex'            => 'Valor incorreto no campo "TOTAL".'
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                    'error' => $validator->errors()->all()
+            ]);
+        }
         
         if ($request->troco < 0)
-            return response()->json(['valores_incorretos' => 'Valores não correspondem-se.']);
+            return response()->json(['valores_incorretos' => 'Valor do troco incorreto.']);
 
         $valor_recebido_formatado = str_replace('.', '', $request->valor_recebido);
         $total_venda_formatado    = str_replace('.', '', $request->total_venda);
-        //$desconto_formatado     = str_replace('.', '', $request->desconto);
         $troco_formatado          = str_replace('.', '', $request->troco);
+        //$desconto_formatado     = str_replace('.', '', $request->desconto);
 
         $data['valor_recebido'] = str_replace(',', '.', $valor_recebido_formatado);
         $data['total_venda']    = str_replace(',', '.', $total_venda_formatado);
         $data['troco']          = str_replace(',', '.', $troco_formatado);
-        $data['desconto']       = 0.00;
+        //$data['desconto']       = 0.00;
         
         $venda                  = new Venda();
         $venda->nfe_id          = $request->nfe_id;
@@ -104,7 +150,7 @@ class NfeController extends Controller
         
         $venda->save();
 
-        if ($notas_fiscais->count() == 1)
+        if ($nota->count() == 1)
         {
             Nfe::where('id', $request->nfe_id)->update([
                 "status_id"       => 2,
@@ -132,28 +178,23 @@ class NfeController extends Controller
             "serie_nfe"       => 1,
             "nro_nfe"         => $ult_numero_nfe
         ]);  
-       
+
         return response()->json(['message' => 'Nota fiscal gerada com sucesso.']);
     }
 
     public function geraNfe($id)
     {   
-        
         $nota = Nfe::where('id', $id)->first();
-      
+       
         if($nota->status_id == 2)
         {
             $emitente     = Emitente::where('id', $nota->emitente_id)->first();
-        
             $destinatario = Destinatario::where('id', $nota->destinatario_id)->first();
-           
             $item         = ItemVenda::join('products', 'products.id', '=', 'item_vendas.product_id')
             ->where('item_vendas.nfe_id', $id)->get();
-        
-            $venda        = Venda::where("nfe_id", $id)
-            ->select('forma_pagamento', 'valor_recebido', 'troco')
-            ->first();
-            
+
+            $venda        = Venda::where('nfe_id', $id)->select('forma_pagamento', 'valor_recebido', 'troco')->first();
+          
             $config = [
                 "atualizacao" => date('Y-m-d h:i:s'), // Data e hora de atualização
                 "tpAmb"       => (int) $nota->ambiente, // Tipo de ambiente (1 - Produção, 2 - Homologação)
@@ -252,18 +293,18 @@ class NfeController extends Controller
             }
             $nfe->tagdest($stdDestinatario);
 
-            $stdEnderecoDestinatario = new stdClass();
-            $stdEnderecoDestinatario->xLgr = $destinatario->rua;
-            $stdEnderecoDestinatario->nro = $destinatario->numero;
+            $stdEnderecoDestinatario          = new stdClass();
+            $stdEnderecoDestinatario->xLgr    = $destinatario->rua;
+            $stdEnderecoDestinatario->nro     = $destinatario->numero;
             $stdEnderecoDestinatario->xBairro = $destinatario->bairro;
-            $stdEnderecoDestinatario->cMun = $destinatario->cibge;
-            $stdEnderecoDestinatario->xMun = $destinatario->cidade;
-            $stdEnderecoDestinatario->UF = $destinatario->uf;
-            $stdEnderecoDestinatario->CEP = $destinatario->cep;
-            $stdEnderecoDestinatario->cPais = $destinatario->cPais;
-            $stdEnderecoDestinatario->xPais = $destinatario->xPais;
-            $stdEnderecoDestinatario->xCpl = $destinatario->xCpl;
-            $stdEnderecoDestinatario->fone = $destinatario->fone;
+            $stdEnderecoDestinatario->cMun    = $destinatario->cibge;
+            $stdEnderecoDestinatario->xMun    = $destinatario->cidade;
+            $stdEnderecoDestinatario->UF      = $destinatario->uf;
+            $stdEnderecoDestinatario->CEP     = $destinatario->cep;
+            $stdEnderecoDestinatario->cPais   = $destinatario->cPais;
+            $stdEnderecoDestinatario->xPais   = $destinatario->xPais;
+            $stdEnderecoDestinatario->xCpl    = $destinatario->xCpl;
+            $stdEnderecoDestinatario->fone    = $destinatario->fone;
             $nfe->tagenderDest($stdEnderecoDestinatario);
             ##### FIM Node Destinatarios NFE ######
 
@@ -372,7 +413,7 @@ class NfeController extends Controller
             
             //pag OBRIGATÓRIA
             $stdFormPagamento = new stdClass();
-            $stdFormPagamento->vTroco = $venda->troco;
+            $stdFormPagamento->vTroco = $venda->troco == 0.00 ? 0 : $venda->troco;
             $nfe->tagpag($stdFormPagamento);
            
             //detPag OBRIGATÓRIA
@@ -499,9 +540,9 @@ class NfeController extends Controller
 
             $caminho_aut = '';
             if ($stdProt->protNFe->infProt->cStat != 100) {
+              
+                return response()->json(['error' => $stdProt->protNFe->infProt->xMotivo]);
                 
-                return (['Resposta' => $stdProt]);
-
             } else {
                 $xml_autorizado = Complements::toAuthorize($response_assinado, $protocolo);
                 $path_autorizadas = "XML/NFe/{$emitente->cnpj}/{$PastaAmbiente}/autorizadas/{$data_geracao_ano}/{$data_geracao_mes}/{$data_geracao_dia}";
@@ -517,6 +558,7 @@ class NfeController extends Controller
                 
                 // // $std = $stdCl->toStd();
                 $arr = $stdCl->toArray();
+
                 $data_xml_aut = $arr['protNFe']['infProt'];
 
                 Nfe::where('id', $nota->id)->update([
@@ -652,7 +694,7 @@ class NfeController extends Controller
             'serie_nfe' => 'required|numeric',
             'nro_nfe'   => 'required|numeric|unique:nves,nro_nfe,'.$nota->id,
             'nProt'     => 'required|numeric|unique:nves,nProt,'.$nota->id,
-            'xJust'     => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/|min:15'
+            'xJust'     => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 ".,:]*$/|min:15'
           ],
           [
             'id.required'        => 'Campo "ID" deve ser preenchido.',
@@ -663,8 +705,8 @@ class NfeController extends Controller
             'nProt.required'     => 'Campo "Protocolo" deve ser preenchido.',
             'nProt.numeric'      => 'Digitar apenas números no campo "Protocolo".',
             'nProt.unique'       => 'Protocolo já cadastrado.',
-            'xJust.required'     => 'Campo "Justificativa" deve ser preenchido.',
-            'xJust.numeric'      => 'Digite apenas letras e/ou números no campo "Justificativa".',
+            'xJust.required'     => 'Campo "JUSTIFICATIVA" deve ser preenchido.',
+            'xJust.regex'        => 'Digite apenas letras, números e alguns caracteres especiais no campo "JUSTIFICATIVA".',
             'xJust.min'          => 'A justificativa deve conter no mínimo 15 caracteres',
           ]);
         
@@ -701,20 +743,21 @@ class NfeController extends Controller
             $justificativa = $request->xJust;
             $nProt         = $nota->nProt;
             $response      = $tools->sefazCancela($chave, $justificativa, $nProt);
-
+            
             $stdCl = new Standardize($response);
             $std   = $stdCl->toStd();
             //$arr = $stdCl->toArray();
-
+           
             //verifique se o evento foi processado
             if ($std->cStat != 128) {
                 //houve alguma falha e o evento não foi processado
                 //TRATAR
             } else {
                 $cStat = $std->retEvento->infEvento->cStat;
-
+               
                 if ($cStat == '101' || $cStat == '135' || $cStat == '155') {
                     //SUCESSO PROTOCOLAR A SOLICITAÇÂO ANTES DE GUARDAR
+                   
                     $xml = Complements::toAuthorize($tools->lastRequest, $response);
                     //grave o XML protocolado 
                     Nfe::where('id', $nota->id)->update(
@@ -740,8 +783,40 @@ class NfeController extends Controller
 
     public function cartaCorrecaoNfe(Request $request)
     {
+        if (!$nota = Nfe::find($request->id)) 
+            return redirect()->back();
+
         $nota     = Nfe::where('id', $request->id)->first();
         $emitente = Emitente::where('id', $nota->emitente_id)->first();
+        $data     = $request->all();
+        $valor    = 0;
+
+        $validator = Validator::make($data, [
+            'id'        => 'required|numeric|unique:nves,id,'.$nota->id,
+            'serie_nfe' => 'required|numeric',
+            'nro_nfe'   => 'required|numeric|unique:nves,nro_nfe,'.$nota->id,
+            'nProt'     => 'required|numeric|unique:nves,nProt,'.$nota->id,
+            'xJust'     => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/|min:15'
+          ],
+          [
+            'id.required'        => 'Campo "ID" deve ser preenchido.',
+            'id.numeric'         => 'Digitar apenas números no campo "ID".',
+            'id.unique'          => 'ID já cadastrado.',
+            'serie_nfe.required' => 'Campo "Série" deve ser preenchido.',
+            'serie_nfe.numeric'  => 'Digite apenas números no campo "Série".',
+            'nProt.required'     => 'Campo "Protocolo" deve ser preenchido.',
+            'nProt.numeric'      => 'Digitar apenas números no campo "Protocolo".',
+            'nProt.unique'       => 'Protocolo já cadastrado.',
+            'xJust.required'     => 'Campo "RETIFICAR" deve ser preenchido.',
+            'xJust.regex'        => 'Digite apenas letras e, números e alguns caracteres especiais no campo "RETIFICAR".',
+            'xJust.min'          => 'A retificação deve conter no mínimo 15 caracteres',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                    'error' => $validator->errors()->all()
+            ]);
+        }
 
         $config = [
             "atualizacao" => date('Y-m-d h:i:s'), 
@@ -758,35 +833,56 @@ class NfeController extends Controller
         ];
 
         $configJson         = json_encode($config);
-        $certificadoDigital = file_get_contents($emitente->certificado_a1);
+        $certificadoDigital = file_get_contents('storage/'.$emitente->certificado_a1);
         $certificate        = Certificate::readPfx($certificadoDigital, $emitente->senha_certificado);
 
         $tools = new Tools($configJson, $certificate);
         $tools->model('55');
 
-        try {
-            $chave      = $nota->chave_nfe;
-            $xCorrecao  = 'Informações complementares: Endereco';
-            $nSeqEvento = 1;
+        if ($nota->nSeqEvento)
+        {
+            $valor = $nota->nSeqEvento + 1;
+        } else {
+            $valor = 1;
+        }
 
-            $response   = $tools->sefazCCe($chave, $xCorrecao, $nSeqEvento);
+        try {
+            $chave         = $nota->chave_nfe;
+            //$xCorrecao   = 'Informações complementares: Endereco';
+            $xCorrecao     = $request->xJust;
+            $nSeqEvento    = $valor;
+            $response      = $tools->sefazCCe($chave, $xCorrecao, $nSeqEvento);
         
             $stdCl = new Standardize($response);
 
             $std  = $stdCl->toStd();
-            $arr  = $stdCl->toArray();
-            $json = $stdCl->toJson();
            
+            // $arr  = $stdCl->toArray();
+            // $json = $stdCl->toJson();
+          
             //verifique se o evento foi processado
             if ($std->cStat != 128) {
                 //houve alguma falha e o evento não foi processado
                 //TRATAR
             } else {
                 $cStat = $std->retEvento->infEvento->cStat;
+               
                 if ($cStat == '135' || $cStat == '136') {
                     //SUCESSO PROTOCOLAR A SOLICITAÇÂO ANTES DE GUARDAR
                     $xml = Complements::toAuthorize($tools->lastRequest, $response);
                     //grave o XML protocolado 
+                    Nfe::where('id', $nota->id)->update(
+                        [
+                            'xJust'       => $xCorrecao,
+                            'nSeqEvento'  => $nSeqEvento,
+                            'xMotivo'     => $std->retEvento->infEvento->xMotivo,
+                            'xEvento'     => $std->retEvento->infEvento->xEvento,
+                            'dhRegEvento' => $std->retEvento->infEvento->dhRegEvento,
+                            'cStat'       => $std->retEvento->infEvento->cStat,
+                        ]
+                    );
+
+                    return response()->json(['message' => 'Carta correção enviada com sucesso.']);
                 } else {
                     //houve alguma falha no evento 
                     //TRATAR

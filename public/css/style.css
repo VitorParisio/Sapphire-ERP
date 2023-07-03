@@ -36,28 +36,33 @@ a{
     text-align: center;
 }
 
+#qtd_produto_nfe{
+    width: 80px;
+    text-align: center;
+}
+
 input{
     outline: none;
 }
 
-.cancelamento_nfe{
-    
-}
-
 .cancelamento_nfe form > div:nth-child(1),
-.cancelamento_nfe form > div:nth-child(2) 
+.cancelamento_nfe form > div:nth-child(2),
+.carta_correcao_nfe form > div:nth-child(1),
+.carta_correcao_nfe form > div:nth-child(2) 
 {
     display: flex; 
     justify-content: space-around;
 }
 
-.cancelamento_nfe form > div:nth-child(3) 
+.cancelamento_nfe form > div:nth-child(3),
+.carta_correcao_nfe form > div:nth-child(3)
 {
     display: flex; 
     flex-direction: column;
 }
 
-.cancelamento_nfe form > div:nth-child(3) > label
+.cancelamento_nfe form > div:nth-child(3) > label,
+.carta_correcao_nfe form > div:nth-child(3) > label
 {
    color: red;
 }

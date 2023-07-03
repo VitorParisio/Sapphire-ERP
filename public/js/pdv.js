@@ -107,8 +107,7 @@ function getProduto(cod_barra)
                 var valor_unitario = formatNumber.format(data.preco_venda);
                 var subtotal       = formatNumber.format(data.sub_total);
 
-                $('#letreiro').val(data.nome)
-                .css({'letter-spacing' : '5px', 'font-weight' : 'bold', 'text-transform': 'uppercase', 'color' : 'grey'});
+                $('#letreiro').val(data.nome).css({'letter-spacing' : '5px', 'font-weight' : 'bold', 'text-transform': 'uppercase', 'color' : 'grey'});
                 $('#descricao').val(data.descricao);
                 $('#qtd_produto').val(data.qtd);
                 $('#valor_unitario').val(valor_unitario);

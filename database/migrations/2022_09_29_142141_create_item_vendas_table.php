@@ -17,14 +17,11 @@ class CreateItemVendasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('nfe_id');
-            //$table->unsignedBigInteger('fabricante_id');
             $table->integer('qtd')->default(1);
             $table->decimal('sub_total', 10,2)->default(0.00);
             $table->date('data_venda');
             $table->boolean('status')->default(0);
-            $table->foreign('nfe_id')->references('id')->on('nves')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
-            //$table->foreign('fabricante_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

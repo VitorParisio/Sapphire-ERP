@@ -43,8 +43,8 @@
         <div class="card-body">
             <div class="tabcontainer">
                 <div class="tabbody active" id="tab1" style="display: block;">  
-                    <div style="display: flex; justify-content:space-between; align-items: flex-start; margin-bottom: 5px; margin-top: -10px;">
-                        <div class="total_categorias" style="position: relative; top:-2px; font-weight: 100; font-size: 13px; height: 12px;"></div>
+                    <div style="display: flex; justify-content:space-between; align-items: flex-start; margin-bottom: 5px; margin-top: -31px;">
+                        <div class="total_categorias" style="position: relative; top:-2px; font-weight: 900; font-size: 13px; height: 12px;"></div>
                         <!-- <input type="text" name="search_category" id="search_category" style="position: relative; outline:none; border:1px solid #848484;" placeholder="Pesquisar categoria..." autocomplete="off" /> -->
                     </div>
                     <div class="categorias_produto">
@@ -171,11 +171,11 @@
                         <div class="card-header">
                             <div style="display: flex; justify-content: space-between; flex-wrap:wrap; align-items:center;">
                                 <h3 class="card-title">Meus produtos</h3><br>
-                                <input class="search_product" id="search_product" name="search_product" type="text" placeholder="Pesquisar..." style="outline: none" autocomplete="off">
+                                <input class="search_product" id="search_product" name="search_product" type="text" placeholder="Produto" style="outline: none" autocomplete="off">
                             </div>
                         </div>
                         <div class="card-body">
-                        <span id="total_produtos" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:100"></span>
+                        <span id="total_produtos" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
                             <table class="table table-striped table-bordered lista_produto">
                                 <thead>
                                     <tr>
