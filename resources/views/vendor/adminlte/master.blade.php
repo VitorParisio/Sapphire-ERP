@@ -89,16 +89,9 @@
         <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+        <script src="{{asset('js/cash_verify.js')}}"></script>>
         <script src="{{asset('js/notifications.js')}}"></script>
-        <script>
-            // $(document).keydown(function (event) {
-            //     if (event.keyCode == 123) { // Prevent F12
-            //         return false;
-            //     } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) { // Prevent Ctrl+Shift+I        
-            //         return false;
-            //     }
-            // });
-       </script>
+        <script src="{{asset('js/events_key.js')}}"></script>>
         @stack('scripts')
 
         {{-- Configured Scripts --}}

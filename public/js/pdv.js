@@ -15,7 +15,10 @@ $(function(){
 
     $('#form_cod_barra').submit(function(e){
         e.preventDefault();
-       
+        
+        var user_id   = $('#user_id').val();
+        var numero    = $('#numero').val();
+        var id_cupom  = $('#id_cupom').val();
         var cod_barra = $('#cod_barra').val();
         var qtd       = $('#qtd').val();
 
@@ -30,6 +33,7 @@ $(function(){
               {
                 if (data)
                 {
+                    console.log(data)
                     swal("Excedeu o limite do estoque. Desejas continuar a venda?", {
                         buttons: {
                             yes: {
@@ -44,7 +48,7 @@ $(function(){
                     }).then((value) => {
                         if (value === "yes") 
                         {
-                            $.post('addproduto', {cod_barra: cod_barra, qtd: qtd})
+                            $.post('addproduto', {user_id: user_id, numero: numero, id_cupom: id_cupom, cod_barra: cod_barra, qtd: qtd})
                             .done(function(data){
                                 getProduto(cod_barra);
                                 document.getElementById('cod_barra').focus();    
@@ -57,11 +61,12 @@ $(function(){
                         document.getElementById('cod_barra').focus();
 
                         return false;
+
                     });
                 }
                 else
                 {
-                    $.post('addproduto', {cod_barra: cod_barra, qtd: qtd})
+                    $.post('addproduto', {user_id: user_id, numero: numero, id_cupom: id_cupom, cod_barra: cod_barra, qtd: qtd})
                     .done(function(data){
                     
                         getProduto(cod_barra);
@@ -82,13 +87,13 @@ $(function(){
         });
     }); 
 
-    notifications()
+    getProduto();
 });
 
-function getProduto(cod_barra)
+function getProduto(data)
 {
     $.ajax({
-        url: "getproduto/"+ cod_barra +"",
+        url: "getproduto/"+ data,
         type:'GET',
         success: function(data) {
             var options = { 
@@ -103,6 +108,9 @@ function getProduto(cod_barra)
             var pdv          = data.pdv;
             var total_venda  = formatNumber.format(data.total_venda);
 
+            $('tbody').html("");
+            $('.total_venda').html("");
+
             $.each(produto, function(index, data){
                 var valor_unitario = formatNumber.format(data.preco_venda);
                 var subtotal       = formatNumber.format(data.sub_total);
@@ -113,9 +121,6 @@ function getProduto(cod_barra)
                 $('#valor_unitario').val(valor_unitario);
                 $('#subtotal').val(subtotal);
             })
-
-            $('tbody').html("");
-            $('.total_venda').html("");
 
             $.each(pdv,function(index,data){
                 var preco_venda = formatNumber.format(data.preco_venda);
@@ -128,7 +133,7 @@ function getProduto(cod_barra)
                     <td>'+preco_venda+'</td>\
                     <td>'+data.qtd+'</td>\
                     <td>'+sub_total+'</td>\
-                    <td><a href="#" onclick="deletaProdutoCod('+ data.item_venda_id +','+ data.product_id +', '+ data.qtd +')">X</a></td>\
+                    <td><a href="#" onclick="deletaProdutoCod('+ data.item_venda_id +','+ data.product_id +', '+ data.qtd +')"><i class="fas fa-times-circle" style="color:red;"></i></a></td>\
                     </tr>');
             });
 
@@ -207,31 +212,34 @@ function deletaProdutoCod(item_venda_id, product_id, qtd)
     });
 }
 
-// function removeProdutos(){
-//     $.ajax(
-//         {
-//         url: "deletaprodutos",
-//         type: 'DELETE',
-//         success: function(){
-//            console.log('Produtos deletados!');
-//         }
-//     });
-// }
+function removeProdutos(){
+    $.ajax(
+        {
+        url: "deletaprodutos",
+        type: 'DELETE',
+        success: function(){
+           console.log('Produtos deletados!');
+        }
+    });
+}
 
 function finalizarVenda(){
+
+    var user_id         = $('#user_id').val();
+    var numero          = $('#numero').val();
+    var id_cupom        = $('#id_cupom').val();
     var forma_pagamento = $('#forma_pagamento').val();
     var valor_recebido  = $('#valor_recebido').val();
     var desconto        = $('#desconto').val();
     var total_venda     = $('#total_pagamento').val();
     var troco           = $('#troco').val();
 
-    $.post('finalizavenda', {total_venda: total_venda, valor_recebido: valor_recebido, forma_pagamento: forma_pagamento, desconto : desconto, troco : troco}, function(data){
+    $.post('finalizavenda', {user_id: user_id, numero: numero, id_cupom: id_cupom, total_venda: total_venda, valor_recebido: valor_recebido, forma_pagamento: forma_pagamento, desconto : desconto, troco : troco}, function(data){
         removeProdutos();
         $('.modal').hide();
         $('.modal-backdrop').hide();
         $('.total_venda').html('Total: R$ 0,00');
         $('.table_itens_vendas tbody').html("");
-        $('#forma_pagamento').val("Dinheiro");
         $('#valor_recebido').val('');
         $('#valor_recebido').prop('placeholder', 'A RECEBER');
         $('#desconto').prop('placeholder', 'DESCONTO');;
@@ -242,7 +250,9 @@ function finalizarVenda(){
         $('#valor_unitario').val('');
         $('#subtotal').val('');
         $('#letreiro').val("CAIXA LIVRE");
+        // $('#letreiro').val("CAIXA LIVRE");
         document.getElementById('cod_barra').focus();
+        openCupom();
     });
 }
 

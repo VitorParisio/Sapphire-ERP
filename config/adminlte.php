@@ -298,40 +298,50 @@ return [
 
         // Sidebar items:
         [
-            'text' => 'Home',
-            'url'  => '/home',
-            'icon' => 'fas fa-home',
-        ],
-        // [
-        //     'text' => 'Nota Fiscal',
-        //     'url'  => '/nota_fiscal',
-        //     'icon' => 'fas fa-file-alt',
-        // ],
+            'text' => 'Dashboard',
+            'url'  => '/dashboard',
+            'icon' => 'fas fa-tachometer-alt',
+        ],  
         [
-            'text' => 'Empresas',
-            'url'  => '/empresas',
+            'text' => 'Unidades',
+            'url'  => '/unidades',
             'icon' => 'fas fa-building',
         ],
+        // [
+        //     'text' => 'Usuários',
+        //     'url'  => '/usuarios',
+        //     'icon' => 'fas fa-user-friends',
+        // ],
+        // [
+        //     'text' => 'Funcionários',
+        //     'url'  => '/funcionarios',
+        //     'icon' => 'far fa-id-card',
+        // ],
         [
             'text' => 'Clientes',
             'url'  => '/clientes',
             'icon' => 'fas fa-users',
         ],
-        [
-            'text' => 'Fornecedores',
-            'url'  => '/fornecedores',
-            'icon' => 'fas fa-truck-moving',
-        ],
+        // [
+        //     'text' => 'Fornecedores',
+        //     'url'  => '/fornecedores',
+        //     'icon' => 'fas fa-truck-moving',
+        // ],
         [
             'text' => 'Produtos',
             'url'  => '/produtos',
             'icon' => 'fas fa-box',
         ],
         // [
-        //     'text' => 'Vendas',
-        //     'url'  => '/vendas',
-        //     'icon' => 'fa-solid fa-cart-shopping',
+        //     'text' => 'Estoques',
+        //     'url'  => '/estoques',
+        //     'icon' => 'fas fa-boxes',
         // ],
+        [
+            'text' => 'Caixas',
+            'url'  => '/caixas',
+            'icon' => 'fas fa-cash-register',
+        ],
         //  [
         //      'text' => 'PDV',
         //      'url'  => '/pdv',

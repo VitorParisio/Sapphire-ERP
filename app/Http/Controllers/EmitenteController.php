@@ -25,16 +25,16 @@ class EmitenteController extends Controller
       {
         if ($query != '')
         {
-          $empresas = Emitente::where('razao_social','LIKE','%'.$query.'%')
-          ->get(); 
+          $empresas       = Emitente::where('razao_social','LIKE','%'.$query.'%')->get(); 
+          $total_empresas = $empresas->count();
         }
         else
         {
-          $empresas = Emitente::orderBy('id', 'ASC')->get();
+          $empresas       = Emitente::orderBy('id', 'ASC')->get();
+          $total_empresas = $empresas->count();
         }
   
         $total_row   = $empresas->count();
-        $total_empresas = Emitente::all()->count();
   
         if ($total_row > 0)
         {
@@ -60,9 +60,9 @@ class EmitenteController extends Controller
                 <td style="display:none;">'.$complemento.'</td>
                 <td style="display:none;">'.$row->bairro.'</td>
                 <td style="display:none;">'.$row->uf.'</td>
-                <td><a href="#" class="dtls_btn"><i class="fas fa-eye" title="Detalhes da empresa"></i></a></td>
-                <td><a href="#" class="edt_btn"><i class="fas fa-edit" title="Editar empresa"></i></a></td>
-                <td><a href="#" class="del_btn"><i class="fas fa-trash" title="Excluir empresa"></i></a></td>
+                <td><a href="#" class="dtls_btn"><i class="fas fa-eye fa-sm" title="Detalhes da empresa"></i></a></td>
+                <td><a href="#" class="edt_btn" style="color:gray"><i class="fas fa-edit fa-sm" title="Editar empresa"></i></a></td>
+                <td><a href="#" class="del_btn" style="color:red"><i class="fas fa-times-circle fa-sm" title="Deletar empresa"></i></i></a></td>
               </tr>
             ';
           }
@@ -71,7 +71,7 @@ class EmitenteController extends Controller
         {
           $output ='
             <tr>
-              <td colspan="7" style="font-weight:100; font-size: 19px"><i>Empresa não encontrada.</i></td>
+              <td colspan="7" style="font-weight:100; font-size: 19px"><i>Unidade não encontrada.</i></td>
             </tr>
           ';
         }

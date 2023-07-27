@@ -25,16 +25,16 @@ class DestinatarioController extends Controller
       {
         if ($query != '')
         {
-          $clientes = Destinatario::where('nome','LIKE','%'.$query.'%')
-          ->get(); 
+          $clientes      = Destinatario::where('nome','LIKE','%'.$query.'%')->get(); 
+          $total_cliente = $clientes->count();
         }
         else
         {
-          $clientes = Destinatario::orderBy('id', 'ASC')->get();
+          $clientes      = Destinatario::orderBy('id', 'ASC')->get();
+          $total_cliente = $clientes->count();
         }
   
         $total_row   = $clientes->count();
-        $total_cliente = Destinatario::all()->count();
   
         if ($total_row > 0)
         {
@@ -59,9 +59,9 @@ class DestinatarioController extends Controller
                 <td style="display:none;">'.$complemento.'</td>
                 <td style="display:none;">'.$row->bairro.'</td>
                 <td style="display:none;">'.$row->uf.'</td>
-                <td><a href="#" class="dtls_btn"><i class="fas fa-eye" title="Detalhes do cliente"></i></a></td>
-                <td><a href="#" class="edt_btn"><i class="fas fa-edit" title="Editar cliente"></i></a></td>
-                <td><a href="#" class="del_btn"><i class="fas fa-trash" title="Excluir cliente"></i></a></td>
+                <td><a href="#" class="dtls_btn"><i class="fas fa-eye fa-sm" title="Detalhes do cliente"></i></a></td>
+                <td><a href="#" class="edt_btn" style="color:gray"><i class="fas fa-edit fa-sm" title="Editar cliente"></i></a></td>
+                <td><a href="#" class="del_btn" style="color:red"><i class="fas fa-times-circle fa-sm" title="Excluir cliente"></i></a></td>
               </tr>
             ';
           }

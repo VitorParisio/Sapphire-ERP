@@ -24,29 +24,29 @@
                     </li>
                     <li rel="tab2">
                         <a href="#">
-                            <small><i class="fas fa-plus fa-x3"></i> Adicionar</small>
+                            <small><i class="fas fa-list fa-x3"></i> Lista de produtos</small>
                         </a> 
                     </li>
                     <li rel="tab3">
                         <a href="#">
-                            <small><i class="fas fa-list fa-x3"></i> Lista</small>
+                            <small><i class="fas fa-plus fa-x3"></i> Novo produto</small>
                         </a>
                     </li>
-                    <li rel="tab4">
+                    <!-- <li rel="tab4">
                         <a href="#">
                             <small><i class="fas fa-clipboard-list fa-x3"></i> Total itens</small>
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
+                
             </div>
         </div>
         <div class="card-body">
             <div class="tabcontainer">
                 <div class="tabbody active" id="tab1" style="display: block;">  
-                    <div style="display: flex; justify-content:space-between; align-items: flex-start; margin-bottom: 5px; margin-top: -31px;">
-                        <div class="total_categorias" style="position: relative; top:-2px; font-weight: 900; font-size: 13px; height: 12px;"></div>
-                        <!-- <input type="text" name="search_category" id="search_category" style="position: relative; outline:none; border:1px solid #848484;" placeholder="Pesquisar categoria..." autocomplete="off" /> -->
-                    </div>
+                    <div class="total_categorias" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></div>
+                    <input class="search_categoria" id="search_categoria" name="search_categoria" type="text" placeholder="Pesquisar categoria" style="outline: none" autocomplete="off">
+                    <hr>
                     <div class="categorias_produto">
                         <div class="lista_categoria">
                             <table class="table-striped tb_categorias">
@@ -76,7 +76,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tabbody" id="tab2" style="display: none;">
+                <div class="tabbody" id="tab3" style="display: none;">
                     <form id="form_cadastro_produto" action="{{route('produtos.store')}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="row cadastro_produtos_inputs">
@@ -166,32 +166,26 @@
                         </div>
                     </form>
                 </div>
-                <div class="tabbody" id="tab3" style="display: none;">
-                    <div class="card">
-                        <div class="card-header">
-                            <div style="display: flex; justify-content: space-between; flex-wrap:wrap; align-items:center;">
-                                <h3 class="card-title">Meus produtos</h3><br>
-                                <input class="search_product" id="search_product" name="search_product" type="text" placeholder="Produto" style="outline: none" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="card-body">
-                        <span id="total_produtos" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
-                            <table class="table table-striped table-bordered lista_produto">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>ID</th>
-                                        <th>Produto</th>
-                                        <th>Valor Custo</th>
-                                        <th>Valor Venda</th>
-                                        <th>Estoque</th>
-                                        <th colspan=3>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div> 
+                <div class="tabbody" id="tab2" style="display: none;">
+                    <div class="lista_produto">
+                        <span id="total_produtos" style="font-size:13px; position:absolute; margin: -34px 0; font-weight:900"></span>
+                        <input class="search_product" id="search_product" name="search_product" type="text" placeholder="Pesquisar produto" style="outline: none" autocomplete="off">
+                        <hr>
+                        <table class="table table-striped lista_produto_table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ID</th>
+                                    <th>Produto</th>
+                                    <th>Valor Custo</th>
+                                    <th>Valor Venda</th>
+                                    <th>Estoque</th>
+                                    <th colspan=3>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                     <div>
                         @include('modals.produto.detalhe')
@@ -592,7 +586,7 @@
                             <td>'+value.categoria+'</td>\
                             <td>'+value.descricao+'</td>\
                             <td><a href="#" title="Editar categoria" class="edt_cate" style="font-size: 13px; color: #656565;"><i class="fas fa-edit"></i></a></td>\
-                            <td><a href="#" title="Remover categoria" class="del_cate" style="font-size: 13px; color: red;"><i class="fas fa-minus-circle"></i></a></td></tr>'
+                            <td><a href="#" title="Deletar categoria" class="del_cate" style="font-size: 13px; color: red;"><i class="fas fa-times-circle"></i></a></td></tr>'
                         ); 
                     }); 
                 }
@@ -637,7 +631,7 @@
             data:{query: query},
             success:function(data)
             {   
-                $('.lista_produto tbody').html(data.output);
+                $('.lista_produto_table tbody').html(data.output);
                 $('#total_produtos').text('Total de itens: '+data.total_product);
                  
             }

@@ -24,11 +24,11 @@
         <div class="modal-footer">
           <div class="result_pagamento">
             <label for="troco">
-                <h2>TROCO (R$)</h2> 
+                <h2>TROCO(R$)</h2> 
                 <input type="text" id="troco" autocomplete="off">
             </label>
             <label for="total_pagamento">
-                <h2>TOTAL (R$)</h2>
+                <h2>TOTAL(R$)</h2>
                 <input type="text" id="total_pagamento" autocomplete="off">
             </label>
           </div>

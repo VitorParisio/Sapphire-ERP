@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\StoreRequest;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\ItemVenda;
 use Illuminate\Support\Str;
+use App\Models\ItemVendaNfe;
+use Illuminate\Http\Request;
+use App\Http\Requests\StoreRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,21 +29,24 @@ class ProductController extends Controller
         $produto = Category::join('products', 'categories.id', '=', 'products.category_id')
         ->where('products.nome','LIKE','%'.$query.'%')
         ->get(); 
+
+        $total_itens = $produto->count();
       }
       else
       {
         $produto = Category::join('products', 'categories.id', '=', 'products.category_id')
         ->orderBy('products.id', 'ASC')->get();
+        
+        $total_itens = $produto->count();
       }
 
       $total_row   = $produto->count();
-      $total_itens = Product::all()->count();
-
+      
       if ($total_row > 0)
       {
         foreach($produto as $row)
         {
-          $img_prod = $row->img ? '<img src="storage/'.$row->img.'" alt="img_item" style="width:60px; height:60px; border-radius:30px;"/>' : '<i class="fas fa-image fa-3x" style="font-size:50px"></i>';
+          $img_prod = $row->img ? '<img src="storage/'.$row->img.'" alt="img_item" style="width:55px; height:30px; border-radius:30px;"/>' : '<i class="fas fa-print fa-lg"></i>';
           $output .='
             <tr>
               <td>'.$img_prod.'</td>
@@ -58,9 +61,9 @@ class ProductController extends Controller
               <td style="display:none;">'.$row->cod_barra.'</td>
               <td style="display:none;">'.$row->category_id.'</td>
               <td style="display:none;">'.$row->categoria.'</td>
-              <td><a href="#" class="dtls_btn"><i class="fas fa-eye" title="Detalhes do produto"></i></a></td>
-              <td><a href="#" class="edt_btn"><i class="fas fa-edit" title="Editar produto"></i></a></td>
-              <td><a href="#" class="del_btn"><i class="fas fa-trash" title="Excluir produto"></i></a></td>
+              <td><a href="#" class="dtls_btn"><i class="fas fa-eye fa-sm" title="Detalhes do produto"></i></a></td>
+              <td><a href="#" class="edt_btn" style="color: gray;"><i class="fas fa-edit fa-sm" title="Editar produto"></i></a></td>
+              <td><a href="#" class="del_btn" style="color: red;"><i class="fas fa-times-circle fa-sm" title="Deletar produto"></i></a></td>
             </tr>
           ';
         }
@@ -317,8 +320,8 @@ class ProductController extends Controller
     {
       if ($query != '')
       {
-        $itens_agrupados = Product::join('item_vendas','products.id', '=', 'item_vendas.product_id')
-        ->select('products.img','products.nome', 'products.qtd_compra', Product::raw('SUM(item_vendas.qtd) as total_itens'), Product::raw('SUM(item_vendas.sub_total) as sub_total'))
+        $itens_agrupados = Product::join('item_venda_nves','products.id', '=', 'item_venda_nves.product_id')
+        ->select('products.img','products.nome', 'products.qtd_compra', Product::raw('SUM(item_venda_nves.qtd) as total_itens'), Product::raw('SUM(item_venda_nves.sub_total) as sub_total'))
         ->where('products.nome','LIKE','%'.$query.'%')
         ->groupBy('products.img','products.nome', 'products.qtd_compra')
         ->get();
@@ -326,8 +329,8 @@ class ProductController extends Controller
       }
       else
       {
-        $itens_agrupados = Product::join('item_vendas','products.id', '=', 'item_vendas.product_id')
-        ->select('products.img','products.nome', 'products.qtd_compra', Product::raw('SUM(item_vendas.qtd) as total_itens'), Product::raw('SUM(item_vendas.sub_total) as sub_total'))
+        $itens_agrupados = Product::join('item_venda_nves','products.id', '=', 'item_venda_nves.product_id')
+        ->select('products.img','products.nome', 'products.qtd_compra', Product::raw('SUM(item_venda_nves.qtd) as total_itens'), Product::raw('SUM(item_venda_nves.sub_total) as sub_total'))
         ->groupBy('products.img','products.nome', 'products.qtd_compra')
         ->get();
       }
@@ -338,7 +341,7 @@ class ProductController extends Controller
       {
         foreach($itens_agrupados as $row)
         {
-          $img_prod = $row->img ? '<img src="storage/'.$row->img.'" alt="img_item" style="width:60px; height:60px; border-radius:30px;"/>' : '<i class="fas fa-image fa-3x" style="font-size:50px"></i>';
+          $img_prod = $row->img ? '<img src="storage/'.$row->img.'" alt="img_item" style="width:60px; height:60px; border-radius:30px;"/>' : '<i class="fa-brands fa-product-hunt"></i>';
           $estoque  = $row->qtd_compra - $row->total_itens;
           $itens_agrupados .='
             <tr>
@@ -371,12 +374,12 @@ class ProductController extends Controller
 
   function totalItem()
   {
-    $itens_agrupados = Product::join('item_vendas','products.id', '=', 'item_vendas.product_id')
-    ->select('products.img','products.nome', 'products.qtd_compra', Product::raw('SUM(item_vendas.qtd) as total_itens'), Product::raw('SUM(item_vendas.sub_total) as sub_total'))
+    $itens_agrupados = Product::join('item_venda_nves','products.id', '=', 'item_venda_nves.product_id')
+    ->select('products.img','products.nome', 'products.qtd_compra', Product::raw('SUM(item_venda_nves.qtd) as total_itens'), Product::raw('SUM(item_venda_nves.sub_total) as sub_total'))
     ->groupBy('products.img','products.nome', 'products.qtd_compra')
     ->get();
 
-    $qtd_total_item = ItemVenda::all()->count();
+    $qtd_total_item = ItemVendaNfe::all()->count();
 
      $data = array(
        'itens_agrupados' => $itens_agrupados,

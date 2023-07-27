@@ -12,8 +12,7 @@ use NFePHP\DA\NFe\Danfe;
 use App\Models\Emitente;
 use App\Models\Destinatario;
 use App\Models\Product;
-use App\Models\ItemVenda;
-use App\Models\PDV;
+use App\Models\ItemVendaNfe;
 use App\Models\Nfe;
 use App\Models\Venda;
 use Illuminate\Support\Facades\Validator;
@@ -64,7 +63,7 @@ class NfeController extends Controller
                 $slc_ult_nro_nfe->serie_nfe  == null &&
                 $slc_ult_nro_nfe->nro_nfe  == null)
             {
-                $count_qtd_itens = ItemVenda::select('nfe_id')->where('nfe_id', $slc_ult_nro_nfe->id)->count();
+                $count_qtd_itens = ItemVendaNfe::select('nfe_id')->where('nfe_id', $slc_ult_nro_nfe->id)->count();
                 
                 $slc_ult_nro_nfe->delete(); 
             }
@@ -73,7 +72,7 @@ class NfeController extends Controller
 
             $novo_id_nfe = Nfe::select('id')->orderBy('id', 'desc')->limit(1)->first();
 
-            ItemVenda::select('nfe_id')
+            ItemVendaNfe::select('nfe_id')
             ->orderBy('id', 'desc')->limit($count_qtd_itens)
             ->update(['nfe_id' => $novo_id_nfe->id]);
          
@@ -157,7 +156,7 @@ class NfeController extends Controller
                 "emitente_id"     => $request->select_emitente,
                 "destinatario_id" => $request->select_destinatario,
                 "serie_nfe"       => 1,
-                "nro_nfe"         => 300
+                "nro_nfe"         => 507
             ]);  
 
             return response()->json(['message' => 'Nota fiscal gerada com sucesso.']);
@@ -185,16 +184,16 @@ class NfeController extends Controller
     public function geraNfe($id)
     {   
         $nota = Nfe::where('id', $id)->first();
-       
+        
         if($nota->status_id == 2)
         {
             $emitente     = Emitente::where('id', $nota->emitente_id)->first();
             $destinatario = Destinatario::where('id', $nota->destinatario_id)->first();
-            $item         = ItemVenda::join('products', 'products.id', '=', 'item_vendas.product_id')
-            ->where('item_vendas.nfe_id', $id)->get();
-
+            $item         = ItemVendaNfe::join('products', 'products.id', '=', 'item_venda_nves.product_id')
+            ->where('item_venda_nves.nfe_id', $id)->get();
+           
             $venda        = Venda::where('nfe_id', $id)->select('forma_pagamento', 'valor_recebido', 'troco')->first();
-          
+           
             $config = [
                 "atualizacao" => date('Y-m-d h:i:s'), // Data e hora de atualização
                 "tpAmb"       => (int) $nota->ambiente, // Tipo de ambiente (1 - Produção, 2 - Homologação)

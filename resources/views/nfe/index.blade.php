@@ -84,6 +84,9 @@
         </div>
     </div>
     <div>
+        @include('modals.nfe.itens_nota')
+    </div>
+    <div>
         @include('modals.nfe.consulta')
     </div>
     <div>
@@ -123,7 +126,6 @@
         $('.itens-nota-nfe').on('click', function(){
             $('#itens_nota_nfe_modal').modal('show');
         })
-
 
         $('.cancelamento-nfe').on('click', function(){
             $('#cancelamento_nfe_modal').modal('show');
@@ -293,7 +295,7 @@
               return false;
             }
         });
-    }
+    }  
 
 </script>
 @endpush

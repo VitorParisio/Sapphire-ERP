@@ -19,12 +19,12 @@
                 <ul class="tabheading">
                     <li class="active" rel="tab1" >
                         <a href="#">
-                            <small><i class="fas fa-plus fa-x3"></i> Adicionar</small>
+                            <small><i class="fas fa-list fa-x3"></i> Lista de clientes</small>
                         </a>
                     </li>
                     <li rel="tab2">
                         <a href="#">
-                            <small><i class="fas fa-list fa-x3"></i> Lista</small>
+                            <small><i class="fas fa-plus fa-x3"></i> Novo cliente</small>
                         </a> 
                     </li>
                 </ul>
@@ -32,9 +32,29 @@
         </div>
         <div class="card-body">
             <div class="tabcontainer">
-                <div class="tabbody active" id="tab1" style="display: block;">  
+                <div class="tabbody active" id="tab1" style="display: block;">
+                    <span id="total_clientes" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
+                    <input class="search_cliente" id="search_client" name="search_client" type="text" placeholder="Pesquisar cliente" style="outline: none" autocomplete="off">
+                    <hr>
+                    <table class="table table-striped lista_cliente_table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>CPF/CNPJ</th>
+                                <th>RG/Insc. Estadual</th>
+                                <th>Cidade</th>
+                                <th colspan=3>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                        
+                </div> 
+                <div class="tabbody" id="tab2" style="display: none;">  
                     <div class="adicionar_cliente">
-                        <form id="form_cadastro_cliente" action="{{route('store.clientes')}}" method="post" enctype="multipart/form-data">
+                        <form id="form_cadastro_cliente" style="margin-top:-20px;" action="{{route('store.clientes')}}" method="post" enctype="multipart/form-data">
                         @csrf
                             <div class="row  align-items-start cadastro_clientes_inputs">
                                 <div class="col-md-12">
@@ -103,33 +123,6 @@
                         </form>
                     </div>
                 </div>
-                <div class="tabbody" id="tab2" style="display: none;">
-                    <div class="card">
-                        <div class="card-header">
-                            <div style="display: flex; justify-content: space-between; flex-wrap:wrap; align-items:center;">
-                                <h3 class="card-title">Meus clientes</h3><br>
-                                <input class="search_cliente" id="search_client" name="search_client" type="text" placeholder="Cliente" style="outline: none" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <span id="total_clientes" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
-                            <table class="table table-striped table-bordered lista_cliente">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Cliente</th>
-                                        <th>CPF/CNPJ</th>
-                                        <th>RG/Insc. Estadual</th>
-                                        <th>Cidade</th>
-                                        <th colspan=3>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div> 
-                    </div>    
-                </div> 
             </div>
         </div>
         <div>
@@ -141,7 +134,6 @@
     </div>
 @stop
 @push('scripts')
-<script src="{{ asset('js/mask.js') }}"></script>
 <script src="{{ asset('js/cep.js') }}"></script>
 <script>
     $(function(){
@@ -345,7 +337,7 @@
             data:{query: query},
             success:function(data)
             {   
-                $('.lista_cliente tbody').html(data.output);
+                $('.lista_cliente_table tbody').html(data.output);
                 $('#total_clientes').text('Total de clientes: '+data.total_client);
                  
             }

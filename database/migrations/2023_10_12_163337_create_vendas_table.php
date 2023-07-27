@@ -21,7 +21,6 @@ class CreateVendasTable extends Migration
             $table->decimal('desconto', 10,2)->default(0.00);
             $table->decimal('troco', 10,2)->default(0.00);
             $table->string('forma_pagamento');
-            $table->foreign('nfe_id')->references('id')->on('nves')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

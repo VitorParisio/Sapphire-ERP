@@ -1,6 +1,7 @@
 @inject('navbarItemHelper', 'JeroenNoten\LaravelAdminLte\Helpers\NavbarItemHelper')
 
 {{-- Notification customize --}}
+@include('adminlte::partials.navbar.menu-item-pdv')
 @include('adminlte::partials.navbar.menu-item-comunication-widget')
 @include('adminlte::partials.navbar.menu-item-notification-widget')
 

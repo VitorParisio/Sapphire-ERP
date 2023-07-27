@@ -4,10 +4,10 @@
 
 @section('content_header')
     <div style="display:flex; justify-content:space-between" >
-        <h5 class="m-0 text-dark"><i class="fas fa-play-circle"></i> Empresas</h5>
+        <h5 class="m-0 text-dark"><i class="fas fa-play-circle"></i> Unidades</h5>
         <ol class="breadcrumb float-sm-right" style="font-size: 13px;">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Empresas</li>
+            <li class="breadcrumb-item active">Unidades</li>
         </ol>
     </div>
     <div class="errors"></div>
@@ -19,12 +19,12 @@
                 <ul class="tabheading">
                     <li class="active" rel="tab1" >
                         <a href="#">
-                            <small><i class="fas fa-plus fa-x3"></i> Adicionar</small>
+                            <small><i class="fas fa-list fa-x3"></i> Lista de unidades</small>
                         </a>
                     </li>
                     <li rel="tab2">
                         <a href="#">
-                            <small><i class="fas fa-list fa-x3"></i> Lista</small>
+                            <small><i class="fas fa-plus fa-x3"></i> Nova unidade</small>
                         </a> 
                     </li>
                 </ul>
@@ -32,15 +32,34 @@
         </div>
         <div class="card-body">
             <div class="tabcontainer">
-                <div class="tabbody active" id="tab1" style="display: block;">  
+                <div class="tabbody active" id="tab1" style="display: block;">
+                    <span id="total_empresas" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
+                    <input class="search_empresa" id="search_empresa" name="search_empresa" type="text" placeholder="Pesquisar unidade" style="outline: none" autocomplete="off">
+                    <hr>
+                    <table class="table table-striped lista_empresa_table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>CNPJ</th>
+                                <th>Razão Social</th>
+                                <th>Insc. Estadual</th>
+                                <th>Localidade</th>
+                                <th colspan=3>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>  
+                <div class="tabbody active" id="tab2" style="display: none;">  
                     <div style="display: flex; justify-content:space-between; align-items: flex-start; margin-bottom: 5px; margin-top: -10px;">
                     </div>
                     <div class="adicionar_empresa">
-                        <form id="form_cadastro_empresa" action="{{route('store.empresa')}}" method="post" enctype="multipart/form-data">
+                        <form id="form_cadastro_empresa" style="margin-top:-20px;" action="{{route('store.empresa')}}" method="post" enctype="multipart/form-data">
                         @csrf
                             <div class="row cadastro_empresas_inputs">
                                 <div class="col-md-12">
-                                    <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px; margin-bottom:15px;"><i class="fas fa-id-card"></i> IDENTIFICAÇÃO:</h4>
+                                    <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px;"><i class="fas fa-id-card"></i> IDENTIFICAÇÃO:</h4>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="cnpj">CNPJ/CPF*
@@ -121,34 +140,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="tabbody" id="tab2" style="display: none;">
-                    <div class="card">
-                        <div class="card-header">
-                            <div style="display: flex; justify-content: space-between; flex-wrap:wrap; align-items:center;">
-                                <h3 class="card-title">Minhas empresas</h3><br>
-                                <input class="search_empresa" id="search_empresa" name="search_empresa" type="text" placeholder="Empresa" style="outline: none" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="card-body">
-                        <span id="total_empresas" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
-                            <table class="table table-striped table-bordered lista_empresa">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>CNPJ</th>
-                                        <th>Razão Social</th>
-                                        <th>Insc. Estadual</th>
-                                        <th>Localidade</th>
-                                        <th colspan=3>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div> 
-                    </div>
-                   
-                </div>  
+               
             </div>
         </div>
     </div>
@@ -160,7 +152,6 @@
     </div>
 @stop
 @push('scripts')
-<script src="{{ asset('js/mask.js') }}"></script>
 <script src="{{ asset('js/cep.js') }}"></script>
 <script>
     $(function(){
@@ -370,8 +361,10 @@
         $('#file_empresa_input_editar').change(function(e){
             $('.file_empresa_input_editar span').next().text(e.target.files[0].name);
         })
+
         getEmpresa();
     });
+    
     function getEmpresa(query = '')
     {   
         
@@ -382,8 +375,8 @@
             data:{query: query},
             success:function(data)
             {   
-                $('.lista_empresa tbody').html(data.output);
-                $('#total_empresas').text('Total de empresas: '+data.total_empresas);
+                $('.lista_empresa_table tbody').html(data.output);
+                $('#total_empresas').text('Total de unidades: '+data.total_empresas);
                  
             }
         });

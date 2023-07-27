@@ -89,7 +89,24 @@
                 </span>
             @enderror
         </div>
-
+        <div style="display:flex; align-items:center; justify-content: space-between">
+            <div>
+                <label for="role_as">Nível</label>
+                <select class="form-select" name="role_as" id="role_as">
+                    <option value="2">Master</option>
+                    <option value="1">Administrador</option>
+                    <option value="0">Vendas</option>
+                </select>
+            </div>
+            <div>
+                <label for="status">Ativo</label>
+                <select name="status" id="status">
+                    <option value="1">SIM</option>
+                    <option value="0">NÃO</option>
+                </select>
+            </div>
+        </div>
+       
         {{-- Register button --}}
         <button type="submit" class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
             <span class="fas fa-user-plus"></span>
@@ -99,10 +116,3 @@
     </form>
 @stop
 
-@section('auth_footer')
-    <p class="my-0">
-        <a href="{{ $login_url }}">
-            {{ __('adminlte::adminlte.i_already_have_a_membership') }}
-        </a>
-    </p>
-@stop

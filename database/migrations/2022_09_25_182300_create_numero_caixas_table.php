@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStatusTable extends Migration
+class CreateNumeroCaixasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateStatusTable extends Migration
      */
     public function up()
     {
-        Schema::create('status', function (Blueprint $table) {
+        Schema::create('numero_caixas', function (Blueprint $table) {
             $table->id();
-            $table->string('situacao');
-            $table->string('cor');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->tinyInteger('numero')->nullable();
+            $table->string('descricao')->nullable();
         });
     }
 
@@ -27,6 +28,6 @@ class CreateStatusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('status');
+        Schema::dropIfExists('numero_caixas');
     }
 }

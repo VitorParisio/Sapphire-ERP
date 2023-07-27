@@ -11,7 +11,7 @@ class PDV extends Model
 {
     use HasFactory;
 
-    protected $table = 'p_d_v_s';
+    protected $table   = 'p_d_v_s';
     public $timestamps = false;
 
     protected $fillable = ['product_id', 'item_venda_id'];

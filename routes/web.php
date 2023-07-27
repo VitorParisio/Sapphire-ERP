@@ -7,7 +7,11 @@ use App\Http\Controllers\VendasController;
 use App\Http\Controllers\ItemVendaController;
 use App\Http\Controllers\EmitenteController;
 use App\Http\Controllers\DestinatarioController;
+use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\NfeController;
+use App\Http\Controllers\ItemVendaNfeController;
+use App\Http\Controllers\CaixaController;
+use App\Http\Controllers\TstController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -24,29 +28,22 @@ Auth::routes();
 
 Route::get('/', function () {
     return view('auth.login');
-    // return view('home');
 });
 
- Route::group(['middleware' => 'auth'], function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    
-    Route::get('notas_fiscais', [NfeController::class, 'index'])->name('index.nfe');
-    Route::get('cadastrar_nota', [NfeController::class, 'create'])->name('create.nfe');
-    Route::post('cadastra_nfe', [NfeController::class, 'cadastraNfe'])->name('cadastra.nfe');
-    Route::get('gera_nfe/{id}', [NfeController::class, 'geraNfe'])->name('gera.nfe');
-    Route::get('consulta_nfe', [NfeController::class, 'consultaNfe'])->name('consulta.nfe');
-    Route::get('imprime_nfe/{id}', [NfeController::class, 'imprimeNfe'])->name('imprimi.nfe');
-    Route::post('cancela_nfe', [NfeController::class, 'cancelaNfe'])->name('cancelar.nfe');
-    Route::post('carta_correcao_nfe', [NfeController::class, 'cartaCorrecaoNfe'])->name('carta.correcao.nfe');
-    //Route::get('email_nfe', [NfeController::class, 'emailNfe'])->name('email.nfe');
-    Route::get('itens_nota_nfe/{id}', [NfeController::class, 'itensNotaNfe'])->name('itens_nota.nfe');
-    Route::get('status_sefaz', [NfeController::class, 'statusSefaz'])->name('status.sefaz');
+Route::get('/funcionario', function () {
+    return view('login.index');
+});
 
-    Route::get('/empresas', [EmitenteController::class, 'index'])->name('index.empresa');
+Route::group(['middleware' => 'auth'], function (){
+    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::get('/unidades', [EmitenteController::class, 'index'])->name('index.empresa');
     Route::post('/empresas', [EmitenteController::class, 'store'])->name('store.empresa');
     Route::get('/empresas/page', [EmitenteController::class, 'getEmpresa'])->name('empresa.search_empresa');
     Route::post('/update_empresa/{id}', [EmitenteController::class, 'update'])->name('empresa.update');
     Route::delete('/delete_empresa/{id}', [EmitenteController::class, 'destroy'])->name('empresa.delete');
+
+    Route::get('/usuarios', [UsuariosController::class, 'index'])->name('index.usuarios');
 
     Route::get('/clientes', [DestinatarioController::class, 'index'])->name('index.clientes');
     Route::post('/clientes', [DestinatarioController::class, 'store'])->name('store.clientes');
@@ -70,20 +67,42 @@ Route::get('/', function () {
     Route::get('/produtos/page-data', [ProductController::class, 'paginationProduct'])->name('produtos.pagination_produto');
     Route::get('/total_itens', [ProductController::class, 'totalItem'])->name('produtos.total_item');
     Route::get('/notifications', [ProductController::class, 'notifications'])->name('produtos.notifications');
-   
+
     Route::get('/getproduto/{produto_id}', [ItemVendaController::class, 'index'])->name('item_vendas.get_produto');
-    Route::post('/add_produto_nfe', [ItemVendaController::class, 'storeNfe'])->name('item_vendas.add_produto_nfe');
+    Route::post('/addproduto', [ItemVendaController::class, 'store'])->name('item_vendas.add_produto');
     Route::delete('/deletaprodutocod/{item_venda_id}/{product_id}/{qtd}', [ItemVendaController::class, 'destroy'])->name('item_vendas.deletaprotudocod');
     Route::get('/totalpagamento', [ItemVendaController::class, 'totalPagamento'])->name('item_vendas.total_pagamento');
     Route::delete('/deletaprodutos', [ItemVendaController::class, 'removeProdutos'])->name('item_vendas.deleta_produtos');
-    Route::get('/estoque_negativo_nfe', [ItemVendaController::class, 'estoqueNegativoNfe'])->name('intem_vendas.estoque_negativo');
+    Route::get('/estoque_negativo', [ItemVendaController::class, 'estoqueNegativo'])->name('item_vendas.estoque_negativo');
 
+    Route::get('/getprodutonfe/{produto_id}', [ItemVendaNfeController::class, 'index'])->name('item_vendas_nfe.get_produto');
+    Route::post('/add_produto_nfe', [ItemVendaNfeController::class, 'store'])->name('item_vendas_nfe.add_produto_nfe');
+    Route::delete('/deletaprodutocodnfe/{item_venda_nfe_id}/{product_id}/{qtd}', [ItemVendaNfeController::class, 'destroy'])->name('item_vendas_nfe.deletaprotudocod');
+    Route::get('/totalpagamentonfe', [ItemVendaNfeController::class, 'totalPagamento'])->name('item_vendas_nfe.total_pagamento');
+    Route::delete('/deletaprodutosnfe', [ItemVendaNfeController::class, 'removeProdutos'])->name('item_vendas_nfe.deleta_produtos');
+    Route::get('/estoque_negativo_nfe', [ItemVendaNfeController::class, 'estoqueNegativo'])->name('item_vendas_nfe.estoque_negativo');
 
-    //Route::get('/estoque_negativo', [ItemVendaController::class, 'estoqueNegativo'])->name('item_vendas.estoque_negativo');
-    //Route::post('/addproduto', [ItemVendaController::class, 'store'])->name('item_vendas.add_produto');
-    //Route::get('/vender', [VendasController::class, 'index'])->name('vender.vendas');
-    //Route::get('/pdv', [VendasController::class, 'pdv'])->name('pdv.vendas');
-    //Route::post('/finalizavenda', [VendasController::class, 'finalizaVenda'])->name('finaliza_venda.vendas');
+    Route::get('/caixas', [CaixaController::class, 'index'])->name('index.caixa');
+    Route::get('/get_caixas', [CaixaController::class, 'getCaixas'])->name('get_caixas.caixa');
+    Route::post('/abertura_caixa', [CaixaController::class, 'abrirCaixa'])->name('abrir_caixa.caixa');
+    Route::get('/get_caixa_aberto/{id}', [CaixaController::class, 'getCaixaAberto'])->name('get_caixa_aberto.caixa');
+    
+    Route::get('/vender', [VendasController::class, 'index'])->name('vender.vendas');
+    Route::get('/cash_verify/{id}', [VendasController::class, 'cashVerify'])->name('vender.vendas');
+    Route::get('/pdv', [VendasController::class, 'pdv'])->name('pdv.vendas');
+    Route::post('/finalizavenda', [VendasController::class, 'finalizaVenda'])->name('finaliza_venda.vendas');
+    Route::get('/cupom', [VendasController::class, 'cupom'])->name('cupom.vendas');
 
+    Route::get('notas_fiscais', [NfeController::class, 'index'])->name('index.nfe');
+    Route::get('cadastrar_nota', [NfeController::class, 'create'])->name('create.nfe');
+    Route::post('cadastra_nfe', [NfeController::class, 'cadastraNfe'])->name('cadastra.nfe');
+    Route::get('gera_nfe/{id}', [NfeController::class, 'geraNfe'])->name('gera.nfe');
+    Route::get('consulta_nfe', [NfeController::class, 'consultaNfe'])->name('consulta.nfe');
+    Route::get('imprime_nfe/{id}', [NfeController::class, 'imprimeNfe'])->name('imprimi.nfe');
+    Route::post('cancela_nfe', [NfeController::class, 'cancelaNfe'])->name('cancelar.nfe');
+    Route::post('carta_correcao_nfe', [NfeController::class, 'cartaCorrecaoNfe'])->name('carta.correcao.nfe');
+    //Route::get('email_nfe', [NfeController::class, 'emailNfe'])->name('email.nfe');
+    Route::get('itens_nota_nfe/{id}', [NfeController::class, 'itensNotaNfe'])->name('itens_nota.nfe');
+    Route::get('status_sefaz', [NfeController::class, 'statusSefaz'])->name('status.sefaz');
  });
 

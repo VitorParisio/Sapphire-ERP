@@ -50,9 +50,26 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role_as'  => ['required'],
+            'status'   => ['required'],
+        ],
+        [
+            'name.required'     => 'Campo de ser preenchido.',
+            'name.string'       => 'Digite apenas letras.',
+            'name.max'          => 'Excedeu o limite de digitos.',
+            'email.required'    => 'Campo de ser preenchido.',
+            'email.email'       => 'E-mail inválido.',
+            'email.max'         => 'Excedeu o limite de digitos.',
+            'email.unique'      => 'E-mail já cadastrado.',
+            'password.required' => 'Campo de ser preenchido.',
+            'password.min'      => 'Senha deve possuir no mínimo 8 caracteres.',
+            'password.confirmed'=> 'Senhas não coincidem.',
+            'role_as.required'  => 'Campo de ser preenchido.',
+            'status.required'   => 'Campo de ser preenchido.',
+            
         ]);
     }
 
@@ -65,9 +82,11 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'name'     => $data['name'],
+            'email'    => $data['email'],
             'password' => Hash::make($data['password']),
+            'role_as'  => $data['role_as'],
+            'status'   => $data['status'],
         ]);
     }
 }

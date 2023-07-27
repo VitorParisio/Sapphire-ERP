@@ -67,33 +67,48 @@ input{
    color: red;
 }
 
+/* ----------------------------------------------------- */
+
+/* -------------------- EMITENTE CSS ------------------------ */
+
+.search_empresa{
+    position: absolute;
+    right: 0;
+    margin: -22px 20px;
+    border: none;
+    background: rgba(0,0,0,0.2);
+    text-align: center;
+}
+
 
 /* ----------------------------------------------------- */
 
-
 /* -------------------- CATEGORIA CSS ------------------------ */
 
-.categorias_produto{
+.categorias_produto,
+.numero_caixa{
     display: flex;
     gap: 24px;
     justify-content: center;
     align-items: flex-start;
 }
 
-.categorias_produto > .lista_categoria{
+.categorias_produto > .lista_categoria,
+.numero_caixa > .lista_caixas{
     flex: 2;
     height: 360px;
     overflow: auto;
 }
 
-.lista_categoria .tb_categorias{
+.lista_categoria .tb_categorias,
+.lista_caixas .tb_caixa{
     width: 100%;
     max-height: 300px;
     overflow: auto;
-    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
 }
 
-.lista_categoria .tb_categorias thead th{
+.lista_categoria .tb_categorias thead th,
+.lista_caixas .tb_caixa thead th{
     font-size: 13px;
     background: teal;
     color: #FFF;
@@ -101,18 +116,21 @@ input{
     height: 30px;
 }
 
-.lista_categoria .tb_categorias tbody td{
+.lista_categoria .tb_categorias tbody td,
+.lista_caixas .tb_caixa tbody td{
     text-align: center;
 }
 
-.categorias_produto > .adicionar_categoria{
+.categorias_produto > .adicionar_categoria,
+.numero_caixa > .adicionar_caixa{
     display: flex;
     flex-direction: column;
     background: #e2e2e2;
     width: 245px;
 }
 
-.categorias_produto .adicionar_categoria .header_card_categoria
+.categorias_produto .adicionar_categoria .header_card_categoria,
+.numero_caixa .adicionar_caixa .header_card_caixa
 {
     text-align: center;
     border-bottom: 1px solid;
@@ -123,7 +141,8 @@ input{
     font-weight: bold;
 }
 
-.categorias_produto .adicionar_categoria div:nth-child(2)
+.categorias_produto .adicionar_categoria div:nth-child(2),
+.numero_caixa .adicionar_caixa div:nth-child(2)
 {
     display: flex;
     flex-direction: column;
@@ -131,27 +150,28 @@ input{
     height: 271px;
 }
 
-.categorias_produto .adicionar_categoria div:nth-child(2) label
+.categorias_produto .adicionar_categoria div:nth-child(2) label,
+.numero_caixa .adicionar_caixa div:nth-child(2) label
 {
     font-size: 15px;
     text-align: left;
 }
 
-.categorias_produto .adicionar_categoria .btn_add_categoria
+.categorias_produto .adicionar_categoria .btn_add_categoria,
+.numero_caixa .adicionar_caixa .btn_add_caixa
 {
     border: none;
     background: #3f6792;
     padding: 6px;
     margin-top: 0px;
     color: #FFF;
-    position: an;
-    position: absolute;
     bottom: 0;
-    margin: 29px 0px;
+    margin: 13px 19px;
 }
 
 
-.categorias_produto .adicionar_categoria div:nth-child(2) input
+.categorias_produto .adicionar_categoria div:nth-child(2) input,
+.numero_caixa .adicionar_caixa div:nth-child(2) input
 {
    outline: none;
    border: none;
@@ -160,7 +180,8 @@ input{
    margin-bottom: 15px;
 }
 
-.categorias_produto .adicionar_categoria div:nth-child(2) textarea
+.categorias_produto .adicionar_categoria div:nth-child(2) textarea,
+.numero_caixa .adicionar_caixa div:nth-child(2) textarea
 {
    outline: none;
    border: none;
@@ -220,6 +241,10 @@ input{
 .cadastro_clientes_inputs label
 {
     font-weight: 100 !important;
+}
+
+#form_cadastro_produto{
+    margin-top: -27px;
 }
 
 .detalhes_produto,.editar_produto{
@@ -345,20 +370,42 @@ input{
     cursor: pointer;
 }
 
-.lista_produto{
+.search_categoria,
+.search_cliente{
+    position: absolute;
+    right: 0;
+    margin: -22px 20px;
+    border: none;
+    background: rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.lista_produto > .search_product{
+    position: absolute;
+    right: 0;
+    margin: -38px 20px;
+    border: none;
+    background: rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.lista_produto_table{
     box-shadow: 0px 2px 0px 1px rgba(0,0,0,0.2);
 }
 
-.lista_produto thead th{
+.lista_produto_table thead th,
+.lista_empresa_table thead th,
+.lista_cliente_table thead th{
     font-size: 13px;
     background: teal;
     color: #FFF;
     text-align: center;
-    height: 30px;
 }
 
-.lista_produto tbody td{
-    
+.lista_produto_table tbody td,
+.lista_empresa_table tbody td,
+.lista_cliente_table tbody td{
+    padding: 3px;
 }
 
 .preco_custo_detalhe, .preco_venda_detalhe, 
@@ -424,11 +471,10 @@ input{
 }
 
 .dados_itens_venda h3{
-    background-color:#3f6792; 
+    background-color:#183c70; 
     color:#FFF;
     font-weight: bold;
     text-align: center;
-    font-family: 'Times New Roman', Times, serif;
     font-size: 20px;
 }
 
@@ -442,16 +488,17 @@ input{
 }
 
 .table > tbody > tr > td {
-    vertical-align: middle
+    vertical-align: middle;
+    padding: 0;
 }
 
 .table_itens_vendas > tbody > tr > td > img {
-    height:60px;
+    height:40px;
 }
 
 .pdv{
     display:flex; 
-    justify-content:space-between;
+    justify-content:space-around;
 }
 
 .letreiro{
@@ -465,8 +512,10 @@ input{
 }
 
 .letreiro::placeholder{
-    font-weight: bold;
-    letter-spacing: 20px;
+    letter-spacing: 5px; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    color: grey;
 }
 
 #descricao, #qtd_produto, 
@@ -499,7 +548,7 @@ input{
     font-size: 26px;
     font-weight: bold;
     margin-left: 10px;
-    margin-left: 62px;
+    margin-left: 116px;
     background: #008d7f;
     color: #FFF;
     padding: 0px 14px;
@@ -540,12 +589,26 @@ input{
 }
 
 .lista_atalhos{
-   border:1px solid;
+    width: 300px;
+    position: absolute;
+    right: 0;
+    bottom: 113px;
+    text-align: center;
+    border-radius: 5px;
 }
 
-.lista_atalhos li{
-    margin-left: 10px;
-    display: inline;
+.lista_atalhos .lista1{
+    display: flex;
+}
+
+.lista_atalhos .lista1 span
+{
+    background-color: #183c70;
+    color: #FFF;
+    font-size: 10px;
+    padding: 10px;
+    width: 145px;
+    display: block;
 }
 
 .modal-footer .result_pagamento{
@@ -591,7 +654,12 @@ input{
 .tabheading{
     padding: 0;
     background-color: #e3e3e3;
-    text-align: center;
+    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.5);
+}
+
+.tabheading{
+    padding: 0;
+    background-color: #e3e3e3;
     box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.5);
 }
 

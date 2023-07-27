@@ -16,12 +16,11 @@ class CreateItemVendasTable extends Migration
         Schema::create('item_vendas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('nfe_id');
+            $table->unsignedBigInteger('cupom_id');
             $table->integer('qtd')->default(1);
+            $table->decimal('desconto', 10,2)->default(0.00);
             $table->decimal('sub_total', 10,2)->default(0.00);
             $table->date('data_venda');
-            $table->boolean('status')->default(0);
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

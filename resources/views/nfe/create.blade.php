@@ -41,7 +41,7 @@
             <hr>
             <div class="mt-3">
                 <label class="mr-3" style="width:60%" for="select_produto">Produto*
-                    <select class="form-control select_produto" id="select_produto" name="item_venda_id">
+                    <select class="form-control select_produto" id="select_produto" name="item_venda_nfe_id">
                         <option value="0">Selecione...</option>
                         @foreach($produtos as $produto)
                             <option  value="{{$produto->id}}">{{$produto->nome}}</option>
@@ -240,7 +240,7 @@
     function getProdutoNfe(produto_id)
     { 
         $.ajax({
-            url: "getproduto/"+ produto_id +"",
+            url: "getprodutonfe/"+ produto_id +"",
             type:'GET',
             success: function(data) {
                 var options = { 
@@ -267,7 +267,7 @@
                         <td>'+preco_venda+'</td>\
                         <td>'+data.qtd+'</td>\
                         <td>'+sub_total+'</td>\
-                        <td><a href="#" onclick="deletaProdutoCodNfe('+ data.item_venda_id +','+ data.product_id +', '+ data.qtd +')"><i class="far fa-times-circle"></i></a></td>\
+                        <td><a href="#" onclick="deletaProdutoCodNfe('+ data.item_venda_nfe_id +','+ data.product_id +', '+ data.qtd +')"><i class="far fa-times-circle"></i></a></td>\
                         </tr>');
                 });
                 
@@ -276,16 +276,16 @@
         });
     } 
 
-    function deletaProdutoCodNfe(item_venda_id, product_id, qtd)
+    function deletaProdutoCodNfe(item_venda_nfe_id, product_id, qtd)
     {
         $.ajax(
             {
-            url: "deletaprodutocod/"+item_venda_id+"/"+product_id+"/"+qtd+"",
+            url: "deletaprodutocodnfe/"+item_venda_nfe_id+"/"+product_id+"/"+qtd+"",
             type: 'DELETE',
             data: {
-                "item_venda_id": item_venda_id,
-                "product_id"   : product_id,
-                "qtd"          : qtd,
+                "item_venda_nfe_id": item_venda_nfe_id,
+                "product_id"       : product_id,
+                "qtd"              : qtd,
             },
             success: function(){
                 $('#valor_recebido').val("");
@@ -304,7 +304,7 @@
 
         $.ajax(
             {
-            url: "totalpagamento",
+            url: "totalpagamentonfe",
             type: 'GET',
             success: function(data){
                 var options = { 
@@ -338,9 +338,8 @@
     }
 
     function removeProdutos(){
-        $.ajax(
-            {
-            url: "deletaprodutos",
+        $.ajax({
+            url: "deletaprodutosnfe",
             type: 'DELETE',
             success: function(){
             console.log('Produtos deletados!');

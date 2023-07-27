@@ -9,13 +9,18 @@
         </div>
         <div class="modal-body">
           <div class="itens_nota_nfe">
-            <table class="table table-striped">
-                <thead>
-                    <tr>Nº Item</tr>
-                    <tr>Produto</tr>
-                </thead>
-                <body></body>
-            </table>
+            <div class="table">
+              <div class="row">
+                <div class="cell">Célula 1</div>
+                <div class="cell">Célula 2</div>
+                <div class="cell">Célula 3</div>
+              </div>
+              <div class="row">
+                <div class="cell">Célula 4</div>
+                <div class="cell">Célula 5</div>
+                <div class="cell">Célula 6</div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
