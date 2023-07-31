@@ -43,7 +43,7 @@ class NfeController extends Controller
         $nota_fiscal     = new Nfe();
         $slc_ult_nro_nfe = Nfe::orderBy('id', 'desc')->limit(1)->first();
         $count_qtd_itens = 0;
-
+       
         if ($slc_ult_nro_nfe == null)
         {   
             $nota_fiscal->save();
@@ -75,7 +75,7 @@ class NfeController extends Controller
             ItemVendaNfe::select('nfe_id')
             ->orderBy('id', 'desc')->limit($count_qtd_itens)
             ->update(['nfe_id' => $novo_id_nfe->id]);
-         
+           
             $emitentes      = Emitente::all();
             $destinatarios  = Destinatario::all();
             $produtos       = Product::all();
@@ -156,7 +156,7 @@ class NfeController extends Controller
                 "emitente_id"     => $request->select_emitente,
                 "destinatario_id" => $request->select_destinatario,
                 "serie_nfe"       => 1,
-                "nro_nfe"         => 507
+                "nro_nfe"         => 802
             ]);  
 
             return response()->json(['message' => 'Nota fiscal gerada com sucesso.']);
@@ -538,6 +538,7 @@ class NfeController extends Controller
             file_put_contents($caminho_Protocolo, $protocolo);
 
             $caminho_aut = '';
+
             if ($stdProt->protNFe->infProt->cStat != 100) {
               
                 return response()->json(['error' => $stdProt->protNFe->infProt->xMotivo]);

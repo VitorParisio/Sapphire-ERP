@@ -93,9 +93,6 @@
     <div style="display:flex; margin-top:30px" class="mt-3">
         <button class="btn btn-success save_sell">Cadastrar</button>
     </div>
-    <div>
-        @include('modals.pagamento')
-    </div>
 @stop
 @push('scripts')
 <script>

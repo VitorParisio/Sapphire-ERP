@@ -7,7 +7,7 @@ $(function(){
     
     document.getElementById('cod_barra').focus();
 
-    $('.total_venda').append('Total: R$ 0,00');
+    $('.total_venda').val('R$ 0,00');
 
     $('#cod_barra').keypress(function(){
         document.getElementById('qtd').focus();
@@ -48,7 +48,7 @@ $(function(){
                     }).then((value) => {
                         if (value === "yes") 
                         {
-                            $.post('addproduto', {user_id: user_id, numero: numero, id_cupom: id_cupom, cod_barra: cod_barra, qtd: qtd})
+                            $.post('addproduto', {user_id: user_id, numero: numero, cod_barra: cod_barra, qtd: qtd})
                             .done(function(data){
                                 getProduto(cod_barra);
                                 document.getElementById('cod_barra').focus();    
@@ -66,7 +66,7 @@ $(function(){
                 }
                 else
                 {
-                    $.post('addproduto', {user_id: user_id, numero: numero, id_cupom: id_cupom, cod_barra: cod_barra, qtd: qtd})
+                    $.post('addproduto', {user_id: user_id, numero: numero, cod_barra: cod_barra, qtd: qtd})
                     .done(function(data){
                     
                         getProduto(cod_barra);
@@ -109,7 +109,7 @@ function getProduto(data)
             var total_venda  = formatNumber.format(data.total_venda);
 
             $('tbody').html("");
-            $('.total_venda').html("");
+            $('.total_venda').val();
 
             $.each(produto, function(index, data){
                 var valor_unitario = formatNumber.format(data.preco_venda);
@@ -139,7 +139,7 @@ function getProduto(data)
 
             $('#cod_barra').val('');
             $('#qtd').val('');
-            $('.total_venda').append('Total: '+total_venda);
+            $('.total_venda').val(total_venda);
             totalPagamento();
         }
     });
@@ -148,7 +148,7 @@ function getProduto(data)
 function totalPagamento(){
     var forma_pagamento = $('#forma_pagamento').val();
     var valor_recebido  = $('#valor_recebido').val().replaceAll(".", "").replaceAll(",", ".");
-    //var desconto      = $('#desconto').val().replaceAll(".", "").replaceAll(",", ".");
+    var desconto        = $('#desconto').val().replaceAll(".", "").replaceAll(",", ".");
     var troco           = 0.00;
 
     $.ajax(
@@ -168,10 +168,10 @@ function totalPagamento(){
             else 
                 troco = valor_recebido - data;
             
-            // if (desconto > 0 && troco > 0){
-            //     troco = troco;
-            //     data  = data - desconto;
-            // } 
+            if (desconto > 0 && troco > 0){
+                troco = troco;
+                data  = data - desconto;
+            } 
 
             troco = troco.toFixed(2);
             troco = formatNumber.format(troco);
@@ -238,7 +238,7 @@ function finalizarVenda(){
         removeProdutos();
         $('.modal').hide();
         $('.modal-backdrop').hide();
-        $('.total_venda').html('Total: R$ 0,00');
+        $('.total_venda').val('R$ 0,00');
         $('.table_itens_vendas tbody').html("");
         $('#valor_recebido').val('');
         $('#valor_recebido').prop('placeholder', 'A RECEBER');
@@ -249,8 +249,7 @@ function finalizarVenda(){
         $('#qtd_produto').val('');
         $('#valor_unitario').val('');
         $('#subtotal').val('');
-        $('#letreiro').val("CAIXA LIVRE");
-        // $('#letreiro').val("CAIXA LIVRE");
+        $('.letreiro').val("CAIXA LIVRE");
         document.getElementById('cod_barra').focus();
         openCupom();
     });

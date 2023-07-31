@@ -29,19 +29,32 @@
     <input type="text" class="letreiro" id="letreiro" placeholder="CAIXA LIVRE" autocomplete="off" style="font-style:italic">
     <div class="pdv">
       <div class="itens_vendas">
-        <table class="table table-bordered table_itens_vendas">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Item</th>
-              <th>Valor unitário(R$)</th>
-              <th>Qtd</th>
-              <th>Subtotal(R$)</th>
-              <th><i class="fas fa-times-circle"></i></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <div>
+          <table class="table table-bordered table_itens_vendas">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Item</th>
+                <th>Valor unitário(R$)</th>
+                <th>Qtd</th>
+                <th>Subtotal(R$)</th>
+                <th><i class="fas fa-times-circle"></i></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="" style="display: flex; align-items:center; margin-top: 400px; justify-content: space-between;">
+          <div class="" style="display: flex;">
+            <input type="text" id="cod_barra" placeholder="Código/Produto" style="outline:none; text-align:center" autocomplete="off" >
+            <form id="form_cod_barra" action="#">
+              @csrf
+              <input type="text" id="qtd" placeholder="1" style="outline:none; text-align:center; height:41px" autocomplete="off" >
+              <button type="submit" style="display: none;"></button>
+            </form>
+          </div>
+          <input type="text" class="total_venda" id="total_venda"/>
+        </div>
       </div>
       <div class="dados_itens_venda">
         <div id="dado_descricao">
@@ -74,17 +87,6 @@
         </div>
       </div>
     </div> 
-    <div class="" style="display: flex; align-items:center;">
-      <div class="" style="display: flex; margin-left:12px;">
-        <input type="text" id="cod_barra" placeholder="Código/Produto" style="outline:none; text-align:center" autocomplete="off" >
-        <form id="form_cod_barra" action="#">
-          @csrf
-          <input type="text" id="qtd" placeholder="1" style="outline:none; text-align:center; height:41px" autocomplete="off" >
-          <button type="submit" style="display: none;"></button>
-        </form>
-      </div>
-      <div class="total_venda"></div>
-    </div>
     @include('modals.pdv.pagamento')
     <button id="btn_modal_venda" data-toggle="modal" data-target="#pagamento_modal" style="display: none"></button>
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
@@ -118,6 +120,7 @@
         $('#total').prop( "disabled", true );
         $('#troco').prop( "disabled", true );
         $('#total_pagamento').prop( "disabled", true );
+        $('#total_venda').prop( "disabled", true );
         
         $('#valor_recebido').focus(function(){
           $('#valor_recebido').prop( "placeholder", "0,00" );

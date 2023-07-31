@@ -45,9 +45,9 @@ class VendasController extends Controller
         $slc_ult_id_cupom  = Cupom::orderBy('id', 'desc')->limit(1)->first();
         $count_qtd_id      = 0;
         $id_cupom          = '';
-
+       
         if ($slc_ult_id_cupom == null)
-        {   
+        {    
             $cupom->save();
 
             $id_cupom = $cupom->id;    
@@ -64,13 +64,11 @@ class VendasController extends Controller
                 $slc_ult_id_cupom->delete(); 
             }
 
-            $cupom->save();
-
-            $id_cupom = $cupom->id;    
-
+            $cupom->save(); 
+            
             $novo_id_cupom = Cupom::select('id')->orderBy('id', 'desc')->limit(1)->first();
             $id_cupom      = $novo_id_cupom->id;
-            
+          
             ItemVenda::select('cupom_id')
             ->orderBy('id', 'desc')->limit($count_qtd_id)
             ->update(['cupom_id' => $id_cupom]);
@@ -83,13 +81,15 @@ class VendasController extends Controller
         $data         = $request->all();
         $user_id      = $request->user_id;
         $numero_caixa = $request->numero;
-        
+        $cupom_id     = $request-> id_cupom;
+        $cupom        = Cupom::get();
+
         $valor_recebido_formatado = str_replace('.', '', $request->valor_recebido);
         $total_venda_formatado    = str_replace('.', '', $request->total_venda);
-        //$desconto_formatado       = str_replace('.', '', $request->desconto);
+        $desconto_formatado       = str_replace('.', '', $request->desconto);
         $troco_formatado          = str_replace('.', '', $request->troco);
         
-        $data['cupom_id']       = $request->id_cupom;
+        $data['cupom_id']       = $cupom_id;
         $data['valor_recebido'] = str_replace(',', '.', $valor_recebido_formatado);
         $data['total_venda']    = str_replace(',', '.', $total_venda_formatado);
         $data['troco']          = str_replace(',', '.', $troco_formatado);
@@ -106,9 +106,30 @@ class VendasController extends Controller
         
         VendaCupom::create($data);
 
-        $novo_cupom           = new Cupom();
-        // $novo_cupom->user_id  = $user_id;
-        // $novo_cupom->caixa_id = $numero_caixa;
+        if ($cupom->count() == 1)
+        {
+            Cupom::where('id', $cupom_id)->update([
+                "user_id"   => $request->user_id,
+                "caixa_id"  => $request->numero,
+                "nro_cupom" => 1
+            ]);  
+        } else {
+            $nmro_cupom = Cupom::select("nro_cupom")
+            ->orderBy('id', 'desc')
+            ->skip(1)
+            ->limit(1)
+            ->first();
+           
+            $ult_numero_cupom = $nmro_cupom->nro_cupom + 1;
+            
+            Cupom::where('id', $cupom_id)->update([
+                "user_id"   => $request->user_id,
+                "caixa_id"  => $request->numero,
+                "nro_cupom" => $ult_numero_cupom
+            ]);  
+        }
+
+        $novo_cupom = new Cupom();
         $novo_cupom->save();
 
         return redirect()->route('cupom.vendas');

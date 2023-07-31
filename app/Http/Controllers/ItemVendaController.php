@@ -32,8 +32,8 @@ class ItemVendaController extends Controller
     {
         $cod_barra = $request->cod_barra;
         $qtd       = $request->qtd > 0 ? $request->qtd : 1;
-        $cupom     = Cupom::get();
-        
+        $slc_ult_id_cupom  = Cupom::orderBy('id', 'desc')->limit(1)->first();
+       
         $produto = Product::select('cod_barra', 'nome','id', 'estoque', 'preco_venda')
         ->where('cod_barra', $cod_barra)->first();
         
@@ -62,7 +62,7 @@ class ItemVendaController extends Controller
         {
             $item_venda             = new ItemVenda();
             $item_venda->product_id = $produto->id;
-            $item_venda->cupom_id   = $request->id_cupom;
+            $item_venda->cupom_id   = $slc_ult_id_cupom->id;
             $item_venda->sub_total  = $produto->preco_venda * $qtd;
             $item_venda->data_venda = date("Y-m-d");
             $item_venda->save();
@@ -76,29 +76,6 @@ class ItemVendaController extends Controller
             $estoque_atualizado = $produto->estoque - $qtd;
             $produto->estoque   = $estoque_atualizado;
 
-            if ($cupom->count() == 1)
-            {
-                Cupom::where('id', $request->id_cupom)->update([
-                    "user_id"   => $request->user_id,
-                    "caixa_id"  => $request->numero,
-                    "nro_cupom" => 1
-                ]);  
-            } else {
-                $nmro_cupom = Cupom::select("nro_cupom")
-                ->orderBy('id', 'desc')
-                ->skip(1)
-                ->limit(1)
-                ->first();
-               
-                $ult_numero_cupom = $nmro_cupom->nro_cupom + 1;
-                
-                Cupom::where('id', $ult_numero_cupom)->update([
-                    "user_id"   => $request->user_id,
-                    "caixa_id"  => $request->numero,
-                    "nro_cupom" => $ult_numero_cupom
-                ]);  
-            }
-
             $produto->where('cod_barra', $cod_barra)->update(['estoque' => $produto->estoque]);
            
         } 
@@ -106,7 +83,7 @@ class ItemVendaController extends Controller
         {
             $item_venda             = new ItemVenda();
             $item_venda->product_id = $produto->id;
-            $item_venda->cupom_id   = $request->id_cupom;
+            $item_venda->cupom_id   = $slc_ult_id_cupom->id;
             $item_venda->sub_total  = $produto->preco_venda * $qtd;
             $item_venda->data_venda = date("Y-m-d");
             $item_venda->save();
@@ -118,30 +95,6 @@ class ItemVendaController extends Controller
 
             $estoque_atualizado = $produto->estoque - $qtd;
             $produto->estoque   = $estoque_atualizado;
-
-            
-            if ($cupom->count() == 1)
-            {
-                Cupom::where('id', $request->id_cupom)->update([
-                    "user_id"   => $request->user_id,
-                    "caixa_id"  => $request->numero,
-                    "nro_cupom" => 1
-                ]);  
-            } else {
-                $nmro_cupom = Cupom::select("nro_cupom")
-                ->orderBy('id', 'desc')
-                ->skip(1)
-                ->limit(1)
-                ->first();
-               
-                $ult_numero_cupom = $nmro_cupom->nro_cupom + 1;
-                
-                Cupom::where('id', $ult_numero_cupom)->update([
-                    "user_id"   => $request->user_id,
-                    "caixa_id"  => $request->numero,
-                    "nro_cupom" => $ult_numero_cupom
-                ]);  
-            }
 
             $produto->where('cod_barra', $cod_barra)->update(['estoque' => $produto->estoque]);
         }
