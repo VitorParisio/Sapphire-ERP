@@ -7,6 +7,7 @@ use App\Models\Cupom;
 use App\Models\NumeroCaixa;
 use App\Models\ItemVenda;
 use App\Models\VendaCupom;
+use App\Models\Emitente;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
@@ -78,18 +79,18 @@ class VendasController extends Controller
     }
 
     function finalizaVenda(Request $request){
-        $data         = $request->all();
-        $user_id      = $request->user_id;
-        $numero_caixa = $request->numero;
-        $cupom_id     = $request-> id_cupom;
-        $cupom        = Cupom::get();
+        $data              = $request->all();
+        $user_id           = $request->user_id;
+        $numero_caixa      = $request->numero;
+        $slc_ult_id_cupom  = Cupom::orderBy('id', 'desc')->limit(1)->first();
+        $cupom             = Cupom::get();
 
         $valor_recebido_formatado = str_replace('.', '', $request->valor_recebido);
         $total_venda_formatado    = str_replace('.', '', $request->total_venda);
         $desconto_formatado       = str_replace('.', '', $request->desconto);
         $troco_formatado          = str_replace('.', '', $request->troco);
         
-        $data['cupom_id']       = $cupom_id;
+        $data['cupom_id']       = $slc_ult_id_cupom->id;
         $data['valor_recebido'] = str_replace(',', '.', $valor_recebido_formatado);
         $data['total_venda']    = str_replace(',', '.', $total_venda_formatado);
         $data['troco']          = str_replace(',', '.', $troco_formatado);
@@ -108,7 +109,7 @@ class VendasController extends Controller
 
         if ($cupom->count() == 1)
         {
-            Cupom::where('id', $cupom_id)->update([
+            Cupom::where('id', $slc_ult_id_cupom->id)->update([
                 "user_id"   => $request->user_id,
                 "caixa_id"  => $request->numero,
                 "nro_cupom" => 1
@@ -122,7 +123,7 @@ class VendasController extends Controller
            
             $ult_numero_cupom = $nmro_cupom->nro_cupom + 1;
             
-            Cupom::where('id', $cupom_id)->update([
+            Cupom::where('id', $slc_ult_id_cupom->id)->update([
                 "user_id"   => $request->user_id,
                 "caixa_id"  => $request->numero,
                 "nro_cupom" => $ult_numero_cupom
@@ -136,8 +137,27 @@ class VendasController extends Controller
     }
 
     function cupom(){
-       
-        $pdf = PDF::loadHTML('vendas.cupom')->setPaper([0, 0, 807.874, 221.102], 'landscape');
+        
+        $emitente = Emitente::first();
+        $cupom_id = Cupom::orderBy('id', 'desc')->skip(1)->limit(1)->first();
+        
+        $itens = ItemVenda::join('products', 'products.id', '=', 'item_vendas.product_id')
+        ->join('cupoms', 'cupoms.id', '=', 'item_vendas.cupom_id')
+        ->select('products.nome', 'products.preco_venda', 'item_vendas.qtd', 'item_vendas.sub_total')
+        ->where('cupoms.id', $cupom_id->id)
+        ->get();
+      
+        $cupom = Cupom::join('users', 'users.id', '=', 'cupoms.user_id')
+        ->join('numero_caixas', 'numero_caixas.numero', '=', 'cupoms.caixa_id')
+        ->join('venda_cupoms', 'venda_cupoms.cupom_id', '=', 'cupoms.id')
+        ->select('numero_caixas.descricao')
+        ->where('cupoms.id', $cupom_id->id)
+        ->groupBy('numero_caixas.descricao')->get();
+
+        $view = view('vendas.cupom', compact('emitente', 'itens','cupom'));
+        
+        $pdf = PDF::loadHTML($view)->setPaper([0, 0, 807.874, 221.102], 'landscape');
+
         return $pdf->stream();
     }
 }

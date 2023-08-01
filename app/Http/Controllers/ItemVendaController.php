@@ -63,6 +63,7 @@ class ItemVendaController extends Controller
             $item_venda             = new ItemVenda();
             $item_venda->product_id = $produto->id;
             $item_venda->cupom_id   = $slc_ult_id_cupom->id;
+            $item_venda->qtd        = $qtd;
             $item_venda->sub_total  = $produto->preco_venda * $qtd;
             $item_venda->data_venda = date("Y-m-d");
             $item_venda->save();
@@ -84,6 +85,7 @@ class ItemVendaController extends Controller
             $item_venda             = new ItemVenda();
             $item_venda->product_id = $produto->id;
             $item_venda->cupom_id   = $slc_ult_id_cupom->id;
+            $item_venda->qtd        = $qtd;
             $item_venda->sub_total  = $produto->preco_venda * $qtd;
             $item_venda->data_venda = date("Y-m-d");
             $item_venda->save();
