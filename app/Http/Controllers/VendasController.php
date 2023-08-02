@@ -146,15 +146,17 @@ class VendasController extends Controller
         ->select('products.nome', 'products.preco_venda', 'item_vendas.qtd', 'item_vendas.sub_total')
         ->where('cupoms.id', $cupom_id->id)
         ->get();
+
+        $qtd_itens = $itens->count();
       
         $cupom = Cupom::join('users', 'users.id', '=', 'cupoms.user_id')
         ->join('numero_caixas', 'numero_caixas.numero', '=', 'cupoms.caixa_id')
         ->join('venda_cupoms', 'venda_cupoms.cupom_id', '=', 'cupoms.id')
-        ->select('numero_caixas.descricao')
+        ->select('numero_caixas.descricao', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento')
         ->where('cupoms.id', $cupom_id->id)
-        ->groupBy('numero_caixas.descricao')->get();
+        ->groupBy('numero_caixas.descricao', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento')->get();
 
-        $view = view('vendas.cupom', compact('emitente', 'itens','cupom'));
+        $view = view('vendas.cupom', compact('emitente', 'itens', 'cupom', 'qtd_itens'));
         
         $pdf = PDF::loadHTML($view)->setPaper([0, 0, 807.874, 221.102], 'landscape');
 

@@ -146,7 +146,7 @@
       });
 
       function openCupom() {
-        var popupWindow = window.open('/cupom', '_blank', 'width=300, height=600');
+        var popupWindow = window.open('/cupom', '_blank', "width=300, height=600");
         popupWindow.focus();
       }
   </script>
