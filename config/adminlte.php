@@ -302,16 +302,6 @@ return [
             'url'  => '/dashboard',
             'icon' => 'fas fa-tachometer-alt',
         ],  
-        [
-            'text' => 'Unidades',
-            'url'  => '/unidades',
-            'icon' => 'fas fa-building',
-        ],
-        // [
-        //     'text' => 'Usuários',
-        //     'url'  => '/usuarios',
-        //     'icon' => 'fas fa-user-friends',
-        // ],
         // [
         //     'text' => 'Funcionários',
         //     'url'  => '/funcionarios',
@@ -342,25 +332,20 @@ return [
             'url'  => '/caixas',
             'icon' => 'fas fa-cash-register',
         ],
-        //  [
-        //      'text' => 'PDV',
-        //      'url'  => '/pdv',
-        //      'icon' => 'fas fa-window-maximize',
-        //  ],
-         [
+        [
             'text'    => 'Nota Fiscal',
             'icon'    => 'fas fa-file-alt',
             'submenu' => [
-                [
-                'text' => 'Notas fiscais',
-                'url'  => '/notas_fiscais',
-                'icon' => 'fas fa-clone'
-                ],
-                [
-                'text' => 'Cadastrar nota',
-                'url'  => '/cadastrar_nota',
-                'icon' => 'fas fa-plus'
-                ],
+            [
+            'text' => 'Notas fiscais',
+            'url'  => '/notas_fiscais',
+            'icon' => 'fas fa-clone'
+            ],
+            [
+            'text' => 'Cadastrar nota',
+            'url'  => '/cadastrar_nota',
+            'icon' => 'fas fa-plus'
+            ],
         //         // [
         //         //     'text'    => 'Contas a receber',
         //         //     'url'     => '#',
@@ -391,7 +376,23 @@ return [
         //             'icon' => 'fas fa-hand-holding-usd'
         //         ],
             ],
-         ],
+        ],
+        [
+            'text'    => 'Configurações',
+            'icon'    => 'fas fa-cog',
+            'submenu' => [
+                [
+                'text' => 'Dados da empresa',
+                'url'  => '/unidades',
+                'icon' => 'fas fa-building'
+                ],
+                [
+                'text' => 'Usuários',
+                'url'  => '/cadastrar_nota',
+                'icon' => 'far fa-user-circle'
+                ],
+            ],  
+        ],
     ],
 
     /*

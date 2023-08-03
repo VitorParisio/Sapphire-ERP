@@ -4,10 +4,10 @@
 
 @section('content_header')
     <div style="display:flex; justify-content:space-between" >
-        <h5 class="m-0 text-dark"><i class="fas fa-play-circle"></i> Unidades</h5>
+        <h5 class="m-0 text-dark"><i class="fas fa-play-circle"></i> Empresas</h5>
         <ol class="breadcrumb float-sm-right" style="font-size: 13px;">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Unidades</li>
+            <li class="breadcrumb-item active">Empresas</li>
         </ol>
     </div>
     <div class="errors"></div>
@@ -19,12 +19,12 @@
                 <ul class="tabheading">
                     <li class="active" rel="tab1" >
                         <a href="#">
-                            <small><i class="fas fa-list fa-x3"></i> Lista de unidades</small>
+                            <small><i class="fas fa-list fa-x3"></i> Lista de empresas</small>
                         </a>
                     </li>
                     <li rel="tab2">
                         <a href="#">
-                            <small><i class="fas fa-plus fa-x3"></i> Nova unidade</small>
+                            <small><i class="fas fa-plus fa-x3"></i> Nova empresa</small>
                         </a> 
                     </li>
                 </ul>
@@ -34,7 +34,7 @@
             <div class="tabcontainer">
                 <div class="tabbody active" id="tab1" style="display: block;">
                     <span id="total_empresas" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
-                    <input class="search_empresa" id="search_empresa" name="search_empresa" type="text" placeholder="Pesquisar unidade" style="outline: none" autocomplete="off">
+                    <input class="search_empresa" id="search_empresa" name="search_empresa" type="text" placeholder="Pesquisar empresa" style="outline: none" autocomplete="off">
                     <hr>
                     <table class="table table-striped lista_empresa_table">
                         <thead>
@@ -376,7 +376,7 @@
             success:function(data)
             {   
                 $('.lista_empresa_table tbody').html(data.output);
-                $('#total_empresas').text('Total de unidades: '+data.total_empresas);
+                $('#total_empresas').text('Total de empresas: '+data.total_empresas);
                  
             }
         });

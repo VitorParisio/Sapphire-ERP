@@ -45,5 +45,15 @@
         <span style="font-size:9px;">Troco (R$): <b>{{number_format($cupom[0]->troco, 2, ',','.')}}</b></span>
         <span style="font-size:11px;">------------------------------------------------------</span>
     </div>
+    <div>
+        <span style="font-size:9px;">{{$cupom[0]->descricao}}</span><br>
+        <span style="font-size:9px;">Operador: {{$cupom[0]->name}}</span>
+        <span style="font-size:11px;">------------------------------------------------------</span>
+    </div>
+    <div style="text-align: center;">
+        <span style="font-size:11px;">A {{$emitente->nome_fantasia}} agradece sua presença.</span>
+        <span style="font-size:11px;">Volte sempre!</span><br>
+        <span style="font-size:11px;">{{date('d/m/Y H:i:s', strtotime($cupom[0]->created_at))}}</span>
+    </div>
 </body>
 </html>

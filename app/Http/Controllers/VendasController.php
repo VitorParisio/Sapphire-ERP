@@ -152,9 +152,9 @@ class VendasController extends Controller
         $cupom = Cupom::join('users', 'users.id', '=', 'cupoms.user_id')
         ->join('numero_caixas', 'numero_caixas.numero', '=', 'cupoms.caixa_id')
         ->join('venda_cupoms', 'venda_cupoms.cupom_id', '=', 'cupoms.id')
-        ->select('numero_caixas.descricao', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento')
+        ->select('users.name', 'numero_caixas.descricao', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento', 'venda_cupoms.created_at')
         ->where('cupoms.id', $cupom_id->id)
-        ->groupBy('numero_caixas.descricao', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento')->get();
+        ->groupBy('users.name','numero_caixas.descricao', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento','venda_cupoms.created_at')->get();
 
         $view = view('vendas.cupom', compact('emitente', 'itens', 'cupom', 'qtd_itens'));
         

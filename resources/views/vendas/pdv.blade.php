@@ -52,8 +52,8 @@
               <input type="text" id="qtd" placeholder="1" style="outline:none; text-align:center; height:41px" autocomplete="off" >
               <button type="submit" style="display: none;"></button>
             </form>
+            <input type="text" class="total_venda" id="total_venda"/>
           </div>
-          <input type="text" class="total_venda" id="total_venda"/>
         </div>
       </div>
       <div class="dados_itens_venda">
