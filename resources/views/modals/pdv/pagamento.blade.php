@@ -14,10 +14,11 @@
               <option value="02">Cheque</option>
               <option value="03">Cartão de Crédito</option>
               <option value="04">Cartão de Débito</option>
+              <option value="05">PIX</option>
             </select>
             <div class="valor_desconto">
               <input type="text" class="form-control" id="valor_recebido" placeholder="A RECEBER" autocomplete="off">
-              <input type="text" class="form-control" id="desconto" placeholder="DESCONTO" autocomplete="off">
+              <input type="text" class="form-control" id="desconto" placeholder="DESCONTO%" autocomplete="off">
             </div>
           </div>
         </div>

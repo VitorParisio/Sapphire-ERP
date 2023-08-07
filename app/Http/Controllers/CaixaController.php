@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Caixa;
 use App\Models\NumeroCaixa;
 use Illuminate\Http\Request;
@@ -58,9 +57,15 @@ class CaixaController extends Controller
 
     function abrirCaixa(Request $request)
     {    
-        $user_id   = Auth::user()->id;
-        $data      = $request->all();
+        $user_auth    = Auth::user()->id;
+        $data         = $request->all();
 
+        $caixa_aberto =  Caixa::where('user_abertura_id', $user_auth)
+        ->first();
+      
+        if ($caixa_aberto != null)
+            return response()->json(['cx_aberto' => 'VOCÊ JÁ POSSUI O CAIXA ' . $caixa_aberto->nro_caixa_id . ' ABERTO.']);
+        
         $validator = Validator::make($data, [
             'valor_abertura_caixa' => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
         ],
@@ -79,15 +84,15 @@ class CaixaController extends Controller
         $valor_abertura_caixa_formatado = str_replace(',', '.', $valor_abertura_caixa_formatado);
 
         NumeroCaixa::where('descricao', $request->numero_caixa)->update([
-            "user_id" => $user_id,
+            "user_id" => $user_auth,
         ]); 
-
+    
         $numero_caixa = NumeroCaixa::select('numero')
         ->where('descricao', $request->numero_caixa)->first();
-     
+    
         Caixa::create([
             "nro_caixa_id"     => $numero_caixa->numero,
-            "user_abertura_id" => $user_id,
+            "user_abertura_id" => $user_auth,
             "data_abertura"    => date('Y:m:d'),
             "horario_abertura" => date('H:i:s'),
             "valor_abertura"   => $valor_abertura_caixa_formatado,
@@ -96,6 +101,7 @@ class CaixaController extends Controller
         ]);  
 
         return response()->json(['message' => 'CAIXA ABERTO!']);
+        
     }
 
     //Modal de informações do caixa aberto

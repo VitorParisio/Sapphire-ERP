@@ -12,6 +12,7 @@
     </div>
 @stop
 @section('content')
+    <div class="errors_aberto_caixa"></div>
     <div class="card card-success">
         <div class="card-header" style="background-color: #2b5a7a;">
             <span class="card-title"></span>
@@ -79,6 +80,14 @@
                 data: data, 
                 success: function(data)
                 {
+                    if (data.cx_aberto)
+                    {
+                        $('#abertura_modal').modal('hide');
+                        $(".errors_aberto_caixa").html(data.cx_aberto).css({'background-color' : 'red', 'padding' : '10px', 'color' : '#FFF', 'font-weight' : 'bold', 'margin-bottom' : '5px'});
+                        
+                        return false;
+                    }
+                     
                     if($.isEmptyObject(data.error)){
                         swal({
                             text: data.message,

@@ -423,7 +423,7 @@ input{
     width: 140px;
     text-align: center;
 }
-* -------------------------------------------- */
+/* -------------------------------------------- */
 
 /* -------------------- ITEM CSS ------------------------ */
 
@@ -532,6 +532,7 @@ input{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
 }
 
 .itens_vendas .table_itens_vendas{
@@ -595,20 +596,11 @@ input{
     text-align: center;
 }
 
-.lista_atalhos{
-    width: 300px;
-    position: absolute;
-    right: 0;
-    bottom: 113px;
-    text-align: center;
-    border-radius: 5px;
-}
-
-.lista_atalhos .lista1{
+.lista_atalhos .lista_teclas{
     display: flex;
 }
 
-.lista_atalhos .lista1 span
+.lista_atalhos .lista_teclas span
 {
     background-color: #183c70;
     color: #FFF;

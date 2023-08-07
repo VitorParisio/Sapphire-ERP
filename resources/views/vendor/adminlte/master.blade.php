@@ -89,9 +89,9 @@
         <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-        <script src="{{asset('js/cash_verify.js')}}"></script>>
+        <script src="{{asset('js/cash_verify.js')}}"></script>
         <script src="{{asset('js/notifications.js')}}"></script>
-        <script src="{{asset('js/events_key.js')}}"></script>>
+        <script src="{{asset('js/events_key.js')}}"></script>
         @stack('scripts')
 
         {{-- Configured Scripts --}}

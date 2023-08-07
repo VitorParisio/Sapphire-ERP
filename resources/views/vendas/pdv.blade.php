@@ -44,7 +44,7 @@
             <tbody></tbody>
           </table>
         </div>
-        <div class="" style="display: flex; align-items:center; margin-top: 400px; justify-content: space-between;">
+        <div class="" style="display: flex; align-items:center; margin-top: 456px; justify-content: space-between; position: absolute;">
           <div class="" style="display: flex;">
             <input type="text" id="cod_barra" placeholder="Código/Produto" style="outline:none; text-align:center" autocomplete="off" >
             <form id="form_cod_barra" action="#">
@@ -73,20 +73,20 @@
           <h3>SUBTOTAL(R$)</h3>
           <input type="text" id="subtotal">
         </div>
+        <div class="lista_atalhos">
+          <div class="lista_teclas">
+            <div>
+              <span><i class="fas fa-sticky-note"></i>&nbspAlt+3 - Abrir cupom</span>
+              <span><i class="fas fa-money-bill-wave"></i>&nbspAlt+ENTER - Pagamento</span>
+            </div>
+            <div>
+              <span><i class="fas fa-list-alt"></i>&nbspAlt+T - Tabela/Produtos</span>
+              <span><i class="fas fa-cash-register"></i>&nbspAlt+F - Fechar caixa</span>
+            </div>
+          </div>
+        </div> 
       </div>
     </div>
-    <div class="lista_atalhos">
-      <div class="lista1">
-        <div>
-          <span><i class="fas fa-sticky-note"></i>&nbspAlt+3 - Abrir cupom</span>
-          <span><i class="fas fa-money-bill-wave"></i>&nbspAlt+ENTER - Pagamento</span>
-        </div>
-        <div>
-          <span><i class="fas fa-list-alt"></i>&nbspAlt+T - Tabela/preços</span>
-          <span><i class="fas fa-cash-register"></i>&nbspAlt+F - Fechar caixa</span>
-        </div>
-      </div>
-    </div> 
     @include('modals.pdv.pagamento')
     <button id="btn_modal_venda" data-toggle="modal" data-target="#pagamento_modal" style="display: none"></button>
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
@@ -121,15 +121,7 @@
         $('#troco').prop( "disabled", true );
         $('#total_pagamento').prop( "disabled", true );
         $('#total_venda').prop( "disabled", true );
-        
-        $('#valor_recebido').focus(function(){
-          $('#valor_recebido').prop( "placeholder", "0,00" );
-        });
 
-        $('#desconto').focus(function(){
-          $('#desconto').prop( "placeholder", "0,00" );
-        });
-        
         $('#valor_recebido').blur(function(){
           if ($('#valor_recebido').val() == '')
             $('#valor_recebido').prop( "placeholder", "A RECEBER" );
@@ -137,11 +129,24 @@
 
         $('#desconto').blur(function(){
           if ($('#desconto').val() == '')
-            $('#desconto').prop( "placeholder", "DESCONTO" );
+            $('#desconto').prop( "placeholder", "DESCONTO%" );
         });
 
         $('#valor_recebido').blur(function(){
           totalPagamento();
+        });
+
+        $('#desconto').blur(function(){
+          totalPagamento();
+        });
+
+
+        $('#valor_recebido').focus(function(){
+          $('#valor_recebido').prop( "placeholder", "0,00" );
+        });
+
+        $('#desconto').focus(function(){
+          $('#desconto').prop( "placeholder", "0,00" );
         });
       });
 

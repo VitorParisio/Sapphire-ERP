@@ -24,7 +24,7 @@ class VendasController extends Controller
         $caixas_fechados = NumeroCaixa::select('user_id')->where('user_id', null)->get();
         $caixas          = Caixa::join('users', 'users.id','=','caixas.user_abertura_id')
         ->where('users.id', $id)->first();
-       
+        
         if (count($caixas_fechados) == 2)
             return response()->json(['message' => 'NENHUM CAIXA ABERTO']);  
         
@@ -80,7 +80,7 @@ class VendasController extends Controller
 
     function finalizaVenda(Request $request){
         $data              = $request->all();
-        $user_id           = $request->user_id;
+
         $numero_caixa      = $request->numero;
         $slc_ult_id_cupom  = Cupom::orderBy('id', 'desc')->limit(1)->first();
         $cupom             = Cupom::get();
@@ -94,7 +94,7 @@ class VendasController extends Controller
         $data['valor_recebido'] = str_replace(',', '.', $valor_recebido_formatado);
         $data['total_venda']    = str_replace(',', '.', $total_venda_formatado);
         $data['troco']          = str_replace(',', '.', $troco_formatado);
-        $data['desconto']       = 0.00;
+        $data['desconto']       = str_replace(',', '.', $desconto_formatado);
 
         $vendido_caixa = Caixa::select('valor_vendido', 'total_caixa')
         ->where('nro_caixa_id', $numero_caixa)->first();

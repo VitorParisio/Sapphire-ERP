@@ -87,6 +87,9 @@ $(function(){
         });
     }); 
 
+    $('#valor_recebido').mask("000.000.000.000.000,00", {reverse: true});
+    $('#desconto').mask("000.000.000.000.000,00", {reverse: true});
+
     getProduto();
 });
 
@@ -146,11 +149,10 @@ function getProduto(data)
 }
 
 function totalPagamento(){
-    var forma_pagamento = $('#forma_pagamento').val();
-    var valor_recebido  = $('#valor_recebido').val().replaceAll(".", "").replaceAll(",", ".");
-    var desconto        = $('#desconto').val().replaceAll(".", "").replaceAll(",", ".");
-    var troco           = 0.00;
-
+    var valor_recebido = $('#valor_recebido').val().replaceAll(".", "").replaceAll(",", ".");;
+    var valor_desconto = $('#desconto').val().replaceAll(".", "").replaceAll(",", ".");;
+    var troco = 0.00;
+   
     $.ajax(
         {
         url: "totalpagamento",
@@ -162,21 +164,22 @@ function totalPagamento(){
                 maximumFractionDigits: 3 
             };
             var formatNumber = new Intl.NumberFormat('pt-BR', options);
-
-            if (forma_pagamento == "Cartão de Crédito" || forma_pagamento == "Cartão de Débito")
-                troco = troco;
-            else 
-                troco = valor_recebido - data;
             
-            if (desconto > 0 && troco > 0){
+            desconto_porcentagem = valor_desconto / 100
+            desconto             = desconto_porcentagem * data;
+            data                 = data - desconto;
+            troco                = valor_recebido - data;
+            
+            if (troco > 0){
                 troco = troco;
-                data  = data - desconto;
-            } 
-
-            troco = troco.toFixed(2);
-            troco = formatNumber.format(troco);
-            data  = formatNumber.format(data);
-
+            }
+            
+            troco          = troco.toFixed(2);
+            data           = data.toFixed(2);
+            
+            troco    = formatNumber.format(troco);
+            data     = formatNumber.format(data);
+            
             if (valor_recebido < 1)
                 $('#troco').prop('placeholder', '0,00');
             else
@@ -242,7 +245,7 @@ function finalizarVenda(){
         $('.table_itens_vendas tbody').html("");
         $('#valor_recebido').val('');
         $('#valor_recebido').prop('placeholder', 'A RECEBER');
-        $('#desconto').prop('placeholder', 'DESCONTO');;
+        $('#desconto').prop('placeholder', 'DESCONTO%');;
         $('#troco').val('');
         $('#total_pagamento').val('');
         $('#descricao').val('');
