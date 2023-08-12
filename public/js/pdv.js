@@ -6,6 +6,17 @@ $(function(){
     });
     
     document.getElementById('cod_barra').focus();
+    $('#cod_barra').on('keyup',function(){
+        var data = $(this).val();
+        getProdutoSearch(data);
+    });
+
+    $(document).on('click', 'li', function(){
+        var item = $(this).text();
+        $('#cod_barra').val(item);
+        document.getElementById('qtd').focus();
+        $('.lista_produtos_input').html("")
+    });
 
     $('.total_venda').val('R$ 0,00');
 
@@ -18,7 +29,6 @@ $(function(){
         
         var user_id   = $('#user_id').val();
         var numero    = $('#numero').val();
-        var id_cupom  = $('#id_cupom').val();
         var cod_barra = $('#cod_barra').val();
         var qtd       = $('#qtd').val();
 
@@ -33,7 +43,6 @@ $(function(){
               {
                 if (data)
                 {
-                    console.log(data)
                     swal("Excedeu o limite do estoque. Desejas continuar a venda?", {
                         buttons: {
                             yes: {
@@ -96,7 +105,7 @@ $(function(){
 function getProduto(data)
 {
     $.ajax({
-        url: "getproduto/"+ data,
+        url: "getproduto/"+data,
         type:'GET',
         success: function(data) {
             var options = { 
@@ -148,10 +157,24 @@ function getProduto(data)
     });
 }
 
+function getProdutoSearch(data = '')
+{
+
+    $.ajax({
+        url: "getprodutosearch/"+data,
+        type:'GET',
+        success: function(data) {
+            $('.lista_produtos_input').html(data);
+        }
+    })
+}
+
 function totalPagamento(){
-    var valor_recebido = $('#valor_recebido').val().replaceAll(".", "").replaceAll(",", ".");;
-    var valor_desconto = $('#desconto').val().replaceAll(".", "").replaceAll(",", ".");;
-    var troco = 0.00;
+    var valor_recebido       = $('#valor_recebido').val().replaceAll(".", "").replaceAll(",", ".");;
+    var valor_desconto       = $('#desconto').val().replaceAll(".", "").replaceAll(",", ".");;
+    var desconto_porcentagem = '';
+    var desconto             = '';
+    var troco                = 0.00;
    
     $.ajax(
         {
@@ -170,21 +193,20 @@ function totalPagamento(){
             data                 = data - desconto;
             troco                = valor_recebido - data;
             
-            if (troco > 0){
-                troco = troco;
-            }
+            troco     = troco.toFixed(2);
+            data      = data.toFixed(2);
+            desconto  = desconto.toFixed(2);
             
-            troco          = troco.toFixed(2);
-            data           = data.toFixed(2);
+            troco     = formatNumber.format(troco);
+            data      = formatNumber.format(data);
+            desconto  = formatNumber.format(desconto);
             
-            troco    = formatNumber.format(troco);
-            data     = formatNumber.format(data);
-            
-            if (valor_recebido < 1)
+            if (valor_recebido == "")
                 $('#troco').prop('placeholder', '0,00');
             else
                 $('#troco').val(troco);
 
+            $('#valor_desconto').val(desconto);    
             $('#total_pagamento').val(data);
         }
     });
@@ -233,7 +255,7 @@ function finalizarVenda(){
     var id_cupom        = $('#id_cupom').val();
     var forma_pagamento = $('#forma_pagamento').val();
     var valor_recebido  = $('#valor_recebido').val();
-    var desconto        = $('#desconto').val();
+    var desconto        = $('#valor_desconto').val();
     var total_venda     = $('#total_pagamento').val();
     var troco           = $('#troco').val();
 
@@ -244,10 +266,12 @@ function finalizarVenda(){
         $('.total_venda').val('R$ 0,00');
         $('.table_itens_vendas tbody').html("");
         $('#valor_recebido').val('');
+        $('#desconto').val('');
         $('#valor_recebido').prop('placeholder', 'A RECEBER');
-        $('#desconto').prop('placeholder', 'DESCONTO%');;
+        $('#desconto').prop('placeholder', 'DESCONTO%');
+        $('#valor_desconto').val('');
         $('#troco').val('');
-        $('#total_pagamento').val('');
+        $('#total_pagamento').val('').prop('placeholder', '0,00');
         $('#descricao').val('');
         $('#qtd_produto').val('');
         $('#valor_unitario').val('');

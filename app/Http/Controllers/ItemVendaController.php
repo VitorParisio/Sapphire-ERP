@@ -7,15 +7,15 @@ use App\Models\Product;
 use App\Models\ItemVenda;
 use App\Models\PDV;
 use App\Models\Cupom;
-use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Facades\Validator;
 
 class ItemVendaController extends Controller
 {
-    function index($produto_id)
+    function index($produto_pdv)
     { 
         $produto = Product::join('item_vendas', 'products.id', '=', 'item_vendas.product_id')
         ->select('products.nome', 'products.preco_venda', 'item_vendas.qtd', 'item_vendas.sub_total','products.descricao')
-        ->where('products.cod_barra', '=', $produto_id)->get();
+        ->where('products.cod_barra', '=', $produto_pdv)->get();
         
         $itens = PDV::join('products', 'products.id', '=', 'p_d_v_s.product_id')
         ->join('item_vendas', 'item_vendas.id', '=', 'p_d_v_s.item_venda_id')
@@ -35,7 +35,9 @@ class ItemVendaController extends Controller
         $slc_ult_id_cupom  = Cupom::orderBy('id', 'desc')->limit(1)->first();
        
         $produto = Product::select('cod_barra', 'nome','id', 'estoque', 'preco_venda')
-        ->where('cod_barra', $cod_barra)->first();
+        ->where('cod_barra', $cod_barra)
+        ->orWhere('nome', $cod_barra)
+        ->first();
         
         $item = PDV::get();
     
@@ -102,6 +104,37 @@ class ItemVendaController extends Controller
         }
     }
 
+    function getProdutoSearch(Request $request, $produto_search = null)
+    {
+        
+        if ($request->ajax())
+        {
+            $produto_nome = Product::select('nome')
+            ->where('nome','LIKE', $produto_search."%")
+            ->get();
+       
+            $output = '';
+           
+            if ($produto_search != null)
+            {
+                $output.='<ul class="list-group" style="display:block; position:relative; z-index:1">';
+                    foreach($produto_nome as $nomes)
+                    {
+                        $output.='<li class="list-group-item item_search">'.$nomes->nome.'</li>';
+                    }
+                $output.='</ul>';
+            }
+            else
+            {
+                $output = "";
+            }
+            
+            return $output;
+        }
+        
+        return view('vendas.pdv');
+    }
+
     function destroy($item_venda_id, $product_id, $qtd)
     {
         $produto = Product::where('id', $product_id)->first();
@@ -116,12 +149,15 @@ class ItemVendaController extends Controller
     function estoqueNegativo(Request $request)
     {
         $cod_barra        = $request->cod_barra;
+        
         $qtd              = $request->qtd > 0 ? $request->qtd : 1;
         $estoque_negativo = false;
        
         $produto = Product::select('cod_barra', 'nome','id', 'estoque', 'preco_venda')
-        ->where('cod_barra', $cod_barra)->first();
-
+        ->where('cod_barra', $cod_barra)
+        ->orWhere('nome', $cod_barra)
+        ->first();
+       
         if ($produto != null){
             if ($produto->estoque < $qtd)
             {

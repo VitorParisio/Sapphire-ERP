@@ -44,15 +44,15 @@
             <tbody></tbody>
           </table>
         </div>
-        <div class="" style="display: flex; align-items:center; margin-top: 456px; justify-content: space-between; position: absolute;">
-          <div class="" style="display: flex;">
+        <div style="display: flex; align-items:center; margin-top: 456px; justify-content: space-between; position: absolute;">
+          <div style="display: flex;">
             <input type="text" id="cod_barra" placeholder="Código/Produto" style="outline:none; text-align:center" autocomplete="off" >
+            <div class="lista_produtos_input"></div>
             <form id="form_cod_barra" action="#">
               @csrf
               <input type="text" id="qtd" placeholder="1" style="outline:none; text-align:center; height:41px" autocomplete="off" >
               <button type="submit" style="display: none;"></button>
             </form>
-            <input type="text" class="total_venda" id="total_venda"/>
           </div>
         </div>
       </div>
@@ -85,6 +85,9 @@
             </div>
           </div>
         </div> 
+        <div>
+          <input type="text" class="total_venda" id="total_venda"/>
+        </div>
       </div>
     </div>
     @include('modals.pdv.pagamento')
@@ -140,13 +143,12 @@
           totalPagamento();
         });
 
-
         $('#valor_recebido').focus(function(){
           $('#valor_recebido').prop( "placeholder", "0,00" );
         });
 
         $('#desconto').focus(function(){
-          $('#desconto').prop( "placeholder", "0,00" );
+          $('#desconto').prop( "placeholder", "%" );
         });
       });
 

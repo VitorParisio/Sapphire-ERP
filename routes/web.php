@@ -68,12 +68,13 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/total_itens', [ProductController::class, 'totalItem'])->name('produtos.total_item');
     Route::get('/notifications', [ProductController::class, 'notifications'])->name('produtos.notifications');
 
-    Route::get('/getproduto/{produto_id}', [ItemVendaController::class, 'index'])->name('item_vendas.get_produto');
+    Route::get('/getproduto/{produto_pdv}', [ItemVendaController::class, 'index'])->name('item_vendas.get_produto');
     Route::post('/addproduto', [ItemVendaController::class, 'store'])->name('item_vendas.add_produto');
     Route::delete('/deletaprodutocod/{item_venda_id}/{product_id}/{qtd}', [ItemVendaController::class, 'destroy'])->name('item_vendas.deletaprotudocod');
     Route::get('/totalpagamento', [ItemVendaController::class, 'totalPagamento'])->name('item_vendas.total_pagamento');
     Route::delete('/deletaprodutos', [ItemVendaController::class, 'removeProdutos'])->name('item_vendas.deleta_produtos');
     Route::get('/estoque_negativo', [ItemVendaController::class, 'estoqueNegativo'])->name('item_vendas.estoque_negativo');
+    Route::get('/getprodutosearch/{produto_search?}', [ItemVendaController::class, 'getProdutoSearch'])->name('item_vendas.get_produto_search');
 
     Route::get('/getprodutonfe/{produto_id}', [ItemVendaNfeController::class, 'index'])->name('item_vendas_nfe.get_produto');
     Route::post('/add_produto_nfe', [ItemVendaNfeController::class, 'store'])->name('item_vendas_nfe.add_produto_nfe');

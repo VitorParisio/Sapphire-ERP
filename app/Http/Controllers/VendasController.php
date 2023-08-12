@@ -140,7 +140,8 @@ class VendasController extends Controller
         
         $emitente = Emitente::first();
         $cupom_id = Cupom::orderBy('id', 'desc')->skip(1)->limit(1)->first();
-        
+        $total    = null;
+
         $itens = ItemVenda::join('products', 'products.id', '=', 'item_vendas.product_id')
         ->join('cupoms', 'cupoms.id', '=', 'item_vendas.cupom_id')
         ->select('products.nome', 'products.preco_venda', 'item_vendas.qtd', 'item_vendas.sub_total')
@@ -156,7 +157,9 @@ class VendasController extends Controller
         ->where('cupoms.id', $cupom_id->id)
         ->groupBy('users.name','numero_caixas.descricao', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento','venda_cupoms.created_at')->get();
 
-        $view = view('vendas.cupom', compact('emitente', 'itens', 'cupom', 'qtd_itens'));
+        $total = $cupom[0]->total_venda + $cupom[0]->desconto;
+
+        $view = view('vendas.cupom', compact('emitente', 'itens', 'cupom', 'qtd_itens', 'total'));
         
         $pdf = PDF::loadHTML($view)->setPaper([0, 0, 807.874, 221.102], 'landscape');
 
