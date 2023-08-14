@@ -44,10 +44,10 @@
             <tbody></tbody>
           </table>
         </div>
-        <div style="display: flex; align-items:center; margin-top: 456px; justify-content: space-between; position: absolute;">
+        <div style="display: flex; align-items:center; margin-top: 438px; justify-content: space-between; position: absolute;">
           <div style="display: flex;">
-            <input type="text" id="cod_barra" placeholder="Código/Produto" style="outline:none; text-align:center" autocomplete="off" >
             <div class="lista_produtos_input"></div>
+            <input type="text" id="cod_barra" placeholder="Código/Produto" style="outline:none; text-align:center" autocomplete="off" >
             <form id="form_cod_barra" action="#">
               @csrf
               <input type="text" id="qtd" placeholder="1" style="outline:none; text-align:center; height:41px" autocomplete="off" >
@@ -76,11 +76,11 @@
         <div class="lista_atalhos">
           <div class="lista_teclas">
             <div>
-              <span><i class="fas fa-sticky-note"></i>&nbspAlt+3 - Abrir cupom</span>
+              <span><i class="fas fa-sticky-note"></i>&nbspAlt+3 - Iniciar venda</span>
               <span><i class="fas fa-money-bill-wave"></i>&nbspAlt+ENTER - Pagamento</span>
             </div>
             <div>
-              <span><i class="fas fa-list-alt"></i>&nbspAlt+T - Tabela/Produtos</span>
+              <span><i class="fas fa-search"></i>&nbspAlt+Q - Buscar produto</span>
               <span><i class="fas fa-cash-register"></i>&nbspAlt+F - Fechar caixa</span>
             </div>
           </div>
@@ -89,9 +89,15 @@
           <input type="text" class="total_venda" id="total_venda"/>
         </div>
       </div>
+      <div>
+        @include('modals.pdv.tabela_produto')
+      </div>
+      <div>
+        @include('modals.pdv.pagamento')
+      </div>
+      <button id="btn_modal_venda" data-toggle="modal" data-target="#pagamento_modal" style="display: none"></button>
+      <button id="btn_modal_tabela_produto" data-toggle="modal" data-target="#tabela_produto_modal" style="display: none"></button>
     </div>
-    @include('modals.pdv.pagamento')
-    <button id="btn_modal_venda" data-toggle="modal" data-target="#pagamento_modal" style="display: none"></button>
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
@@ -104,9 +110,13 @@
 
         document.addEventListener('keydown', (e) => {
             tecla_pressionada[e.key] = true;
-            if (tecla_pressionada['Alt'] && e.key == 'Enter')
-              $( "#btn_modal_venda" ).first().trigger( "click" ); 
             
+            if (tecla_pressionada['Alt'] && e.key == 'Enter')
+              $( "#btn_modal_venda" ).trigger( "click" ); 
+
+            if (tecla_pressionada['Alt'] && e.key == 'q')
+              $( "#btn_modal_tabela_produto" ).trigger( "click" ); 
+             
             if (tecla_pressionada['Alt'] && e.key == '3') 
               document.getElementById('cod_barra').focus();
         });

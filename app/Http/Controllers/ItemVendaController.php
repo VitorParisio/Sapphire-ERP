@@ -27,6 +27,33 @@ class ItemVendaController extends Controller
 
         return response()->json(['produto' => $produto, 'itens' => $itens, 'pdv' => $itens, 'total_venda' => $total_venda]);
     }
+
+    function estoqueNegativo(Request $request)
+    {
+        $cod_barra        = $request->cod_barra;
+        
+        $qtd              = $request->qtd > 0 ? $request->qtd : 1;
+        $estoque_negativo = false;
+       
+        $produto = Product::select('cod_barra', 'nome','id', 'estoque', 'preco_venda')
+        ->where('cod_barra', $cod_barra)
+        ->orWhere('nome', $cod_barra)
+        ->first();
+       
+        if ($produto != null){
+            if ($produto->estoque < $qtd)
+            {
+                $estoque_negativo = true;
+                return response()->json($estoque_negativo);
+            }
+            else{
+                return response()->json($estoque_negativo);
+            }
+        }else{
+            return response()->json(['error' => 'Produto não cadastrado']);
+        }
+
+    }
     
     function store(Request $request)
     {
@@ -105,34 +132,87 @@ class ItemVendaController extends Controller
     }
 
     function getProdutoSearch(Request $request, $produto_search = null)
-    {
-        
-        if ($request->ajax())
-        {
-            $produto_nome = Product::select('nome')
-            ->where('nome','LIKE', $produto_search."%")
-            ->get();
-       
-            $output = '';
-           
-            if ($produto_search != null)
-            {
-                $output.='<ul class="list-group" style="display:block; position:relative; z-index:1">';
-                    foreach($produto_nome as $nomes)
-                    {
-                        $output.='<li class="list-group-item item_search">'.$nomes->nome.'</li>';
-                    }
-                $output.='</ul>';
-            }
-            else
-            {
-                $output = "";
-            }
-            
-            return $output;
-        }
+   {
+      if ($request->ajax())
+      {
+          $produto_nome = Product::select('nome')
+          ->where('nome','LIKE', $produto_search."%")
+          ->limit(1)
+          ->get();
+      
+          $output = '';
+          
+          if ($produto_search != null)
+          {
+              $output.='<ul class="list-group" style="display:block; position:relative;">';
+                  foreach($produto_nome as $nomes)
+                  {
+                      $output.='<li class="list-group-item item_search">'.$nomes->nome.'</li>';
+                  }
+              $output.='</ul>';
+          }
+          else
+          {
+              $output = "";
+          }
+          
+          return $output;
+      }
         
         return view('vendas.pdv');
+    }
+
+    function getProdutoTable(Request $request)
+    {
+        $query              = $request->get('query');
+        $tst                = '';
+        $total_row          = '';
+    
+        if ($request->ajax())
+        {
+          if ($query != '')
+          {
+            $produto = Product::where('nome','LIKE','%'.$query.'%')
+            ->get(); 
+
+          }
+          else
+          {
+            $produto = Product::orderBy('nome', 'ASC')->get();
+            
+          }
+    
+          $total_row   = $produto->count();
+          
+          if ($total_row > 0)
+          {
+            foreach($produto as $row)
+            {
+              $tst .='
+                <tr>
+                  <td>'.$row->id.'</td>
+                  <td class="tst">'.ucfirst($row->nome).'</td>
+                  <td>R$ '.number_format($row->preco_venda, 2, ',', '.').'</td>
+                  <td>'.$row->estoque.'</td>
+                </tr>
+              ';
+            }
+          }
+          else
+          {
+            $tst ='
+              <tr>
+                <td colspan="7" style="font-weight:100; font-size: 19px"><i>Produto não encontrado.</i></td>
+              </tr>
+            ';
+          }
+    
+          $data = array(
+            'tst' => $tst,
+          );
+    
+          return response()->json($data);
+        }
     }
 
     function destroy($item_venda_id, $product_id, $qtd)
@@ -144,33 +224,6 @@ class ItemVendaController extends Controller
 
         $recupera_qtd = $produto->estoque + $qtd;
         $produto->update(['estoque' => $recupera_qtd]); 
-    }
-
-    function estoqueNegativo(Request $request)
-    {
-        $cod_barra        = $request->cod_barra;
-        
-        $qtd              = $request->qtd > 0 ? $request->qtd : 1;
-        $estoque_negativo = false;
-       
-        $produto = Product::select('cod_barra', 'nome','id', 'estoque', 'preco_venda')
-        ->where('cod_barra', $cod_barra)
-        ->orWhere('nome', $cod_barra)
-        ->first();
-       
-        if ($produto != null){
-            if ($produto->estoque < $qtd)
-            {
-                $estoque_negativo = true;
-                return response()->json($estoque_negativo);
-            }
-            else{
-                return response()->json($estoque_negativo);
-            }
-        }else{
-            return response()->json(['error' => 'Produto não cadastrado']);
-        }
-
     }
 
     function totalPagamento()

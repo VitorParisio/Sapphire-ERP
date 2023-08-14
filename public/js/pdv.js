@@ -6,9 +6,15 @@ $(function(){
     });
     
     document.getElementById('cod_barra').focus();
+
     $('#cod_barra').on('keyup',function(){
         var data = $(this).val();
         getProdutoSearch(data);
+    });
+
+    $('.produto_search_tabela').on('keyup',function(){
+        var data = $(this).val();
+        getProdutoTabela(data);
     });
 
     $(document).on('click', 'li', function(){
@@ -16,6 +22,12 @@ $(function(){
         $('#cod_barra').val(item);
         document.getElementById('qtd').focus();
         $('.lista_produtos_input').html("")
+    });
+
+    $(document).on('click', '.tst', function(){
+        var item = $(this).text();
+        $('#cod_barra').val(item);
+        document.getElementById('qtd').focus();
     });
 
     $('.total_venda').val('R$ 0,00');
@@ -43,7 +55,7 @@ $(function(){
               {
                 if (data)
                 {
-                    swal("Excedeu o limite do estoque. Desejas continuar a venda?", {
+                    swal("Excedeu o limite do estoque. Desejas continuar com a venda?", {
                         buttons: {
                             yes: {
                                 text: "Sim",
@@ -59,7 +71,8 @@ $(function(){
                         {
                             $.post('addproduto', {user_id: user_id, numero: numero, cod_barra: cod_barra, qtd: qtd})
                             .done(function(data){
-                                getProduto(cod_barra);
+                                getProduto();
+                                getProdutoTabela();
                                 document.getElementById('cod_barra').focus();    
                             });
                         }
@@ -77,8 +90,9 @@ $(function(){
                 {
                     $.post('addproduto', {user_id: user_id, numero: numero, cod_barra: cod_barra, qtd: qtd})
                     .done(function(data){
-                    
-                        getProduto(cod_barra);
+
+                        getProduto();
+                        getProdutoTabela();
                         document.getElementById('cod_barra').focus();    
                     });
                 }
@@ -97,9 +111,9 @@ $(function(){
     }); 
 
     $('#valor_recebido').mask("000.000.000.000.000,00", {reverse: true});
-    $('#desconto').mask("000.000.000.000.000,00", {reverse: true});
 
     getProduto();
+    getProdutoTabela();
 });
 
 function getProduto(data)
@@ -159,7 +173,6 @@ function getProduto(data)
 
 function getProdutoSearch(data = '')
 {
-
     $.ajax({
         url: "getprodutosearch/"+data,
         type:'GET',
@@ -169,6 +182,19 @@ function getProdutoSearch(data = '')
     })
 }
 
+function getProdutoTabela(query = '')
+{   
+    $.ajax({
+        url:"/getprodutotable",
+        method: 'GET',
+        dataType: 'json',
+        data:{query: query},
+        success:function(data)
+        {   
+            $('.table_produto_list_pdv tbody').html(data.tst);
+        }
+    });
+}
 function totalPagamento(){
     var valor_recebido       = $('#valor_recebido').val().replaceAll(".", "").replaceAll(",", ".");;
     var valor_desconto       = $('#desconto').val().replaceAll(".", "").replaceAll(",", ".");;

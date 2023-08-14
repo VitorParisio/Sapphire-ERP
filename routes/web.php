@@ -75,6 +75,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::delete('/deletaprodutos', [ItemVendaController::class, 'removeProdutos'])->name('item_vendas.deleta_produtos');
     Route::get('/estoque_negativo', [ItemVendaController::class, 'estoqueNegativo'])->name('item_vendas.estoque_negativo');
     Route::get('/getprodutosearch/{produto_search?}', [ItemVendaController::class, 'getProdutoSearch'])->name('item_vendas.get_produto_search');
+    Route::get('/getprodutotable', [ItemVendaController::class, 'getProdutoTable'])->name('item_vendas.get_produto_table');
 
     Route::get('/getprodutonfe/{produto_id}', [ItemVendaNfeController::class, 'index'])->name('item_vendas_nfe.get_produto');
     Route::post('/add_produto_nfe', [ItemVendaNfeController::class, 'store'])->name('item_vendas_nfe.add_produto_nfe');

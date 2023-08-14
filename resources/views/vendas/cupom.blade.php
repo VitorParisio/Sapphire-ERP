@@ -39,7 +39,7 @@
     </div>
     <div>
         <span style="font-size:9px;">Total itens: <b>{{$qtd_itens}}</b></span><br>
-        <span style="font-size:9px;">Total venda: <b>{{number_format($total, 2, ',','.')}}</b></span><br>
+        <span style="font-size:9px;">Total venda (R$): <b>{{number_format($total, 2, ',','.')}}</b></span><br>
         <span style="font-size:9px;">A pagar (R$): <b>{{number_format($cupom[0]->total_venda, 2, ',','.')}}</b></span><br>
         <span style="font-size:9px;">Desconto (R$): <b>{{number_format($cupom[0]->desconto, 2, ',','.')}}</b></span><br>
         <span style="font-size:9px;">Valor pago (R$): <b>{{number_format($cupom[0]->valor_recebido, 2, ',','.')}}</b></span><br>

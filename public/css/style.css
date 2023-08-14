@@ -527,7 +527,7 @@ input{
 .itens_vendas{
     display: flex;
     flex:2;
-    height: 450px;
+    height: 438px;
     box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.4);
     border:none;
     margin-bottom: 5px;
@@ -561,9 +561,27 @@ input{
     background: #008d7f;
     padding: 30px;
     color: #FFF;
-    margin: -14px 0;
+    margin: 22px 0;
     border: none;
     text-align: center; 
+}
+
+.lista_produtos_input {
+    position: absolute;
+    width: 192px;
+    margin-top: 41px;
+}
+
+.lista_produtos_input ul li{
+    cursor: pointer;
+    text-align: center;
+    background-color: lightgray;
+    flex: 0 0 auto;
+}
+
+.lista_produtos_input ul li:hover{
+    background-color: #183c70;
+    color:#FFF;
 }
 
 .pagamento_pdv{
@@ -571,6 +589,12 @@ input{
     flex-direction: column;
     width: 372px;
     margin: 0 auto;
+}
+
+.tabela_produto_pdv input{
+    width: 100%;
+    text-align: center;
+    height: 51px;
 }
 
 .pagamento_pdv div{
