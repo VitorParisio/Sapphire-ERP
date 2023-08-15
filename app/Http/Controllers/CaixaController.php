@@ -15,6 +15,11 @@ class CaixaController extends Controller
         return view('caixas.index'); 
     }
 
+    function opAbreCaixa()
+    {
+        return view('caixas.operador_abre_caixa');
+    }
+
     function getCaixas()
     {   
         $numero_caixas          = NumeroCaixa::get();
@@ -64,7 +69,7 @@ class CaixaController extends Controller
         ->first();
       
         if ($caixa_aberto != null)
-            return response()->json(['cx_aberto' => 'VOCÊ JÁ POSSUI O CAIXA ' . $caixa_aberto->nro_caixa_id . ' ABERTO.']);
+            return response()->json(['cx_aberto' => 'VOCÊ JÁ POSSUI O CAIXA 0' . $caixa_aberto->nro_caixa_id . ' ABERTO.']);
         
         $validator = Validator::make($data, [
             'valor_abertura_caixa' => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',

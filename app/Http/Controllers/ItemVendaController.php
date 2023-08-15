@@ -15,8 +15,10 @@ class ItemVendaController extends Controller
     { 
         $produto = Product::join('item_vendas', 'products.id', '=', 'item_vendas.product_id')
         ->select('products.nome', 'products.preco_venda', 'item_vendas.qtd', 'item_vendas.sub_total','products.descricao')
-        ->where('products.cod_barra', '=', $produto_pdv)->get();
-        
+        ->where('products.cod_barra', '=', $produto_pdv)
+        ->orWhere('products.nome', '=', $produto_pdv)
+        ->get();
+       
         $itens = PDV::join('products', 'products.id', '=', 'p_d_v_s.product_id')
         ->join('item_vendas', 'item_vendas.id', '=', 'p_d_v_s.item_venda_id')
         ->select('products.nome', 'products.preco_venda', 'products.img', 'item_vendas.id AS item_venda_id', 'item_vendas.product_id', 'item_vendas.qtd', 'item_vendas.sub_total')
@@ -132,7 +134,7 @@ class ItemVendaController extends Controller
     }
 
     function getProdutoSearch(Request $request, $produto_search = null)
-   {
+    {
       if ($request->ajax())
       {
           $produto_nome = Product::select('nome')
@@ -165,7 +167,7 @@ class ItemVendaController extends Controller
     function getProdutoTable(Request $request)
     {
         $query              = $request->get('query');
-        $tst                = '';
+        $produto_nome_busca = '';
         $total_row          = '';
     
         if ($request->ajax())
@@ -188,10 +190,10 @@ class ItemVendaController extends Controller
           {
             foreach($produto as $row)
             {
-              $tst .='
+              $produto_nome_busca .='
                 <tr>
                   <td>'.$row->id.'</td>
-                  <td class="tst">'.ucfirst($row->nome).'</td>
+                  <td class="produto_nome_busca"><a href="javascript:void(0)">'.ucfirst($row->nome).'</a></td>
                   <td>R$ '.number_format($row->preco_venda, 2, ',', '.').'</td>
                   <td>'.$row->estoque.'</td>
                 </tr>
@@ -200,7 +202,7 @@ class ItemVendaController extends Controller
           }
           else
           {
-            $tst ='
+            $produto_nome_busca ='
               <tr>
                 <td colspan="7" style="font-weight:100; font-size: 19px"><i>Produto não encontrado.</i></td>
               </tr>
@@ -208,7 +210,7 @@ class ItemVendaController extends Controller
           }
     
           $data = array(
-            'tst' => $tst,
+            'produto_nome_busca' => $produto_nome_busca,
           );
     
           return response()->json($data);

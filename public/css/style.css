@@ -505,11 +505,12 @@ input{
 .letreiro{
     width:100%; 
     height:47px; 
-    font-size:32px; 
+    font-size:40px; 
     text-align:center; 
     margin-bottom:20px;
     border:none;
     background-color: #eceff1;
+    box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.5);
 }
 
 .letreiro::placeholder{
@@ -552,6 +553,10 @@ input{
 
 .table_itens_vendas tbody {
    background-color: #FFF;
+}
+
+.table_produto_list_pdv tbody tr td{
+    padding: 10px;
 }
 
 .total_venda {

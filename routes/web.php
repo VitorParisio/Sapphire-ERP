@@ -88,6 +88,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/get_caixas', [CaixaController::class, 'getCaixas'])->name('get_caixas.caixa');
     Route::post('/abertura_caixa', [CaixaController::class, 'abrirCaixa'])->name('abrir_caixa.caixa');
     Route::get('/get_caixa_aberto/{id}', [CaixaController::class, 'getCaixaAberto'])->name('get_caixa_aberto.caixa');
+    Route::get('/op_abre_caixa', [CaixaController::class, 'opAbreCaixa'])->name('op_abre_caixa.caixa');
     
     Route::get('/vender', [VendasController::class, 'index'])->name('vender.vendas');
     Route::get('/cash_verify/{id}', [VendasController::class, 'cashVerify'])->name('vender.vendas');

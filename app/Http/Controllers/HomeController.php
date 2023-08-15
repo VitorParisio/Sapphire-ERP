@@ -30,7 +30,7 @@ class HomeController extends Controller
             return view('home');
         }
 
-        return redirect('/clientes');
+        return redirect('op_abre_caixa');
         
     }
 }

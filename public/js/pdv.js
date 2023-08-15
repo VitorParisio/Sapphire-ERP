@@ -24,10 +24,15 @@ $(function(){
         $('.lista_produtos_input').html("")
     });
 
-    $(document).on('click', '.tst', function(){
+    $(document).on('click', '.produto_nome_busca', function(){
         var item = $(this).text();
         $('#cod_barra').val(item);
+        $('.produto_search_tabela').val("");
+        $('.modal').hide();
+        $('.modal-backdrop').hide();
         document.getElementById('qtd').focus();
+        getProdutoTabela();
+       
     });
 
     $('.total_venda').val('R$ 0,00');
@@ -71,7 +76,7 @@ $(function(){
                         {
                             $.post('addproduto', {user_id: user_id, numero: numero, cod_barra: cod_barra, qtd: qtd})
                             .done(function(data){
-                                getProduto();
+                                getProduto(cod_barra);
                                 getProdutoTabela();
                                 document.getElementById('cod_barra').focus();    
                             });
@@ -91,7 +96,7 @@ $(function(){
                     $.post('addproduto', {user_id: user_id, numero: numero, cod_barra: cod_barra, qtd: qtd})
                     .done(function(data){
 
-                        getProduto();
+                        getProduto(cod_barra);
                         getProdutoTabela();
                         document.getElementById('cod_barra').focus();    
                     });
@@ -119,7 +124,7 @@ $(function(){
 function getProduto(data)
 {
     $.ajax({
-        url: "getproduto/"+data,
+        url: "getproduto/"+ data,
         type:'GET',
         success: function(data) {
             var options = { 
@@ -132,15 +137,16 @@ function getProduto(data)
             var formatNumber = new Intl.NumberFormat('pt-BR', options);
             var produto      = data.produto;
             var pdv          = data.pdv;
+
             var total_venda  = formatNumber.format(data.total_venda);
 
             $('tbody').html("");
             $('.total_venda').val();
-
+            
             $.each(produto, function(index, data){
                 var valor_unitario = formatNumber.format(data.preco_venda);
                 var subtotal       = formatNumber.format(data.sub_total);
-
+              
                 $('#letreiro').val(data.nome).css({'letter-spacing' : '5px', 'font-weight' : 'bold', 'text-transform': 'uppercase', 'color' : 'grey'});
                 $('#descricao').val(data.descricao);
                 $('#qtd_produto').val(data.qtd);
@@ -191,7 +197,7 @@ function getProdutoTabela(query = '')
         data:{query: query},
         success:function(data)
         {   
-            $('.table_produto_list_pdv tbody').html(data.tst);
+            $('.table_produto_list_pdv tbody').html(data.produto_nome_busca);
         }
     });
 }
@@ -258,7 +264,8 @@ function deletaProdutoCod(item_venda_id, product_id, qtd)
             $('#subtotal').val('')
             document.getElementById('cod_barra').focus();
 
-            getProduto(cod_barra);
+            getProduto();
+            getProdutoTabela();
         }
     });
 }

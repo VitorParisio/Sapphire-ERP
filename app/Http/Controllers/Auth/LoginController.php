@@ -31,11 +31,9 @@ class LoginController extends Controller
     protected function authenticated()
     {
         if (Auth::user()->role_as == 2 || Auth::user()->role_as == 1)
-        {
             return redirect('dashboard');
-        }
         else
-            return redirect('clientes');
+            return redirect('op_abre_caixa');
     }
     /**
      * Create a new controller instance.
