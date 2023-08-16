@@ -26,6 +26,7 @@ a{
     cursor: pointer;
 }
 
+
 .dropdown-item:hover{
     background-color: rgb(170, 170, 170);
 }
