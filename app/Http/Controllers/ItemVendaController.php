@@ -239,5 +239,5 @@ class ItemVendaController extends Controller
     function removeProdutos()
     {
         PDV::truncate();
-    }
+    }    
 }

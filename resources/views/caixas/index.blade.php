@@ -48,27 +48,6 @@
             
         });
 
-        $(document).on('click', '.caixa_aberto_link', function(){
-            $('#caixa_aberto_modal').modal('show');
-
-            var id_user_caixa_aberto = $('.id_user_caixa_aberto').text();
-           
-            $.ajax({
-                url:'/get_caixa_aberto/'+id_user_caixa_aberto,
-                method: 'GET',
-                dataType: 'json',
-                success:function(data)
-                {     
-                    $('.aberto_caixa_dados div .usuario_abertura').text(data.usuario_nome);
-                    $('.aberto_caixa_dados div .data_abertura').text(data.data_caixa_aberto);
-                    $('.aberto_caixa_dados div .horario_abertura').text(data.horario_abertura);
-                    $('.aberto_caixa_dados div .valor_abertura').text(data.valor_abertura);
-                    $('.aberto_caixa_dados div .total_caixa').text(data.total_caixa);
-            
-                }
-            });  
-        });
-
         $(document).on('click', '.abre_caixa', function(){
             var data = {
                         "numero_caixa"         : $('.numero_caixa').val(),
@@ -103,6 +82,28 @@
                 }
             });
         });
+
+        $(document).on('click', '.caixa_aberto_link', function(){
+            $('#caixa_aberto_modal').modal('show');
+
+            var id_user_caixa_aberto = $('.id_user_caixa_aberto').text();
+           
+            $.ajax({
+                url:'/get_caixa_aberto/'+id_user_caixa_aberto,
+                method: 'GET',
+                dataType: 'json',
+                success:function(data)
+                {     
+                    $('.aberto_caixa_dados div .usuario_abertura').text(data.usuario_nome);
+                    $('.aberto_caixa_dados div .data_abertura').text(data.data_caixa_aberto);
+                    $('.aberto_caixa_dados div .horario_abertura').text(data.horario_abertura);
+                    $('.aberto_caixa_dados div .valor_abertura').text(data.valor_abertura);
+                    $('.aberto_caixa_dados div .total_caixa').text(data.total_caixa);
+            
+                }
+            });  
+        });
+
 
         $('.close').click(function(){
             $(".errors_abertura_caixa").html("");

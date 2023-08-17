@@ -42,6 +42,11 @@ class VendasController extends Controller
         ->select('users.name', 'numero_caixas.user_id', 'numero_caixas.numero','numero_caixas.descricao')
         ->first();
 
+        if ($dados_caixa == null)
+        {
+            return redirect()->back();
+        }
+
         $cupom             = new Cupom();
         $slc_ult_id_cupom  = Cupom::orderBy('id', 'desc')->limit(1)->first();
         $count_qtd_id      = 0;

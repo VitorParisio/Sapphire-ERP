@@ -17,11 +17,9 @@
 
 @section('body')
     <div class="{{ $auth_type ?? 'login' }}-box">
-
         {{-- Logo --}}
         <div class="{{ $auth_type ?? 'login' }}-logo">
             <a href="{{ $dashboard_url }}">
-
                 {{-- Logo Image --}}
                 @if (config('adminlte.auth_logo.enabled', false))
                     <img src="{{ asset(config('adminlte.auth_logo.img.path')) }}"
