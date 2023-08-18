@@ -537,6 +537,7 @@ input{
     flex-direction: column;
     margin-right: 15px;
     position: relative;
+    background-color: #FFF;
 }
 
 .itens_vendas .table_itens_vendas{

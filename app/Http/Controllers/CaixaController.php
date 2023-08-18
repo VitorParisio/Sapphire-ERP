@@ -17,10 +17,17 @@ class CaixaController extends Controller
 
     function opAbreCaixa()
     {
+        $user_auth    = Auth::user()->id;
+        $caixa_aberto =  Caixa::where('user_abertura_id', $user_auth)
+        ->first();
+
+        if ($caixa_aberto != null)
+            return redirect('/pdv');
+
         $caixas = NumeroCaixa::select('descricao')
         ->where('user_id', null)
         ->get();
-        
+
         $caixa_count = $caixas->count();
        
         if ($caixa_count == 0)
@@ -130,7 +137,7 @@ class CaixaController extends Controller
         ->first();
       
         if ($caixa_aberto != null)
-            return response()->json(['cx_aberto' => 'VOCÊ JÁ POSSUI O CAIXA 0' . $caixa_aberto->nro_caixa_id . ' ABERTO.']);
+            return redirect('/pdv');
         
         $validator = Validator::make($data, [
             'valor_abertura_caixa' => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
@@ -164,10 +171,7 @@ class CaixaController extends Controller
             "valor_abertura"   => $valor_abertura_caixa_formatado,
             "total_caixa"      => $valor_abertura_caixa_formatado,
             "status"           => 1
-        ]);  
-
-        return response()->json(['message' => 'CAIXA ABERTO!']);
-        
+        ]);    
     }
 
     //Modal de informações do caixa aberto

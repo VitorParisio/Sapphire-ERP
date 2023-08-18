@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="{{ asset('vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <link rel="stylesheet" href="css/style.css">
     <title>PDV - SapphireRP</title>
+
+    <style>
+      body:{
+        background-color: gainsboro;
+      }
+    </style>
   </head>
   <body>
     <div style="display:flex; background:#183c70; color:#FFF;">

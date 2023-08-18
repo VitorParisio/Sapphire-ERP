@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Abrir Caixa - SapphireRP</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
@@ -32,7 +33,7 @@
                 </select>
                 <br>
                 <label for="valor_fundo" style="font-size: 22px; color:#fff">Valor do fundo(R$):</label>
-                <input type="text" class="valor_abertura_caixa" style="height:30px; border:none; outline:none; text-align:center;"/>
+                <input type="text" id="valor_fundo" class="valor_abertura_caixa" style="height:30px; border:none; outline:none; text-align:center;"/>
             </div>
         </div>
         <div style="height: auto; width: 300px; font-size: 30px; background: teal; color: #FFF; font-weight: bold; border: none; padding: 10px; margin: 10px auto; text-align:center;">
@@ -44,31 +45,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script>
         $(function(){
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                
+                $('#user_name_op').prop( "disabled", true );
+                $('.valor_abertura_caixa').mask("000.000.000.000.000,00", {reverse: true});
+
+                $(document).on('click', '.abre_caixa', function(){
+                  
+                var data = {
+                            "numero_caixa"         : $('#numero_caixa').val(),
+                            "valor_abertura_caixa" : $('.valor_abertura_caixa').val()
+                        };
+                $.ajax({
+                    type: 'POST',
+                    url: '/abertura_caixa_op',
+                    data: data, 
+                    success: function(data)
+                    {
+                        window.location.href = "/pdv";
+                    }
+                });
             });
-
-            $('#user_name_op').prop( "disabled", true );
-            $('.valor_abertura_caixa').mask("000.000.000.000.000,00", {reverse: true});
-
-            $(document).on('click', '.abre_caixa', function(){
-            var data = {
-                        "numero_caixa"         : $('.numero_caixa').val(),
-                        "valor_abertura_caixa" : $('.valor_abertura_caixa').val()
-                       };
-            $.ajax({
-                type: 'POST',
-                url: '/abertura_caixa_op',
-                data: data, 
-                success: function(data)
-                {
-                    console.log(tst)
-                }
-            });
-        });
-
         })
     </script>
 </body>
