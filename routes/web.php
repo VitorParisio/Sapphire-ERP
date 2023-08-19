@@ -90,6 +90,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('/abertura_caixa_op', [CaixaController::class, 'abrirCaixaOp'])->name('abrir_caixa_op.caixa');
     Route::get('/get_caixa_aberto/{id}', [CaixaController::class, 'getCaixaAberto'])->name('get_caixa_aberto.caixa');
     Route::get('/op_abre_caixa', [CaixaController::class, 'opAbreCaixa'])->name('op_abre_caixa.caixa');
+    Route::get('/fechamento_caixa', [CaixaController::class, 'fechaCaixa'])->name('fechamento_caixa.caixa');
     
     Route::get('/vender', [VendasController::class, 'index'])->name('vender.vendas');
     Route::get('/cash_verify/{id}', [VendasController::class, 'cashVerify'])->name('vender.vendas');

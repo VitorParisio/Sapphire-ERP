@@ -122,6 +122,28 @@
 
             if (tecla_pressionada['Alt'] && e.key == 'q')
               $( "#btn_modal_tabela_produto" ).trigger( "click" ); 
+
+            if (tecla_pressionada['Alt'] && e.key == 'r')
+            {
+              swal("Tens certeza que desejas fechar o caixa?", {
+                buttons: {
+                    yes: {
+                        text: "Sim",
+                        value: "yes"
+                    },
+                    no: {
+                        text: "Não",
+                        value: "no"
+                    },
+                    
+                },
+                icon:"warning" 
+                }).then((value) => {
+                  if (value === "yes") {
+                    window.location.href = "/fechamento_caixa";
+                  }
+                })
+            }
              
             if (tecla_pressionada['Alt'] && e.key == '3') 
               document.getElementById('cod_barra').focus();

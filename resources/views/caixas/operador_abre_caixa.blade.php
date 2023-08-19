@@ -45,21 +45,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script>
         $(function(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                
-                $('#user_name_op').prop( "disabled", true );
-                $('.valor_abertura_caixa').mask("000.000.000.000.000,00", {reverse: true});
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            
+            $('#user_name_op').prop( "disabled", true );
+            $('.valor_abertura_caixa').mask("000.000.000.000.000,00", {reverse: true});
 
-                $(document).on('click', '.abre_caixa', function(){
-                  
+            $(document).on('click', '.abre_caixa', function(){
+                
                 var data = {
-                            "numero_caixa"         : $('#numero_caixa').val(),
-                            "valor_abertura_caixa" : $('.valor_abertura_caixa').val()
-                        };
+                        "numero_caixa"         : $('#numero_caixa').val(),
+                        "valor_abertura_caixa" : $('.valor_abertura_caixa').val()
+                    };
                 $.ajax({
                     type: 'POST',
                     url: '/abertura_caixa_op',

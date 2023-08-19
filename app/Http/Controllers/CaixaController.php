@@ -15,30 +15,6 @@ class CaixaController extends Controller
         return view('caixas.index'); 
     }
 
-    function opAbreCaixa()
-    {
-        $user_auth    = Auth::user()->id;
-        $caixa_aberto =  Caixa::where('user_abertura_id', $user_auth)
-        ->first();
-
-        if ($caixa_aberto != null)
-            return redirect('/pdv');
-
-        $caixas = NumeroCaixa::select('descricao')
-        ->where('user_id', null)
-        ->get();
-
-        $caixa_count = $caixas->count();
-       
-        if ($caixa_count == 0)
-        {
-            Auth::logout();
-            return redirect()->back()->with('error', 'Nenhum caixa disponível no momento.');
-        }
-            
-        return view('caixas.operador_abre_caixa', compact('caixas'));
-    }
-
     function getCaixas()
     {   
         $numero_caixas          = NumeroCaixa::get();
@@ -74,6 +50,56 @@ class CaixaController extends Controller
             'total_caixa_disponivel' => $total_caixa_disponivel
         );
         
+        return response()->json($data);
+    }
+
+    function opAbreCaixa()
+    {
+        $user_auth    = Auth::user()->id;
+        $caixa_aberto = Caixa::where('user_abertura_id', $user_auth)
+        ->first();
+
+        if ($caixa_aberto != null)
+            return redirect('/pdv');
+
+        $caixas = NumeroCaixa::select('descricao')
+        ->where('user_id', null)
+        ->get();
+
+        $caixa_count = $caixas->count();
+       
+        if ($caixa_count == 0)
+        {
+            Auth::logout();
+            return redirect()->back()->with('error', 'Nenhum caixa disponível no momento.');
+        }
+            
+        return view('caixas.operador_abre_caixa', compact('caixas'));
+    }
+
+    //Modal de informações do caixa aberto
+
+    function getCaixaAberto($id)
+    {
+        $caixa_aberto_query = Caixa::join('users', 'users.id', '=', 'caixas.user_abertura_id')
+        ->where('caixas.user_abertura_id', $id)
+        ->first();
+        
+        $user_nome         = $caixa_aberto_query->name;
+        $data_caixa_aberto = date("d/m/Y", strtotime($caixa_aberto_query->data_abertura));
+        $horario_abertura  = $caixa_aberto_query->horario_abertura;
+        $valor_abertura    = number_format($caixa_aberto_query->valor_abertura,2,",",".");
+        $total_caixa       = number_format($caixa_aberto_query->total_caixa,2,",",".");
+    
+
+        $data = array(
+            'usuario_nome'      => $user_nome,
+            'data_caixa_aberto' => $data_caixa_aberto, 
+            'horario_abertura'  => $horario_abertura, 
+            'valor_abertura'    => $valor_abertura,
+            'total_caixa'       => $total_caixa
+        );
+
         return response()->json($data);
     }
 
@@ -174,29 +200,10 @@ class CaixaController extends Controller
         ]);    
     }
 
-    //Modal de informações do caixa aberto
-
-    function getCaixaAberto($id)
+    function fechaCaixa()
     {
-        $caixa_aberto_query = Caixa::join('users', 'users.id', '=', 'caixas.user_abertura_id')
-        ->where('caixas.user_abertura_id', $id)
-        ->first();
+        return view('caixas.fechamento_caixa');
         
-        $user_nome         = $caixa_aberto_query->name;
-        $data_caixa_aberto = date("d/m/Y", strtotime($caixa_aberto_query->data_abertura));
-        $horario_abertura  = $caixa_aberto_query->horario_abertura;
-        $valor_abertura    = number_format($caixa_aberto_query->valor_abertura,2,",",".");
-        $total_caixa       = number_format($caixa_aberto_query->total_caixa,2,",",".");
-    
-
-        $data = array(
-            'usuario_nome'      => $user_nome,
-            'data_caixa_aberto' => $data_caixa_aberto, 
-            'horario_abertura'  => $horario_abertura, 
-            'valor_abertura'    => $valor_abertura,
-            'total_caixa'       => $total_caixa
-        );
-
-        return response()->json($data);
     }
+
 }
