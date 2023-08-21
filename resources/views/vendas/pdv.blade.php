@@ -13,14 +13,8 @@
     <link rel="stylesheet" href="{{ asset('vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <link rel="stylesheet" href="css/style.css">
     <title>PDV - SapphireRP</title>
-
-    <style>
-      body:{
-        background-color: gainsboro;
-      }
-    </style>
   </head>
-  <body>
+  <body style="background:linear-gradient(45deg, black, transparent);">
     <div style="display:flex; background:#183c70; color:#FFF;">
       <div class="operador" style="border-right: 1px solid #FFF;padding-right: 15px;padding-left: 12px">
         <span><b>Operador:</b>&nbsp<i>{{$dados_caixa->name}}</i></span>
@@ -31,6 +25,7 @@
       <input type="hidden" id="user_id" value="{{$dados_caixa->user_id}}">
       <input type="hidden" id="numero" value="{{$dados_caixa->numero}}">
       <input type="hidden" id="id_cupom" value="{{$id_cupom}}">
+      <input type="hidden" id="caixa_id_pdv" value="{{$dados_caixa->caixa_id_pdv}}">
     </div>
     <input type="text" class="letreiro" id="letreiro" placeholder="CAIXA LIVRE" autocomplete="off" style="font-style:italic">
     <div class="pdv">
@@ -51,7 +46,7 @@
           </table>
         </div>
         <div style="display: flex; align-items:center; margin-top: 438px; justify-content: space-between; position: absolute;">
-          <div style="display: flex;">
+          <div style="display: flex; margin-top:10px;">
             <div class="lista_produtos_input"></div>
             <input type="text" id="cod_barra" placeholder="Código/Produto" style="outline:none; text-align:center" autocomplete="off" >
             <form id="form_cod_barra" action="#">
@@ -125,7 +120,7 @@
 
             if (tecla_pressionada['Alt'] && e.key == 'r')
             {
-              swal("Tens certeza que desejas fechar o caixa?", {
+              swal("Tem certeza que deseja fechar o caixa?", {
                 buttons: {
                     yes: {
                         text: "Sim",

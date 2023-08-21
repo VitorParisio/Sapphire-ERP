@@ -39,7 +39,7 @@ class VendasController extends Controller
         $user_id_auth = Auth::user()->id;
         $dados_caixa = NumeroCaixa::join('users', 'users.id', '=', 'numero_caixas.user_id')
         ->where('numero_caixas.user_id', $user_id_auth)
-        ->select('users.name', 'numero_caixas.user_id', 'numero_caixas.numero','numero_caixas.descricao')
+        ->select('users.name','numero_caixas.id AS caixa_id_pdv', 'numero_caixas.user_id', 'numero_caixas.numero','numero_caixas.descricao')
         ->first();
 
         if ($dados_caixa == null)
@@ -96,6 +96,7 @@ class VendasController extends Controller
         $troco_formatado          = str_replace('.', '', $request->troco);
         
         $data['cupom_id']       = $slc_ult_id_cupom->id;
+        $data['caixa_id']       = $request->caixa_id_pdv;
         $data['valor_recebido'] = str_replace(',', '.', $valor_recebido_formatado);
         $data['total_venda']    = str_replace(',', '.', $total_venda_formatado);
         $data['troco']          = str_replace(',', '.', $troco_formatado);

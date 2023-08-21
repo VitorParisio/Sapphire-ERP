@@ -16,8 +16,9 @@ class CreateContaFechamentosTable extends Migration
         Schema::create('conta_fechamentos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('venda_cupom_id');
+            $table->string('forma_pagamento_fechamento')->nullable();
             $table->decimal('total_caixa_conta_fechamento', 10,2)->default(0.00);
-           
+            $table->decimal('total_caixa_informado', 10,2)->default(0.00);
         });
     }
 

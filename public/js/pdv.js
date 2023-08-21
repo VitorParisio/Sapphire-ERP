@@ -284,6 +284,7 @@ function removeProdutos(){
 function finalizarVenda(){
 
     var user_id         = $('#user_id').val();
+    var caixa_id_pdv    = $('#caixa_id_pdv').val();
     var numero          = $('#numero').val();
     var id_cupom        = $('#id_cupom').val();
     var forma_pagamento = $('#forma_pagamento').val();
@@ -292,7 +293,7 @@ function finalizarVenda(){
     var total_venda     = $('#total_pagamento').val();
     var troco           = $('#troco').val();
 
-    $.post('finalizavenda', {user_id: user_id, numero: numero, id_cupom: id_cupom, total_venda: total_venda, valor_recebido: valor_recebido, forma_pagamento: forma_pagamento, desconto : desconto, troco : troco}, function(data){
+    $.post('finalizavenda', {user_id: user_id, caixa_id_pdv:caixa_id_pdv, numero: numero, id_cupom: id_cupom, total_venda: total_venda, valor_recebido: valor_recebido, forma_pagamento: forma_pagamento, desconto : desconto, troco : troco}, function(data){
         removeProdutos();
         $('.modal').hide();
         $('.modal-backdrop').hide();

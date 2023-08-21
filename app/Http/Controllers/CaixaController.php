@@ -202,7 +202,65 @@ class CaixaController extends Controller
 
     function fechaCaixa()
     {
-        return view('caixas.fechamento_caixa');
+        $user_auth_id = Auth::user()->id;
+        $data = [];
+
+        $caixa_info = NumeroCaixa::join('caixas', 'numero_caixas.id', '=', 'caixas.nro_caixa_id')
+        ->join('venda_cupoms', 'numero_caixas.id', '=', 'venda_cupoms.caixa_id')
+        ->select('venda_cupoms.id AS venda_cupom_id','numero_caixas.descricao', 'caixas.valor_abertura', 'caixas.valor_vendido', 'caixas.sangria', 'caixas.suplemento', 'caixas.total_caixa')
+        ->where('caixas.user_abertura_id', $user_auth_id)
+        ->where('caixas.status', '=', 1)
+        ->first();
+        
+        $conta_fechamentos = NumeroCaixa::join('venda_cupoms', 'numero_caixas.id', '=', 'venda_cupoms.caixa_id')
+        ->join('caixas', 'numero_caixas.id', '=', 'caixas.nro_caixa_id')
+        ->selectRaw('venda_cupoms.forma_pagamento, SUM(venda_cupoms.total_venda) as total_venda_fechamento')
+        ->where('numero_caixas.user_id', $user_auth_id)
+        ->where('caixas.status', '=', 1)
+        ->groupBy('venda_cupoms.forma_pagamento')
+        ->get();
+
+
+        foreach($conta_fechamentos as $conta_fechamento)
+        {
+            array_push($data, $conta_fechamento->forma_pagamento); 
+        }
+
+        for($i = 0; $i < count($data); $i++)
+        {
+           if($data[$i] == 01)
+            $data[$i] = "Dinheiro";
+            if($data[$i] == 02)
+            $data[$i] = "Cheque";
+            if($data[$i] == 03)
+            $data[$i] = "Carttão de Crédito";
+            if($data[$i] == 04)
+            $data[$i] = "Carttão de Débito";
+            if($data[$i] == 05)
+            $data[$i] = "PIX";
+        }
+
+    //    foreach($data as $key => $tst)
+    //    {
+    //        if ($key == 0)
+    //        {
+           
+    //          $data[$key] = "Dinheiro";
+           
+    //        }
+    //         if ($key == 1)
+    //        {
+    //         $data[$key] = "Cheque";
+    //        }
+    //        if ($key == 1)
+    //        {
+    //         $data[$key] = "Cheque";
+    //        }
+           
+          
+    //    }
+    //    print_r($data);
+        return view('caixas.fechamento_caixa', compact('caixa_info', 'conta_fechamentos', 'data'));
         
     }
 

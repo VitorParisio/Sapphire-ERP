@@ -34,6 +34,11 @@ Route::get('/funcionario', function () {
     return view('login.index');
 });
 
+
+Route::fallback(function(){
+    return redirect()->back();
+});
+
 Route::group(['middleware' => 'auth'], function (){
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -109,5 +114,10 @@ Route::group(['middleware' => 'auth'], function (){
     //Route::get('email_nfe', [NfeController::class, 'emailNfe'])->name('email.nfe');
     Route::get('itens_nota_nfe/{id}', [NfeController::class, 'itensNotaNfe'])->name('itens_nota.nfe');
     Route::get('status_sefaz', [NfeController::class, 'statusSefaz'])->name('status.sefaz');
+
+
+    Route::fallback(function(){
+        return redirect()->back();
+    });
  });
 
