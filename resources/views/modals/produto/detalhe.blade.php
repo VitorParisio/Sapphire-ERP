@@ -8,13 +8,14 @@
         </button>
       </div>
       <div class="modal-body">
-        
+        <div sytle="display:flex; align-items:center; justify-content:center;">
+          <span class="img_detalhe"></span> 
+          <span class="produto_detalhe"></span>
+        </div>
+        <hr>
         <div class="detalhes_produto">
-          <div sytle="display:flex; flex-direction:column; justify-content:center; border:1px solid">
-            <span class="produto_detalhe"></span>
-            <span class="img_detalhe"></span> 
-          </div>
           <div class="dados_detalhe">
+            <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px;"><i class="fas fa-info-circle"></i> Informações básicas</h4>
             <div style="display:flex; justify-content: space-between">
               <div>
                 <label for="id_detalhe">ID:</label>
@@ -37,12 +38,22 @@
             </div>
             <div style="display:flex; justify-content: space-between">
               <div>
-                <label for="estoque_detalhe">Estoque:</label>
+                <label for="preco_minimo_detalhe">Preço mínimo:</label>
+                <span class="preco_minimo_detalhe"></span>
+              </div>
+               <div>
+                <label for="descricao_detalhe" style="text-align:right">Descrição:</label> 
+                <span class="descricao_detalhe"></span>
+              </div>
+            </div>
+            <div style="display:flex; justify-content: space-between">
+              <div>
+                <label for="estoque_detalhe">Estoque atual:</label>
                 <span class="estoque_detalhe"></span>
               </div>
               <div>
-                <label for="descricao_detalhe" style="text-align:right">Descrição:</label> 
-                <span class="descricao_detalhe"></span>
+                <label for="estoque_minimo" style="text-align:right">Estoque mínimo:</label>
+                <span class="estoque_minimo"></span>
               </div>
             </div>
             <div style="display:flex; justify-content: space-between">
@@ -53,6 +64,37 @@
               <div>
                 <label for="validade_detalhe" style="text-align:right">Validade:</label> 
                 <span class="validade_detalhe"></span>
+              </div>
+            </div>
+            <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px;"><i class="fas fa-file-invoice-dollar"></i> Dados fiscais</h4>
+            <div style="display:flex; justify-content: space-between">
+              <div>
+                <label for="ncm">NCM:</label>
+                <span class="ncm"></span>
+              </div>
+              <div>
+                <label for="cest" style="text-align:right">CEST:</label> 
+                <span class="cest"></span>
+              </div>
+            </div>
+            <div style="display:flex; justify-content: space-between">
+              <div>
+                <label for="extipi">IPI:</label>
+                <span class="extipi"></span>
+              </div>
+              <div>
+                <label for="cfop" style="text-align:right">CFOP:</label> 
+                <span class="cfop"></span>
+              </div>
+            </div>
+            <div style="display:flex; justify-content: space-between">
+              <div>
+                <label for="origem">Origem</label>
+                <span class="origem"></span>
+              </div>
+              <div>
+                <label for="situacao_tributaria" style="text-align:right">Situação Tributária:</label> 
+                <span class="situacao_tributaria"></span>
               </div>
             </div>
           </div>

@@ -192,7 +192,7 @@ class NfeController extends Controller
             $item         = ItemVendaNfe::join('products', 'products.id', '=', 'item_venda_nves.product_id')
             ->where('item_venda_nves.nfe_id', $id)->get();
            
-            $venda        = Venda::where('nfe_id', $id)->select('forma_pagamento', 'valor_recebido', 'troco')->first();
+            $venda = Venda::where('nfe_id', $id)->select('forma_pagamento', 'valor_recebido', 'troco')->first();
            
             $config = [
                 "atualizacao" => date('Y-m-d h:i:s'), // Data e hora de atualização
@@ -315,18 +315,18 @@ class NfeController extends Controller
                 $stdProd           = new stdClass();
                 $stdProd->item     = $itens;
                 $stdProd->cProd    = $lisItem->id;
-                $stdProd->cEAN     = "SEM GTIN";
+                $stdProd->cEAN     = $lisItem->cod_barra == '' ? 'SEM GETIN' : $lisItem->cod_barra;
                 $stdProd->xProd    = $lisItem->nome;
                 $stdProd->NCM      = $lisItem->ncm;
                 //$stdProd->cBenef = 'ab222222';
                 $stdProd->EXTIPI   = $lisItem->extipi;
                 $stdProd->CFOP     = $lisItem->cfop; //Vendas de produção própria ou de terceiros
-                $stdProd->uCom     = $lisItem->ucom;
+                $stdProd->uCom     = $lisItem->ucom; //Unidade produto
                 $stdProd->qCom     = $lisItem->qtd;
                 $stdProd->vUnCom   = $lisItem->preco_venda;
                 $stdProd->vProd    = $lisItem->sub_total;
-                $stdProd->cEANTrib = "SEM GTIN"; //'6361425485451';
-                $stdProd->uTrib    = $lisItem->utrib;
+                $stdProd->cEANTrib = $lisItem->ceantrib == '' ? 'SEM GETIN' : $lisItem->ceantrib; //'6361425485451';
+                $stdProd->uTrib    = $lisItem->utrib; //Unidade produto tributável
                 $stdProd->qTrib    = $lisItem->qtd;
                 $stdProd->vUnTrib  = $lisItem->vuntrib;
                 $stdProd->indTot   = $lisItem->indTot;
@@ -442,9 +442,9 @@ class NfeController extends Controller
 
             $stdinfoResTec = new stdClass();
             $stdinfoResTec->CNPJ     = '07637528000115'; //CNPJ da pessoa jurídica responsável pelo sistema utilizado na emissão do documento fiscal eletrônico
-            $stdinfoResTec->xContato = 'Smartnet'; //Nome da pessoa a ser contatada
-            $stdinfoResTec->email    = 'smartlojanet@gmail.com'; //E-mail da pessoa jurídica a ser contatada
-            $stdinfoResTec->fone     = '8130101411'; //Telefone da pessoa jurídica/física a ser contatada
+            $stdinfoResTec->xContato = 'AC Softwares'; //Nome da pessoa a ser contatada
+            $stdinfoResTec->email    = 'acsoftwares@gmail.com'; //E-mail da pessoa jurídica a ser contatada
+            $stdinfoResTec->fone     = '81997130580'; //Telefone da pessoa jurídica/física a ser contatada
             // $stdinfoResTec->CSRT = 'G8063VRTNDMO886SFNK5LDUDEI24XJ22YIPO'; //Código de Segurança do Responsável Técnico
             // $stdinfoResTec->idCSRT = '01'; //Identificador do CSRT
 

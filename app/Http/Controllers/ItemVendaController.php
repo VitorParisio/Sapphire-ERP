@@ -72,13 +72,15 @@ class ItemVendaController extends Controller
     
         foreach($item as $data)
         {   
+          
             if ($produto->id == $data->product_id)
             {
                 $itens = ItemVenda::where('id', $data->item_venda_id)->first();
+              
                 $itens->qtd       += $qtd;
                 $itens->sub_total  = $produto->preco_venda * $itens->qtd;
 
-                $itens->where('product_id', $produto->id)->update(['qtd' => $itens->qtd, 'sub_total' => $itens->sub_total]);
+                $itens->where('id', $data->item_venda_id)->update(['qtd' => $itens->qtd, 'sub_total' => $itens->sub_total]);
                 
                 $estoque_atualizado = $produto->estoque - $qtd;
                 $produto->estoque   = $estoque_atualizado;
@@ -93,6 +95,7 @@ class ItemVendaController extends Controller
         {
             $item_venda             = new ItemVenda();
             $item_venda->product_id = $produto->id;
+            $item_venda->caixa_id   = $request->caixa_id_pdv;
             $item_venda->cupom_id   = $slc_ult_id_cupom->id;
             $item_venda->qtd        = $qtd;
             $item_venda->sub_total  = $produto->preco_venda * $qtd;
@@ -115,6 +118,7 @@ class ItemVendaController extends Controller
         {
             $item_venda             = new ItemVenda();
             $item_venda->product_id = $produto->id;
+            $item_venda->caixa_id   = $request->caixa_id_pdv;
             $item_venda->cupom_id   = $slc_ult_id_cupom->id;
             $item_venda->qtd        = $qtd;
             $item_venda->sub_total  = $produto->preco_venda * $qtd;

@@ -26,10 +26,94 @@ a{
     cursor: pointer;
 }
 
+/* ---------------------------------- PRELOADERS ------------------------------------- */
+#preloader_full{
+    display: none;
+    position: absolute;
+    height:100vh;
+    width: 100%;
+    overflow: none;
+    z-index: 1000;
+    background-color: rgba(0,0,0,.6);
+    text-align: center;
+}
+
+#preloader_full > img{
+    margin: 290px auto;
+    position: relative;
+    height: 100px;
+}
+
+#preloader_itens_vendas{
+    display: none;
+    background-color: rgba(0,0,0,.6);
+    z-index: 100;
+    width: 100%;
+    height: 383px;
+    position: absolute;
+    text-align: center;
+}
+
+#preloader_itens_vendas > img{
+    margin: 170px;
+    height: 43px;
+}
+
+#preloader_troco,
+#preloader_total_pagamento{
+    background-color: rgba(0,0,0,.6);
+    z-index: 100;
+    width: 100%;
+    height: 383px;
+    position: absolute;
+    margin-top: -100px;
+    height: 100px;
+}
+
+#preloader_troco > img{
+    margin: 35px -35px;
+    position: absolute;
+    height: 37px;
+}
+
+#preloader_total_pagamento > img{
+    margin: -107px -100px;
+    position: absolute;
+    height: 324px;
+}
+
+#preloader_suprimento{
+    display: none;
+    background-color: rgba(0,0,0,.6);
+    width: 547px;
+    height: 283px;
+    position: absolute;
+}
+
+#preloader_suprimento > img{
+    margin: 135px 228px;
+    position: absolute;
+    height: 41px;
+}
+
+#preloader_sangria{
+    display: none;
+    background-color: rgba(0,0,0,.6);
+    width: 547px;
+    height: 288px;
+    position: absolute;
+}
+
+#preloader_sangria > img{
+    margin: 135px 228px;
+    position: absolute;
+    height: 41px;
+}
 
 .dropdown-item:hover{
     background-color: rgb(170, 170, 170);
 }
+
 /* -------------------- NFe CSS ------------------------ */
 .tb_notas_fiscais,
 .list_produto_add {
@@ -252,27 +336,25 @@ input{
     display: flex;
 }
 
-.detalhes_produto > div:nth-child(1){
+/* .detalhes_produto > div:nth-child(1){
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     text-align:center;
     border-right: 1px solid rgba(0,0,0,0.2);
     margin-right: 15px;
-}
+} */
 
 
-.detalhes_produto > :nth-child(1) .img_detalhe > img{
-    width: 165px !important;
-    height: 205px !important;
-    margin-top: 35px;
+.img_detalhe > img{
+    width: 95px !important;
+    height: 66px !important;
 }
 
 .detalhes_produto > div:nth-child(1) > span:nth-child(1)
 {
     font-size: 22px;
 }
-
 
 .editar_produto .img_editar > img {
     width: 165px !important;
@@ -295,18 +377,13 @@ input{
 .detalhes_produto > .dados_detalhe div{
     margin: 2px 0;
 }
-
-.detalhes_produto > .dados_detalhe > .produto_detalhe {
-    font-size: 40px;
+.produto_detalhe {
     font-weight: bold;
-    font-family: cursive;
-    display: flex;
-    justify-content: center;
 }
 
 .detalhes_produto > .dados_detalhe  .cod_barra_detalhe,
 .detalhes_produto > .dados_detalhe  .preco_venda_detalhe,
-.detalhes_produto > .dados_detalhe  .descricao_detalhe {
+.detalhes_produto > .dados_detalhe  .estoque_minimo, .descricao_detalhe {
     text-align: right;
     float: right;
     width: 150px;
@@ -412,7 +489,8 @@ input{
 .preco_custo_detalhe, .preco_venda_detalhe, 
 .estoque_detalhe, .descricao_detalhe,
 .unidade_detalhe, .validade_detalhe,
-.id_detalhe, .cod_barra_detalhe {
+.id_detalhe, .cod_barra_detalhe, .estoque_minimo,
+.preco_minimo_detalhe, .ncm, .cest, .extipi, .origem, .situacao_tributaria, .cfop {
     font-size: 15px;
     font-weight: bold;
 }
@@ -453,10 +531,7 @@ input{
 /* -------------------- VENDAS CSS ------------------------ */
 
 .dados_itens_venda{
-    height:363px;
-    background-color: #FFF;
-    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.4);
-    width: 287px;
+    width: 400px;
     text-align:center;
     margin-right: 5px;
 }
@@ -468,8 +543,10 @@ input{
     width:100%;
 }
 
-.dados_itens_venda div{
-    margin-bottom: 25px;
+.dados_itens_venda .lista_atalhos{
+      background: #183c70;
+      width: 400px;
+      margin-top: 16px;
 }
 
 .dados_itens_venda h3{
@@ -481,8 +558,14 @@ input{
 }
 
 .dados_itens_venda input{
-    height:35px;
-    font-size:20px;
+    width: 340px;
+    height: 46px;
+    font-size: 35px;
+    margin-bottom: 10px;
+    background-color: darkgray;
+    border: none;
+    color:#FFF;
+    font-weight: bold;
 }
 
 .table_itens_vendas {
@@ -522,7 +605,7 @@ input{
     color: grey;
 }
 
-#descricao, #qtd_produto, 
+#qtd_produto, 
 #valor_unitario, #subtotal{
     text-align:center;
 }
@@ -530,15 +613,14 @@ input{
 .itens_vendas{
     display: flex;
     flex:2;
-    height: 438px;
     box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.4);
     border:none;
     margin-bottom: 5px;
-    display: flex;
     flex-direction: column;
     margin-right: 15px;
     position: relative;
     background-color: #FFF;
+    height: 317px;
 }
 
 .itens_vendas .table_itens_vendas{
@@ -565,18 +647,15 @@ input{
 .total_venda {
     font-size: 33px !important;
     font-weight: bold;
-    width: 100% !important;
     background: #008d7f;
-    padding: 30px;
     color: #FFF;
-    margin: 22px 0;
     border: none;
-    text-align: center; 
+    text-align: center;
 }
 
 .lista_produtos_input {
     position: absolute;
-    width: 192px;
+    width: 325px;
     margin-top: 41px;
 }
 
@@ -631,17 +710,26 @@ input{
     text-align: center;
 }
 
+.lista_atalhos{
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    background: #183c70;
+}
+
 .lista_atalhos .lista_teclas{
+    text-align: center;
     display: flex;
+    justify-content: space-around;
 }
 
 .lista_atalhos .lista_teclas span
 {
     background-color: #183c70;
     color: #FFF;
-    font-size: 10px;
+    font-size: 13px;
     padding: 10px;
-    width: 145px;
+    width: 100%;
     display: block;
 }
 
@@ -702,6 +790,11 @@ input{
     border-bottom: 0;
 }
 
+.tabheading li.active a {
+    color: #FFF;
+}
+
+
 .tabheading li {
     display: inline-block;
     border: 1px solid #f5f5f5;
@@ -715,7 +808,7 @@ input{
 
 .tabheading li a { 
     padding: 0 2%; 
-    color:#FFF;
+    color:dimgray;
 }
 
 .tabbody.active {
@@ -730,3 +823,4 @@ input{
 
 /* -------------------------------------------- */
 
+/* ========================= Responsividades(Mobile)  ========================= */

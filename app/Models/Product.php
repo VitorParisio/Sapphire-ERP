@@ -13,7 +13,7 @@ class Product extends Model
 
     protected $table = 'products';
     
-    public $fillable = ['category_id', 'nome', 'preco_compra', 'preco_venda', 'preco_minimo', 'estoque_minimo', 'validade', 'estoque', 'cod_barra', 'img', 'qtd_compra' ,'descricao', 'cfop', 'ncm', 'extipi', 'ceantrib', 'utrib', 'qtrib', 'indtot', 'icms_orig', 'icms_csosn', 'pis_cst', 'pis_qbcprod', 'pis_valiqprod', 'cofins_cst', 'cofins_qbcprod', 'cofins_valiqprod', 'vpis', 'vcofins', 'pcredsN', 'vcredicmssn', 'vuntrib', 'ucom'];
+    public $fillable = ['category_id', 'nome', 'preco_compra', 'preco_venda', 'preco_minimo', 'estoque_minimo', 'validade', 'estoque', 'cod_barra', 'img', 'qtd_compra' ,'descricao', 'cfop', 'ncm', 'cest', 'extipi', 'ceantrib', 'utrib', 'qtrib', 'indtot', 'icms', 'icms_orig', 'icms_csosn', 'pis_cst', 'pis_qbcprod', 'pis_valiqprod', 'cofins_cst', 'cofins_qbcprod', 'cofins_valiqprod', 'vpis', 'vcofins', 'pcredsN', 'vcredicmssn', 'vuntrib', 'ucom'];
 
 
     public function categoria(){

@@ -24,6 +24,14 @@
                         R$ <span class="valor_abertura"></span>
                     </div>
                     <div>
+                        <label for="suprimento">Suprimento:</label>
+                        R$ <span class="suprimento"></span>
+                    </div>
+                    <div>
+                        <label for="sangria">Retirada (sangria):</label>
+                        R$ <span class="sangria"></span>
+                    </div>
+                    <div>
                         <label for="total_caixa">Valor de fundo atual:</label>
                         R$ <span class="total_caixa"></span> 
                     </div>
@@ -33,13 +41,13 @@
           <hr>
           <div class="modal-footer" style="justify-content: flex-start">
             <div class="bg-primary" style="padding:10px">
-                <i class="fas fa-plus-square"></i>&nbsp<a href="http://">Suprimento</a>
+                <a href="javascript:void(0)" class="suprimento_master"><i class="fas fa-plus-square"></i>&nbspSuprimento</a>
             </div>
             <div class="bg-danger" style="padding:10px">
-                <i class="fas fa-minus-square"></i>&nbsp<a href="http://">Sangria</a>
+                <a href="javascript:void(0)" class="sangria_master"><i class="fas fa-minus-square"></i>&nbspSangria</a>
             </div>
             <div class="bg-secondary" style="padding:10px">
-                <i class="fas fa-cash-register"></i>&nbsp<a href="http://">Fechar caixa</a>
+                <i class="fas fa-lock"></i>&nbsp<a href="http://">Fechar caixa</a>
             </div>
           </div>
       </div>

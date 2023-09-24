@@ -10,6 +10,7 @@ class ContaFechamento extends Model
     use HasFactory;
 
     protected $table   = 'conta_fechamentos';
-    public $fillable   = ['venda_cupom_id', 'forma_pagamento_fechamento', 'total_caixa_conta_fechamento', 'total_caixa_informado'];
+    public $fillable   = ['caixa_id', 'forma_pagamento_fechamento', 'total_caixa_conta_fechamento', 'total_caixa_informado', 'diferenca_pagamento_fechamento'];
     public $timestamps = false;
+
 }

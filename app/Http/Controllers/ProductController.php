@@ -46,21 +46,39 @@ class ProductController extends Controller
       {
         foreach($produto as $row)
         {
-          $img_prod = $row->img ? '<img src="storage/'.$row->img.'" alt="img_item" style="width:55px; height:30px; border-radius:30px;"/>' : '<i class="fas fa-print fa-lg"></i>';
+          $img_prod       = $row->img ? '<img src="storage/'.$row->img.'" alt="img_item" style="width:55px; height:30px;"/>' : '<img src="img/sem_imagem.jpg" alt="img_item" style="width:55px; height:30px;"/>';
+          $cod_barra      = $row->cod_barra == null ? "Não informado" : $row->cod_barra;
+          $estoque_minimo = $row->estoque_minimo == null ? "Não informado" : $row->estoque_minimo;
+          $descricao      = $row->descricao == null ? "Não informado" : $row->descricao;
+          $validade       = $row->validade == null ? "Não informado" : $row->validade;
+          $ncm            = $row->ncm == null ? "Não informado" : $row->ncm;
+          $cest           = $row->cest == null ? "Não informado" : $row->cest;
+          $extipi         = $row->extipi == null ? "Não informado" : $row->extipi; 
+          $cfop           = $row->cfop == null ? "Não informado" : $row->cfop; 
+
           $output .='
             <tr>
               <td>'.$img_prod.'</td>
               <td>'.$row->id.'</td>
+              <td>'.ucfirst($row->categoria).'</td>
               <td>'.ucfirst($row->nome).'</td>
-              <td>R$ '.number_format($row->preco_compra, 2, ',', '.').'</td>
               <td>R$ '.number_format($row->preco_venda, 2, ',', '.').'</td>
               <td>'.$row->estoque.'</td>
-              <td style="display:none;">'.$row->descricao.'</td>
-              <td style="display:none;">'.$row->unidade.'</td>
-              <td style="display:none;">'.$row->validade.'</td>
-              <td style="display:none;">'.$row->cod_barra.'</td>
+              <td style="display:none;">'.$descricao.'</td>
+              <td style="display:none;">'.$row->ucom.'</td>
+              <td style="display:none;">'.$validade.'</td>
+              <td style="display:none;">'.$cod_barra.'</td>
               <td style="display:none;">'.$row->category_id.'</td>
               <td style="display:none;">'.$row->categoria.'</td>
+              <td style="display:none;">'.$estoque_minimo.'</td>
+              <td style="display:none;">R$ '.number_format($row->preco_compra, 2, ',', '.').'</td>
+              <td style="display:none;">R$ '.number_format($row->preco_minimo, 2, ',', '.').'</td>
+              <td style="display:none;">'.$ncm.'</td>
+              <td style="display:none;">'.$cest.'</td>
+              <td style="display:none;">'.$extipi.'</td>
+              <td style="display:none;">'.$cfop.'</td>
+              <td style="display:none;">0 - Nacional</td>
+              <td style="display:none;">102 - Simples Nacional sem permissão de crédito</td>
               <td><a href="#" class="dtls_btn"><i class="fas fa-eye fa-sm" title="Detalhes do produto"></i></a></td>
               <td><a href="#" class="edt_btn" style="color: gray;"><i class="fas fa-edit fa-sm" title="Editar produto"></i></a></td>
               <td><a href="#" class="del_btn" style="color: red;"><i class="fas fa-times-circle fa-sm" title="Deletar produto"></i></a></td>
@@ -96,32 +114,26 @@ class ProductController extends Controller
     $validator = Validator::make($data, [
       'category_id'    => 'required|numeric|not_in:0|',
       'cod_barra'      => 'nullable|numeric|unique:products,cod_barra',
-      'ceantrib'       => 'nullable|numeric|unique:products,ceantrib',
-      'ncm'            => 'required|numeric|min:8',
+      'ncm'            => 'nullable|numeric|min:8',
+      'cest'           => 'nullable|numeric|min:7',
       'nome'           => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]+$/|min:2|max:100|unique:products,nome',
-      'preco_compra'   => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+      'preco_compra'   => 'nullable|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
       'preco_venda'    => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
-      'vuntrib'        => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
-      'preco_minimo'   => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
+      'preco_minimo'   => 'nullable|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
       'estoque'        => 'required|numeric',
-      'qtrib'          => 'required|numeric',
       'ucom'           => 'required|regex:/^[a-z A-Z]+$/',
-      'utrib'          => 'required|regex:/^[a-z A-Z]+$/',
       'validade'       => 'date|nullable',
       'extipi'         => 'nullable|numeric',
-      'estoque_minimo' => 'required|numeric',
+      'estoque_minimo' => 'nullable|numeric',
       'descricao'      => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]*$/',
       'img'            => 'image|max:2048|mimes:jpg,jpeg,png'
     ],
     [
-      'category_id.required'   => 'Campo "Categoria" deve ser preenchido".',
+      'category_id.required'   => 'Campo "Categoria" deve ser preenchido.',
       'category_id.numeric'    => 'Selecione uma categoria existente.',
       'category_id.not_in'     => 'Campo "Categoria" deve ser preenchido".',
-      'cod_barra.numeric'      => 'Digitar apenas números no campo "EAN".',
-      'cod_barra.unique'       => 'EAN já cadastrado.',
-      'ceantrib.numeric'       => 'Digitar apenas números no campo "EAN Unid. Tributável".',
-      'ceantrib.unique'        => 'EAN Unid. Tributável já cadastrado.',
-      'ncm.required'           => 'Campo "NCM" deve ser preenchido.',
+      'cod_barra.numeric'      => 'Digitar apenas números no campo "EAN (Código Barra)".',
+      'cod_barra.unique'       => 'EAN (Código Barra) já cadastrado.',
       'ncm.numeric'            => 'Digitar apenas números no campo "NCM".',
       'ncm.min'                => 'Necessário 8 dígitos no campo "NCM".',
       'ncm.max'                => 'Necessário 8 dígitos no campo "NCM".',
@@ -130,26 +142,17 @@ class ProductController extends Controller
       'nome.max'               => 'Excedeu o limite de 100 caracteres.',
       'nome.min'               => 'Poucos dígitos no campo "Produto".',
       'nome.regex'             => 'Digitar apenas letras no campo "Produto".',
-      'preco_compra.required'  => 'Campo "Valor custo" deve ser preenchido"',
-      'preco_compra.regex'     => 'Valor incorreto no campo "Valor custo."',
-      'preco_venda.required'   => 'Campo "Valor venda" deve ser preenchido".',
-      'preco_venda.regex'      => 'Valor incorreto no campo "Valor venda".',
-      'vuntrib.required'       => 'Campo "Valor Unid. Tributável" deve ser preenchido".',
-      'vuntrib.regex'          => 'Valor incorreto no campo "Valor Unid. Tributável".',
-      'preco_minimo.required'  => 'Campo "Valor Unid. Tributável" deve ser preenchido".',
-      'preco_minimo.regex'     => 'Valor incorreto no campo "Valor Unid. Tributável".',
-      'estoque.required'       => 'Campo "Qtd. Comercial" deve ser preenchido."',
-      'estoque.numeric'        => 'Digitar apenas números no campo "Qtd. Comercial".',
-      'qtrib.required'         => 'Campo "Qtd. Tributável" deve ser preenchido."',
-      'qtrib.numeric'          => 'Digitar apenas números no campo "Qtd. Tributável".',
+      'preco_compra.regex'     => 'Valor incorreto no campo "Preço custo".',
+      'preco_venda.required'   => 'Campo "Preço venda" deve ser preenchido".',
+      'preco_venda.regex'      => 'Valor incorreto no campo "Preço venda".',
+      'preco_minimo.regex'     => 'Valor incorreto no campo "Preço mínimo".',
+      'estoque.required'       => 'Campo "Estoque atual" deve ser preenchido."',
+      'estoque.numeric'        => 'Digitar apenas números no campo "Estoque atual".',
       'ucom.required'          => 'Campo "Unid. Comercial" deve ser preenchido."',
       'ucom.regex'             => 'Digitar apenas letras no campo "Unid. Comercial".',
-      'utrib.required'         => 'Campo "Unid. Tributável" deve ser preenchido."',
-      'utrib.regex'            => 'Digitar apenas letras no campo "Unid. Tributável".',
       'validade.date'          => 'Data inválida.',
       'img.max'                => 'Tamanho máximo de 2MB (2048KB).',
       'extipi.numeric'         => 'Digitar apenas números no campo "EXT IPI".',
-      'estoque_minimo.required'=> 'Campo "Estoque Mínimo" deve ser preenchido.',
       'estoque_minimo.numeric' => 'Digitar apenas números no campo "Estoque Mínimo".',
       'descricao'              => 'Digitar apenas letras e/ou números no campo "Descrição".',
       'img.mimes'              => 'Campo "Imagem" aceita apenas as extensões .jpg, .jpeg e .png',
@@ -161,15 +164,30 @@ class ProductController extends Controller
         ]);
     }
 
-    $preco_compra_formatado = str_replace('.', '', $request->preco_compra);
+    if ($data['preco_compra'] == null)
+    {
+      $data['preco_compra'] = 0.00;
+    } else
+    {
+      $preco_compra_formatado = str_replace('.', '', $request->preco_compra);
+      $data['preco_compra']   = str_replace(',', '.', $preco_compra_formatado);
+    }
+
+    if ($data['preco_minimo'] == null)
+    {
+      $data['preco_minimo'] = 0.00;
+    } else
+    {
+      $preco_minimo_formatado = str_replace('.', '', $request->preco_minimo);
+      $data['preco_minimo']   = str_replace(',', '.', $preco_minimo_formatado);
+    }
+
+   
     $preco_venda_formatado  = str_replace('.', '', $request->preco_venda);
     $vuntrib_formatado      = str_replace('.', '', $request->vuntrib);
-    $preco_minimo_formatado = str_replace('.', '', $request->preco_minimo);
-
-    $data['preco_compra'] = str_replace(',', '.', $preco_compra_formatado);
+    
     $data['preco_venda']  = str_replace(',', '.', $preco_venda_formatado);
     $data['vuntrib']      = str_replace(',', '.', $vuntrib_formatado);
-    $data['preco_minimo'] = str_replace(',', '.', $preco_minimo_formatado);
     $data['qtd_compra']   = $request->estoque;
     
     if ($request->img != null)
@@ -200,7 +218,7 @@ class ProductController extends Controller
       'category_id'    => 'required|numeric|not_in:0|',
       'cod_barra'      => 'nullable|numeric|unique:products,cod_barra'.$produto->id,
       'ceantrib'       => 'nullable|numeric|unique:products,ceantrib'.$produto->id,
-      'ncm'            => 'required|numeric|min:8',
+      'ncm'            => 'numeric|min:8',
       'nome'           => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]+$/|min:2|max:100|unique:products,nome'.$produto->id,
       'preco_compra'   => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
       'preco_venda'    => 'required|regex:/^\d{1,3}(\.\d{3})*,\d{2}$/',
@@ -212,7 +230,7 @@ class ProductController extends Controller
       'utrib'          => 'required|regex:/^[a-z A-Z]+$/',
       'validade'       => 'date|nullable',
       'extipi'         => 'nullable|numeric',
-      'estoque_minimo' => 'required|numeric',
+      'estoque_minimo' => 'numeric',
       'descricao'      => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]*$/',
       'img'            => 'image|max:2048|mimes:jpg,jpeg,png'
     ],
@@ -224,7 +242,6 @@ class ProductController extends Controller
       'cod_barra.unique'       => 'EAN já cadastrado.',
       'ceantrib.numeric'       => 'Digitar apenas números no campo "EAN Unid. Tributável".',
       'ceantrib.unique'        => 'EAN Unid. Tributável já cadastrado.',
-      'ncm.required'           => 'Campo "NCM" deve ser preenchido.',
       'ncm.numeric'            => 'Digitar apenas números no campo "NCM".',
       'ncm.min'                => 'Necessário 8 dígitos no campo "NCM".',
       'ncm.max'                => 'Necessário 8 dígitos no campo "NCM".',
@@ -252,7 +269,6 @@ class ProductController extends Controller
       'validade.date'          => 'Data inválida.',
       'img.max'                => 'Tamanho máximo de 2MB (2048KB).',
       'extipi.numeric'         => 'Digitar apenas números no campo "EXT IPI".',
-      'estoque_minimo.required'=> 'Campo "Estoque Mínimo" deve ser preenchido.',
       'estoque_minimo.numeric' => 'Digitar apenas números no campo "Estoque Mínimo".',
       'descricao'              => 'Digitar apenas letras e/ou números no campo "Descrição".',
       'img.mimes'              => 'Campo "Imagem" aceita apenas as extensões .jpg, .jpeg e .png',
@@ -276,6 +292,7 @@ class ProductController extends Controller
     $produto->preco_venda  = str_replace(',', '.', $preco_venda_formatado);
     $produto->vuntrib      = str_replace(',', '.', $vuntrib_formatado);
     $produto->preco_minimo = str_replace(',', '.', $preco_minimo_formatado);
+    
     $produto->estoque      = $request->input('estoque');
     $produto->descricao    = $request->input('descricao');
     $produto->category_id  = $request->input('category_id');

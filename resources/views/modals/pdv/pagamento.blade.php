@@ -25,17 +25,18 @@
         </div>
         <div class="modal-footer">
           <div class="result_pagamento">
-            <label for="troco">
+            <label for="troco" style="position: relative">
                 <h2>TROCO(R$)</h2> 
                 <input type="text" id="troco" autocomplete="off">
+                <div id="preloader_troco"><img src="{{asset('img/preloader.gif')}}" alt="preloader..."></div>
             </label>
-            <label for="total_pagamento">
+            <label for="total_pagamento" style="position: relative">
                 <h2>TOTAL(R$)</h2>
                 <input type="text" id="total_pagamento" autocomplete="off">
             </label>
           </div>
           <div class="btn_finalizar_venda">
-            <button type="button" class="btn btn-primary" onclick="finalizarVenda()">Finalizar venda</button>
+            <button type="button" class="btn btn-primary" id="disabled_btn_finaliza_venda" onclick="finalizarVenda()">Finalizar venda</button>
           </div>
         </div>
       </div>

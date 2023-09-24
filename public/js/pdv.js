@@ -7,7 +7,7 @@ $(function(){
     
     document.getElementById('cod_barra').focus();
 
-    $('#cod_barra').on('keyup',function(){
+    $('#cod_barra').on('keyup', function(){
         var data = $(this).val();
         getProdutoSearch(data);
     });
@@ -32,7 +32,6 @@ $(function(){
         $('.modal-backdrop').hide();
         document.getElementById('qtd').focus();
         getProdutoTabela();
-       
     });
 
     $('.total_venda').val('R$ 0,00');
@@ -44,18 +43,23 @@ $(function(){
     $('#form_cod_barra').submit(function(e){
         e.preventDefault();
         
-        var user_id   = $('#user_id').val();
-        var numero    = $('#numero').val();
-        var cod_barra = $('#cod_barra').val();
-        var qtd       = $('#qtd').val();
+        var user_id      = $('#user_id').val();
+        var numero       = $('#numero').val();
+        var cod_barra    = $('#cod_barra').val();
+        var caixa_id_pdv = $('#caixa_id_pdv').val();
+        var qtd          = $('#qtd').val();
 
         $.ajax({
             url: '/estoque_negativo',
             method: 'GET',
             data: {cod_barra: cod_barra, qtd: qtd},
             dataType: 'JSON',
+            beforeSend: () =>{
+                $("#preloader_itens_vendas").css({'display' : 'block'});
+            },
             success:function(data)
             {
+              
               if (!data.error)
               {
                 if (data)
@@ -74,8 +78,9 @@ $(function(){
                     }).then((value) => {
                         if (value === "yes") 
                         {
-                            $.post('addproduto', {user_id: user_id, numero: numero, cod_barra: cod_barra, qtd: qtd})
+                            $.post('addproduto', {user_id: user_id, caixa_id_pdv: caixa_id_pdv, numero: numero, cod_barra: cod_barra, qtd: qtd})
                             .done(function(data){
+                                $("#preloader_itens_vendas").css({'display' : 'none'});
                                 getProduto(cod_barra);
                                 getProdutoTabela();
                                 document.getElementById('cod_barra').focus();    
@@ -86,6 +91,7 @@ $(function(){
                         $('#qtd').val("");
 
                         document.getElementById('cod_barra').focus();
+                        $("#preloader_itens_vendas").css({'display' : 'none'});
 
                         return false;
 
@@ -93,9 +99,9 @@ $(function(){
                 }
                 else
                 {
-                    $.post('addproduto', {user_id: user_id, numero: numero, cod_barra: cod_barra, qtd: qtd})
+                    $.post('addproduto', {user_id: user_id, caixa_id_pdv: caixa_id_pdv, numero: numero, cod_barra: cod_barra, qtd: qtd})
                     .done(function(data){
-
+                        $("#preloader_itens_vendas").css({'display' : 'none'})
                         getProduto(cod_barra);
                         getProdutoTabela();
                         document.getElementById('cod_barra').focus();    
@@ -110,6 +116,7 @@ $(function(){
                  $('#cod_barra').val("");
                  $('#qtd').val("");
                  document.getElementById('cod_barra').focus(); 
+                 $("#preloader_itens_vendas").css({'display' : 'none'})
               }
             }
         });
@@ -159,7 +166,7 @@ function getProduto(data)
                 var sub_total   = formatNumber.format(data.sub_total);
                 var img_tag     = data.img != null ? '<img src="storage/'+data.img+'" alt="img-item" />' : '<i class="fas fa-file-image fa-3x"></i>'
                 
-                $('tbody').append('<tr>\
+                $('.table_itens_vendas tbody').append('<tr>\
                     <td>'+img_tag+'</td>\
                     <td>'+data.nome+'</td>\
                     <td>'+preco_venda+'</td>\
@@ -182,8 +189,8 @@ function getProdutoSearch(data = '')
     $.ajax({
         url: "getprodutosearch/"+data,
         type:'GET',
-        success: function(data) {
-            $('.lista_produtos_input').html(data);
+        success: async function(data) {
+           await $('.lista_produtos_input').html(data);
         }
     })
 }
@@ -197,10 +204,11 @@ function getProdutoTabela(query = '')
         data:{query: query},
         success:function(data)
         {   
-            $('.table_produto_list_pdv tbody').html(data.produto_nome_busca);
+           $('.table_produto_list_pdv tbody').html(data.produto_nome_busca);
         }
     });
 }
+
 function totalPagamento(){
     var valor_recebido       = $('#valor_recebido').val().replaceAll(".", "").replaceAll(",", ".");;
     var valor_desconto       = $('#desconto').val().replaceAll(".", "").replaceAll(",", ".");;
@@ -212,12 +220,20 @@ function totalPagamento(){
         {
         url: "totalpagamento",
         type: 'GET',
-        success: function(data){
+        beforeSend: () => {
+            $("#preloader_troco").css({'display' : 'block'});
+            $("#disabled_btn_finaliza_venda").prop('disabled', true)
+        },
+        success:function(data){
+            $("#preloader_troco").css({'display' : 'none'});
+            $("#disabled_btn_finaliza_venda").prop('disabled', false)
+         
             var options = { 
                 currency: 'BRL', 
                 minimumFractionDigits: 2, 
                 maximumFractionDigits: 3 
             };
+
             var formatNumber = new Intl.NumberFormat('pt-BR', options);
             
             desconto_porcentagem = valor_desconto / 100

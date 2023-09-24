@@ -35,9 +35,9 @@ Route::get('/funcionario', function () {
 });
 
 
-Route::fallback(function(){
-    return redirect()->back();
-});
+// Route::fallback(function(){
+//     return redirect()->back();
+// });
 
 Route::group(['middleware' => 'auth'], function (){
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -95,8 +95,16 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('/abertura_caixa_op', [CaixaController::class, 'abrirCaixaOp'])->name('abrir_caixa_op.caixa');
     Route::get('/get_caixa_aberto/{id}', [CaixaController::class, 'getCaixaAberto'])->name('get_caixa_aberto.caixa');
     Route::get('/op_abre_caixa', [CaixaController::class, 'opAbreCaixa'])->name('op_abre_caixa.caixa');
-    Route::get('/fechamento_caixa', [CaixaController::class, 'fechaCaixa'])->name('fechamento_caixa.caixa');
-    
+    Route::get('/suprimento_valores/{descricao_caixa}', [CaixaController::class, 'suprimentoCaxiaValores'])->name('sangria.caixa');
+    Route::post('/suprimento', [CaixaController::class, 'suprimentoCaixa'])->name('sangria.caixa');
+    Route::get('/sangria_valores/{descricao_caixa}', [CaixaController::class, 'sangriaCaxiaValores'])->name('sangria.caixa');
+    Route::post('/retirada_caixa', [CaixaController::class, 'retiradaSangria'])->name('retirada_sangria.caixa');
+    Route::get('/fecha_caixa', [CaixaController::class, 'fechaCaixa'])->name('fecha_caixa.caixa');
+    Route::post('/fechamento_caixa', [CaixaController::class, 'fechamentoCaixa'])->name('fechamento_caixa.caixa');
+    Route::get('/imprimir_cupom_fechamento/{caixa_id}', [CaixaController::class, 'cupomFechamento'])->name('cupom.fechamento');
+    Route::get('/caixa_logout/{caixa_id}', [CaixaController::class, 'caixaLogout'])->name('caixa_logout.fechamento');
+    Route::get('/op_logout', [CaixaController::class, 'opLogout'])->name('op_logout.caixa');
+
     Route::get('/vender', [VendasController::class, 'index'])->name('vender.vendas');
     Route::get('/cash_verify/{id}', [VendasController::class, 'cashVerify'])->name('vender.vendas');
     Route::get('/pdv', [VendasController::class, 'pdv'])->name('pdv.vendas');

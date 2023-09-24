@@ -14,11 +14,11 @@ class ItemVenda extends Model
     protected $table = 'item_vendas';
 
     public $timestamps = false;
-    protected $fillable = ['product_id', 'cupom_id', 'qtd', 'data_venda', 'desconto' ,'sub_total'];
+    protected $fillable = ['product_id', 'cupom_id', 'caixa_id', 'qtd', 'data_venda', 'desconto' ,'sub_total'];
 
     public function produto()
     {
-        return $this->hasMany(Product::class, 'product_id', 'id');
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
 }

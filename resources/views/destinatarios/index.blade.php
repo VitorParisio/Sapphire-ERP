@@ -49,8 +49,7 @@
                         </thead>
                         <tbody>
                         </tbody>
-                    </table>
-                        
+                    </table>  
                 </div> 
                 <div class="tabbody" id="tab2" style="display: none;">  
                     <div class="adicionar_cliente">
@@ -58,7 +57,7 @@
                         @csrf
                             <div class="row  align-items-start cadastro_clientes_inputs">
                                 <div class="col-md-12">
-                                    <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px; margin-bottom:15px;"><i class="fas fa-id-card"></i> IDENTIFICAÇÃO:</h4>
+                                    <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px; margin-bottom:15px;"><i class="fas fa-id-card"></i> Identificação</h4>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="nome">Cliente*
@@ -83,7 +82,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <hr>
-                                    <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px; margin-bottom:15px; margin-top:15px;"><i class="fas fa-map-marker-alt"></i> ENDEREÇO:</h4>
+                                    <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px; margin-bottom:15px; margin-top:15px;"><i class="fas fa-map-marker-alt"></i> Endereço</h4>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="cep">CEP*

@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="author" content="SmartNet - Vitor Parísio">
-    <meta name="keywords" content="sapphire, saphira, safira, smartnet sapphira, smartnet, smart safira">
+    <meta name="author" content="SapphirERP - Vitor Parísio">
+    <meta name="keywords" content="sapphirerp, saphira, safira, sapphira, sistemas de vendas, softwares de vendas">
 
     {{-- Custom Meta Tags --}}
     @yield('meta_tags')

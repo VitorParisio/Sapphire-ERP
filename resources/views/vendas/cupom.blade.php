@@ -47,7 +47,7 @@
         <span style="font-size:11px;">------------------------------------------------------</span>
     </div>
     <div>
-        <span style="font-size:9px;">{{$cupom[0]->descricao}}</span><br>
+        <span style="font-size:9px;">{{$descricao_caixa->descricao_caixa}}</span><br>
         <span style="font-size:9px;">Operador: {{$cupom[0]->name}}</span>
         <span style="font-size:11px;">------------------------------------------------------</span>
     </div>
@@ -57,4 +57,5 @@
         <span style="font-size:11px;">{{date('d/m/Y H:i:s', strtotime($cupom[0]->created_at))}}</span>
     </div>
 </body>
+
 </html>

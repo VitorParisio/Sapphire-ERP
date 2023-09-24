@@ -12,6 +12,7 @@
     </div>
     <div class="errors"></div>
 @stop
+
 @section('content')
     <div class="card card-primary card-tabs">
         <div class="tabcontainer">
@@ -32,13 +33,7 @@
                             <small><i class="fas fa-plus fa-x3"></i> Novo produto</small>
                         </a>
                     </li>
-                    <!-- <li rel="tab4">
-                        <a href="#">
-                            <small><i class="fas fa-clipboard-list fa-x3"></i> Total itens</small>
-                        </a>
-                    </li> -->
                 </ul>
-                
             </div>
         </div>
         <div class="card-body">
@@ -67,9 +62,9 @@
                             <i class="fas fa-plus"></i>&nbsp<span>Adicionar Categoria</span>
                             </div>
                             <div> 
-                                <label for="categoria">Categoria:</label>
+                                <label for="categoria">Categoria*</label>
                                 <input type="text" name="categoria" id="categoria" value="{{old('categoria')}}" autocomplete="off">
-                                <label for="descricao_categoria">Descrição:</label>
+                                <label for="descricao_categoria">Descrição</label>
                                 <textarea rows="5" name="descricao" id="descricao_categoria" value="{{old('descricao')}}"></textarea>
                             </div>
                             <button class="btn_add_categoria" onclick="addCategoria()">Adicionar</button>
@@ -80,84 +75,99 @@
                     <form id="form_cadastro_produto" action="{{route('produtos.store')}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="row cadastro_produtos_inputs">
+                            <div class="col-md-12">
+                                <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px; margin-bottom:15px;"><i class="fas fa-info-circle"></i> Informações básicas</h4>
+                            </div>
                             <div class="col-md-3">
                                 <label for="select_categoria">Categoria*
                                     <select class="form-control select_categoria" id="select_categoria" name="category_id"></select>
                                 </label>
+                                <label for="estoque">Estoque atual*
+                                    <input type="text" class="form-control" name="estoque" id="estoque" placeholder="" value="{{old('estoque')}}" autocomplete="off">
+                                </label>
+                                <label for="preco_compra">Preço custo(R$)
+                                    <input type="text" class="form-control" name="preco_compra" id="preco_compra" value="{{old('preco_compra')}}" style="text-align: right" autocomplete="off">
+                                </label>
+                            </div>
+                            <div class="col-md-3">
                                 <label for="nome">Produto*
                                     <input type="text" class="form-control" name="nome" id="nome" placeholder="" value="{{ old('nome')}}" autocomplete="off">
                                 </label>
-                                <label for="estoque">Qtd. Comercial*
-                                    <input type="text" class="form-control" name="estoque" id="estoque" placeholder="" value="{{old('estoque')}}" autocomplete="off">
-                                </label>
-                            </div>
-                            <div class="col-md-3">
-                               <label for="cod_barra">EAN
-                                    <input type="text" class="form-control" name="cod_barra" id="cod_barra" placeholder="" value="{{ old('cod_barra')}}" autocomplete="off">
-                                </label>
-                                <label for="ceantrib">EAN Unid. Tributável
-                                    <input type="text" class="form-control" name="ceantrib" id="ceantrib" placeholder="" value="{{ old('ceantrib')}}" autocomplete="off">
-                                </label>
-                                <label for="qtrib">Qtd. Tributável*
-                                    <input type="text" class="form-control" name="qtrib" id="qtrib" value="{{old('qtrib')}}" autocomplete="off">
-                                </label>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="ncm">NCM*
-                                    <input type="text" class="form-control" name="ncm" id="ncm" value="{{ old('ncm')}}" autocomplete="off">
-                                </label>
-                                <label for="extipi">EXT IPI
-                                    <input type="text" class="form-control" name="extipi" id="extipi" value="{{old('extipi')}}"  autocomplete="off">
-                                </label>
-                                <label for="estoque_minimo">Estoque Mínimo*
+                                <label for="estoque_minimo">Estoque mínimo
                                     <input type="text" class="form-control" name="estoque_minimo" id="estoque_minimo" placeholder="" value="{{old('estoque_minimo')}}" autocomplete="off">
                                 </label>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="preco_compra">Valor Custo(R$)*
-                                    <input type="text" class="form-control" name="preco_compra" id="preco_compra" value="{{old('preco_compra')}}" style="text-align: right" autocomplete="off">
-                                </label>
-                                <label for="preco_venda">Valor Venda(R$)*
+                                <label for="preco_venda">Preço venda(R$)*
                                     <input type="text" class="form-control" name="preco_venda" id="preco_venda" value="{{old('preco_venda')}}" style="text-align: right" autocomplete="off">
                                 </label>
-                                <label for="vuntrib">Valor Unid. Tributável(R$)*
-                                    <input type="text" class="form-control" name="vuntrib" id="vuntrib" value="{{old('vuntrib')}}" style="text-align: right" autocomplete="off">
-                                </label>
                             </div>
                             <div class="col-md-3">
-                                <label for="ucom">Unid. Comercial*
+                                <label for="cod_barra">EAN (Códgio Barra)
+                                    <input type="text" class="form-control" name="cod_barra" id="cod_barra" placeholder="" value="{{ old('cod_barra')}}" autocomplete="off">
+                                </label>
+                                <label for="ucom">Unid. comercial*
                                     <input type="text" class="form-control" name="ucom" id="ucom" value="UNID" autocomplete="off" disabled>
                                 </label>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="utrib">Unid. Tributável*
-                                    <input type="text" class="form-control" name="utrib" id="utrib" value="UNID" autocomplete="off" disabled>
+                                <label for="preco_minimo">Preço mínimo(R$)
+                                    <input type="text" class="form-control" name="preco_minimo" id="preco_minimo" value="{{old('preco_minimo')}}" style="text-align: right" autocomplete="off">
                                 </label>
                             </div>
                             <div class="col-md-3">
                                 <label for="descricao">Descrição
                                     <input type="text" class="form-control" name="descricao" id="descricao" value="{{old('descricao')}}" autocomplete="off">
                                 </label>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="preco_minimo">Valor Mínimo(R$)*
-                                    <input type="text" class="form-control" name="preco_minimo" id="preco_minimo" value="{{old('preco_minimo')}}" style="text-align: right" autocomplete="off">
-                                </label>
-                            </div>
-                            <div class="col-md-3">
                                 <label for="validade">Validade
                                     <input type="date" class=" form-control datetimepicker-input" data-target="#reservationdate" name="validade" id="validade" value="{{old('validade')}}">
                                 </label>
+                                <div>
+                                    <input type="file" name="img" id="img_produto_input" accept="image/*">
+                                    <label>Imagem:</label>
+                                    <label for="img_produto_input" class="img_produto_input">
+                                        <span>Procurar</span>
+                                        <span>Selecionar imagem</span>
+                                    </label>
+                                    <small>Tamanho máximo: 2MB</small>
+                                </div> 
+                            </div>
+                            <div class="col-md-12">
+                                <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px; margin-bottom:15px;"><i class="fas fa-file-invoice-dollar"></i> Dados fiscais</h4>
                             </div>
                             <div class="col-md-3">
-                                <input type="file" name="img" id="img_produto_input" accept="image/*">
-                                <label>Imagem:</label>
-                                <label for="img_produto_input" class="img_produto_input">
-                                    <span>Procurar</span>
-                                    <span>Selecionar imagem</span>
+                                 <label for="ncm">NCM 
+                                    <input type="text" class="form-control" name="ncm" id="ncm" value="{{ old('ncm')}}" autocomplete="off">
+                                </label> 
+                            </div>
+                            <div class="col-md-3">
+                                <label for="cest">CEST
+                                    <input type="text" class="form-control" name="cest" id="cest" value="{{old('cest')}}" autocomplete="off">
                                 </label>
-                                <small>Tamanho máximo: 2MB</small>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="extipi">IPI
+                                    <input type="text" class="form-control" name="extipi" id="extipi" value="{{old('extipi')}}"  autocomplete="off">
+                                </label>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="cfop">CFOP
+                                    <input type="text" class="form-control" name="cfop" id="cfop" value="5101"  autocomplete="off" disabled>
+                                </label>
                             </div> 
+                            <div class="col-md-3">
+                                <label for="origem">Origem
+                                    <input type="text" class="form-control" name="origem" id="origem" value="0 - Nacional"  autocomplete="off" disabled>
+                                </label>
+                            </div> 
+                            <label for="situacao_tributaria">Situação tributária
+                                <input type="text" class="form-control" name="situacao_tributaria" id="situacao_tributaria" value="102 - Tributada pelo Simples Nacional sem permissão de crédito" style="width:519px" autocomplete="off" disabled>
+                            </label>
+                            <label for="ceantrib" style="display: none">EAN Unid. Tributável
+                                <input type="text" class="form-control" name="ceantrib" id="ceantrib" placeholder="" value="{{ old('ceantrib')}}" autocomplete="off">
+                            </label>
+                            <label for="qtrib" style="display: none">Qtd. Tributável
+                                <input type="text" class="form-control" name="qtrib" id="qtrib" value="{{old('qtrib')}}" autocomplete="off">
+                            </label>
+                            <label for="vuntrib" style="display: none">Valor Unid. Tributável(R$)*
+                                <input type="text" class="form-control" name="vuntrib" id="vuntrib" value="{{old('vuntrib')}}" style="text-align: right" autocomplete="off">
+                            </label>
                         </div>
                         <hr>
                         <div style="display:flex; gap:4px; margin-top:15px;">
@@ -176,9 +186,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>ID</th>
+                                    <th>Categoria</th>
                                     <th>Produto</th>
-                                    <th>Valor Custo</th>
-                                    <th>Valor Venda</th>
+                                    <th>Preço venda</th>
                                     <th>Estoque</th>
                                     <th colspan=3>Ações</th>
                                 </tr>
@@ -239,6 +249,10 @@
             }
         });
 
+        $('#cfop').prop('disabled', true)
+        $('#situacao_tributaria').prop('disabled', true)
+        $('#origem').prop('disabled', true)
+
         $('.search_category').on('keyup',function(){
             var value = $(this).val();
             searchCategory(value);
@@ -254,6 +268,21 @@
             searchItem(value);
         });
 
+        $('#cod_barra').blur(function(){
+            var value = $(this).val();
+            $('#ceantrib').val(value);
+        });
+
+        $('#preco_venda').blur(function(){
+            var value = $(this).val();
+            $('#vuntrib').val(value);
+        });
+
+        $('#estoque').blur(function(){
+            var value = $(this).val();
+            $('#qtrib').val(value);
+        });
+
         $(document).delegate(".dtls_btn","click",function(){
             $('#detalhe_produto_modal').modal('show');
 
@@ -262,20 +291,33 @@
             var data = $tr.children("td").map(function(){
                 return $(this).html();
             }).get();
-
+        
+            var validade = "";
             var validade_split = data[8].split('-');
-            var validade_formatada = validade_split[2]+'/'+validade_split[1]+'/'+validade_split[0];
+
+            if (validade_split == "Não informado")
+                validade = validade_split
+            else
+                validade = validade_split[2]+'/'+validade_split[1]+'/'+validade_split[0];
 
             $('.img_detalhe').html(data[0]);
             $('.id_detalhe').html(data[1]);
-            $('.produto_detalhe').html(data[2]);
-            $('.preco_custo_detalhe').html(data[3]);
+            $('.produto_detalhe').html(data[3]);
+            $('.preco_custo_detalhe').html(data[13]);
+            $('.preco_minimo_detalhe').html(data[14]);
+            $('.ncm').html(data[15]);
+            $('.cest').html(data[16]);
+            $('.extipi').html(data[17]);
+            $('.cfop').html(data[18]);
+            $('.origem').html(data[19]);
+            $('.situacao_tributaria').html(data[20]);
             $('.preco_venda_detalhe').html(data[4]);
             $('.estoque_detalhe').html(data[5]);
             $('.descricao_detalhe').html(data[6]);
             $('.unidade_detalhe').html(data[7]);
-            $('.validade_detalhe').html(validade_formatada);
+            $('.validade_detalhe').html(validade);
             $('.cod_barra_detalhe').html(data[9]);
+            $('.estoque_minimo').html(data[12]);
         });
 
         $(document).delegate(".edt_btn","click",function(){
@@ -379,6 +421,9 @@
                             $('#form_cadastro_produto').find('#utrib').val("UNID");
                             $('#form_cadastro_produto').find('#utrib').prop("readonly",true);
                             $('#form_cadastro_produto').find('#ucom').prop("readonly",true);
+                            $('#form_cadastro_produto').find('#origem').val("0 - Nacional");
+                            $('#form_cadastro_produto').find('#situacao_tributaria').val("102 - Tributada pelo Simples Nacional sem permissão de crédito");
+                            $('#form_cadastro_produto').find('#cfop').val("5101");
                             
                             getCategoria();
                             getProduto();

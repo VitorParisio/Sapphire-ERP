@@ -24,22 +24,24 @@ class VendasController extends Controller
         $caixas_fechados = NumeroCaixa::select('user_id')->where('user_id', null)->get();
         $caixas          = Caixa::join('users', 'users.id','=','caixas.user_abertura_id')
         ->where('users.id', $id)->first();
-        
+
         if (count($caixas_fechados) == 2)
             return response()->json(['message' => 'NENHUM CAIXA ABERTO']);  
-        
+    
         if ($caixas == null)
             return response()->json(['message' => 'ABRA UM NOVO CAIXA']);  
-        
+    
         return;
     }
 
     function pdv()
     {
         $user_id_auth = Auth::user()->id;
-        $dados_caixa = NumeroCaixa::join('users', 'users.id', '=', 'numero_caixas.user_id')
+        $dados_caixa  = NumeroCaixa::join('users', 'users.id', '=', 'numero_caixas.user_id')
+        ->join('caixas', 'numero_caixas.id', '=', 'caixas.nro_caixa_id')
         ->where('numero_caixas.user_id', $user_id_auth)
-        ->select('users.name','numero_caixas.id AS caixa_id_pdv', 'numero_caixas.user_id', 'numero_caixas.numero','numero_caixas.descricao')
+        ->where('caixas.status', 1)
+        ->select('users.name','caixas.id AS caixa_id_pdv', 'numero_caixas.user_id', 'numero_caixas.numero','numero_caixas.descricao')
         ->first();
 
         if ($dados_caixa == null)
@@ -86,7 +88,7 @@ class VendasController extends Controller
     function finalizaVenda(Request $request){
         $data              = $request->all();
 
-        $numero_caixa      = $request->numero;
+        $numero_caixa      = $request->caixa_id_pdv;
         $slc_ult_id_cupom  = Cupom::orderBy('id', 'desc')->limit(1)->first();
         $cupom             = Cupom::get();
 
@@ -103,12 +105,12 @@ class VendasController extends Controller
         $data['desconto']       = str_replace(',', '.', $desconto_formatado);
 
         $vendido_caixa = Caixa::select('valor_vendido', 'total_caixa')
-        ->where('nro_caixa_id', $numero_caixa)->first();
+        ->where('id', $numero_caixa)->first();
 
         $valor_vendido = $vendido_caixa->valor_vendido + $data['total_venda'];
         $total_caixa   = $vendido_caixa->total_caixa + $data['total_venda'];
 
-        Caixa::where('nro_caixa_id', $numero_caixa)
+        Caixa::where('id', $numero_caixa)
         ->update(['valor_vendido' => $valor_vendido, 'total_caixa' => $total_caixa]);
         
         VendaCupom::create($data);
@@ -117,7 +119,7 @@ class VendasController extends Controller
         {
             Cupom::where('id', $slc_ult_id_cupom->id)->update([
                 "user_id"   => $request->user_id,
-                "caixa_id"  => $request->numero,
+                "caixa_id"  => $request->caixa_id_pdv,
                 "nro_cupom" => 1
             ]);  
         } else {
@@ -131,7 +133,7 @@ class VendasController extends Controller
             
             Cupom::where('id', $slc_ult_id_cupom->id)->update([
                 "user_id"   => $request->user_id,
-                "caixa_id"  => $request->numero,
+                "caixa_id"  => $request->caixa_id_pdv,
                 "nro_cupom" => $ult_numero_cupom
             ]);  
         }
@@ -144,10 +146,17 @@ class VendasController extends Controller
 
     function cupom(){
         
+        $user_auth = Auth::user()->id;
         $emitente = Emitente::first();
         $cupom_id = Cupom::orderBy('id', 'desc')->skip(1)->limit(1)->first();
         $total    = null;
 
+        $descricao_caixa = NumeroCaixa::join('caixas', 'numero_caixas.id' , '=', 'caixas.nro_caixa_id')
+        ->select('numero_caixas.descricao AS descricao_caixa')
+        ->where('caixas.user_abertura_id', $user_auth)
+        ->where('caixas.status', 1)
+        ->first();
+      
         $itens = ItemVenda::join('products', 'products.id', '=', 'item_vendas.product_id')
         ->join('cupoms', 'cupoms.id', '=', 'item_vendas.cupom_id')
         ->select('products.nome', 'products.preco_venda', 'item_vendas.qtd', 'item_vendas.sub_total')
@@ -157,15 +166,15 @@ class VendasController extends Controller
         $qtd_itens = $itens->count();
       
         $cupom = Cupom::join('users', 'users.id', '=', 'cupoms.user_id')
-        ->join('numero_caixas', 'numero_caixas.numero', '=', 'cupoms.caixa_id')
+        ->join('caixas', 'caixas.id', '=', 'cupoms.caixa_id')
         ->join('venda_cupoms', 'venda_cupoms.cupom_id', '=', 'cupoms.id')
-        ->select('users.name', 'numero_caixas.descricao', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento', 'venda_cupoms.created_at')
+        ->select('users.name', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento', 'venda_cupoms.created_at')
         ->where('cupoms.id', $cupom_id->id)
-        ->groupBy('users.name','numero_caixas.descricao', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento','venda_cupoms.created_at')->get();
-
+        ->groupBy('users.name', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento','venda_cupoms.created_at')->get();
+       
         $total = $cupom[0]->total_venda + $cupom[0]->desconto;
 
-        $view = view('vendas.cupom', compact('emitente', 'itens', 'cupom', 'qtd_itens', 'total'));
+        $view = view('vendas.cupom', compact('descricao_caixa', 'emitente', 'itens', 'cupom', 'qtd_itens', 'total'));
         
         $pdf = PDF::loadHTML($view)->setPaper([0, 0, 807.874, 221.102], 'landscape');
 
