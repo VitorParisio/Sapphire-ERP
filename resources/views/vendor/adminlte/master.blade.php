@@ -93,7 +93,7 @@
         <script src="{{asset('js/notifications.js')}}"></script>
         <script src="{{asset('js/events_key.js')}}"></script>
         @stack('scripts')
-
+        @stack('chart')
         {{-- Configured Scripts --}}
         @include('adminlte::plugins', ['type' => 'js'])
 

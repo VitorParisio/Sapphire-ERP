@@ -301,32 +301,22 @@ return [
             'text' => 'Dashboard',
             'url'  => '/dashboard',
             'icon' => 'fas fa-tachometer-alt',
+        ],
+        [
+            'text' => 'Unidades',
+            'url'  => '/unidades',
+            'icon' => 'fas fa-building',
         ],  
-        // [
-        //     'text' => 'Funcionários',
-        //     'url'  => '/funcionarios',
-        //     'icon' => 'far fa-id-card',
-        // ],
         [
             'text' => 'Clientes',
             'url'  => '/clientes',
             'icon' => 'fas fa-users',
         ],
-        // [
-        //     'text' => 'Fornecedores',
-        //     'url'  => '/fornecedores',
-        //     'icon' => 'fas fa-truck-moving',
-        // ],
         [
             'text' => 'Produtos',
             'url'  => '/produtos',
             'icon' => 'fas fa-box',
         ],
-        // [
-        //     'text' => 'Estoques',
-        //     'url'  => '/estoques',
-        //     'icon' => 'fas fa-boxes',
-        // ],
         [
             'text' => 'Caixas',
             'url'  => '/caixas',
@@ -336,45 +326,16 @@ return [
             'text'    => 'Nota Fiscal',
             'icon'    => 'fas fa-file-alt',
             'submenu' => [
-            [
-            'text' => 'Notas fiscais',
-            'url'  => '/notas_fiscais',
-            'icon' => 'fas fa-clone'
-            ],
-            [
-            'text' => 'Cadastrar nota',
-            'url'  => '/cadastrar_nota',
-            'icon' => 'fas fa-plus'
-            ],
-        //         // [
-        //         //     'text'    => 'Contas a receber',
-        //         //     'url'     => '#',
-        //         //     'submenu' => [
-        //         //         [
-        //         //             'text' => 'level_two',
-        //         //             'url'  => '#',
-        //         //         ],
-        //         //         [
-        //         //             'text'    => 'level_two',
-        //         //             'url'     => '#',
-        //         //             'submenu' => [
-        //         //                 [
-        //         //                     'text' => 'level_three',
-        //         //                     'url'  => '#',
-        //         //                 ],
-        //         //                 [
-        //         //                     'text' => 'level_three',
-        //         //                     'url'  => '#',
-        //         //                 ],
-        //         //             ],
-        //         //         ],
-        //         //     ],
-        //         // ],
-        //         [
-        //             'text' => 'Vender',
-        //             'url'  => '/vender',
-        //             'icon' => 'fas fa-hand-holding-usd'
-        //         ],
+                [
+                'text' => 'Fiscal',
+                'url'  => '/notas_fiscais',
+                'icon' => 'fas fa-clone'
+                ],
+                [
+                'text' => 'Cadastrar nota',
+                'url'  => '/cadastrar_nota',
+                'icon' => 'fas fa-plus'
+                ],
             ],
         ],
         [

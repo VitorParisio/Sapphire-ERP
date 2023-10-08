@@ -334,6 +334,7 @@ input{
 
 .detalhes_produto,.editar_produto{
     display: flex;
+    gap: 10px;
 }
 
 /* .detalhes_produto > div:nth-child(1){
@@ -383,7 +384,7 @@ input{
 
 .detalhes_produto > .dados_detalhe  .cod_barra_detalhe,
 .detalhes_produto > .dados_detalhe  .preco_venda_detalhe,
-.detalhes_produto > .dados_detalhe  .estoque_minimo, .descricao_detalhe {
+.detalhes_produto > .dados_detalhe  .estoque_minimo_detalhe, .descricao_detalhe {
     text-align: right;
     float: right;
     width: 150px;
@@ -440,11 +441,10 @@ input{
     position: absolute;
     left: 0;
     bottom: 0;
-    margin: 69px 38px;
+    margin: 309px 38px;
     background: #525e6a;
     color: #FFF;
     padding: 5px;
-    border-radius: 5px;
     cursor: pointer;
 }
 
@@ -489,8 +489,8 @@ input{
 .preco_custo_detalhe, .preco_venda_detalhe, 
 .estoque_detalhe, .descricao_detalhe,
 .unidade_detalhe, .validade_detalhe,
-.id_detalhe, .cod_barra_detalhe, .estoque_minimo,
-.preco_minimo_detalhe, .ncm, .cest, .extipi, .origem, .situacao_tributaria, .cfop {
+.id_detalhe, .cod_barra_detalhe, .estoque_minimo_detalhe,
+.preco_minimo_detalhe, .ncm_detalhe, .cest_detalhe, .extipi_detalhe, .origem_detalhe, .situacao_tributaria_detalhe, .cfop_detalhe {
     font-size: 15px;
     font-weight: bold;
 }
@@ -498,7 +498,9 @@ input{
 .produto_editar, .preco_compra_editar, .preco_venda_editar, 
 .estoque_editar, .descricao_editar,
 .unidade_editar, .validade_editar,
-.id_editar, .cod_barra_editar {
+.id_editar, .cod_barra_editar, .preco_minimo_editar,
+.estoque_minimo_editar, .unidade_medida_editar, .select_categoria,
+.ncm_editar, .cest_editar, .extipi_editar, .origem_editar, .cfop_editar {
     width: 140px;
     text-align: center;
 }

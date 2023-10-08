@@ -73,6 +73,8 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/total_itens', [ProductController::class, 'totalItem'])->name('produtos.total_item');
     Route::get('/notifications', [ProductController::class, 'notifications'])->name('produtos.notifications');
 
+    // Route::get('/estoque', [ProductController::class, 'index'])->name('estoque');
+
     Route::get('/getproduto/{produto_pdv}', [ItemVendaController::class, 'index'])->name('item_vendas.get_produto');
     Route::post('/addproduto', [ItemVendaController::class, 'store'])->name('item_vendas.add_produto');
     Route::delete('/deletaprodutocod/{item_venda_id}/{product_id}/{qtd}', [ItemVendaController::class, 'destroy'])->name('item_vendas.deletaprotudocod');

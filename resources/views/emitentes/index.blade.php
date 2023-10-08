@@ -6,7 +6,7 @@
     <div style="display:flex; justify-content:space-between" >
         <h5 class="m-0 text-dark"><i class="fas fa-play-circle"></i> Empresas</h5>
         <ol class="breadcrumb float-sm-right" style="font-size: 13px;">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
             <li class="breadcrumb-item active">Empresas</li>
         </ol>
     </div>

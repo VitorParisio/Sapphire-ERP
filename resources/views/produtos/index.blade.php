@@ -6,7 +6,7 @@
     <div style="display:flex; justify-content:space-between" >
         <h5 class="m-0 text-dark"><i class="fas fa-play-circle"></i> Produtos</h5>
         <ol class="breadcrumb float-sm-right" style="font-size: 13px;">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
             <li class="breadcrumb-item active">Produtos</li>
         </ol>
     </div>
@@ -20,7 +20,7 @@
                 <ul class="tabheading">
                     <li class="active" rel="tab1" >
                         <a href="#">
-                            <small><i class="fas fa-sitemap fa-x3"></i> Categorias</small>
+                            <small><i class="fas fa-tags"></i> Categorias</small>
                         </a>
                     </li>
                     <li rel="tab2">
@@ -157,16 +157,16 @@
                                 </label>
                             </div> 
                             <label for="situacao_tributaria">Situação tributária
-                                <input type="text" class="form-control" name="situacao_tributaria" id="situacao_tributaria" value="102 - Tributada pelo Simples Nacional sem permissão de crédito" style="width:519px" autocomplete="off" disabled>
+                                <input type="text" class="form-control" name="situacao_tributaria" id="situacao_tributaria" value="102 - Tributada pelo Simples Nacional sem permissão de crédito">
                             </label>
                             <label for="ceantrib" style="display: none">EAN Unid. Tributável
-                                <input type="text" class="form-control" name="ceantrib" id="ceantrib" placeholder="" value="{{ old('ceantrib')}}" autocomplete="off">
+                                <input type="text" class="form-control" name="ceantrib" id="ceantrib" value="{{ old('ceantrib')}}">
                             </label>
                             <label for="qtrib" style="display: none">Qtd. Tributável
-                                <input type="text" class="form-control" name="qtrib" id="qtrib" value="{{old('qtrib')}}" autocomplete="off">
+                                <input type="text" class="form-control" name="qtrib" id="qtrib" value="{{old('qtrib')}}">
                             </label>
                             <label for="vuntrib" style="display: none">Valor Unid. Tributável(R$)*
-                                <input type="text" class="form-control" name="vuntrib" id="vuntrib" value="{{old('vuntrib')}}" style="text-align: right" autocomplete="off">
+                                <input type="text" class="form-control" name="vuntrib" id="vuntrib" value="{{old('vuntrib')}}">
                             </label>
                         </div>
                         <hr>
@@ -181,21 +181,23 @@
                         <span id="total_produtos" style="font-size:13px; position:absolute; margin: -34px 0; font-weight:900"></span>
                         <input class="search_product" id="search_product" name="search_product" type="text" placeholder="Pesquisar produto" style="outline: none" autocomplete="off">
                         <hr>
-                        <table class="table table-striped lista_produto_table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>ID</th>
-                                    <th>Categoria</th>
-                                    <th>Produto</th>
-                                    <th>Preço venda</th>
-                                    <th>Estoque</th>
-                                    <th colspan=3>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <div style="height: 465px; width:100%; overflow:auto;">
+                            <table class="table table-striped lista_produto_table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ID</th>
+                                        <th>Categoria</th>
+                                        <th>Produto</th>
+                                        <th>Preço venda</th>
+                                        <th>Estoque atual</th>
+                                        <th colspan=3>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div>
                         @include('modals.produto.detalhe')
@@ -249,9 +251,14 @@
             }
         });
 
-        $('#cfop').prop('disabled', true)
-        $('#situacao_tributaria').prop('disabled', true)
-        $('#origem').prop('disabled', true)
+        $('#cfop').prop('disabled', true);
+        $('#situacao_tributaria').prop('disabled', true);
+        $('#origem').prop('disabled', true);
+
+        $('.unidade_medida_editar').prop('disabled', true);
+        $('#cfop_editar').prop('disabled', true);
+        $('#origem_editar').prop('disabled', true);
+        $('#situacao_tributaria_editar').prop('disabled', true);
 
         $('.search_category').on('keyup',function(){
             var value = $(this).val();
@@ -302,22 +309,23 @@
 
             $('.img_detalhe').html(data[0]);
             $('.id_detalhe').html(data[1]);
+            $('.categoria_detalhe').html(data[2]);
             $('.produto_detalhe').html(data[3]);
-            $('.preco_custo_detalhe').html(data[13]);
-            $('.preco_minimo_detalhe').html(data[14]);
-            $('.ncm').html(data[15]);
-            $('.cest').html(data[16]);
-            $('.extipi').html(data[17]);
-            $('.cfop').html(data[18]);
-            $('.origem').html(data[19]);
-            $('.situacao_tributaria').html(data[20]);
             $('.preco_venda_detalhe').html(data[4]);
             $('.estoque_detalhe').html(data[5]);
             $('.descricao_detalhe').html(data[6]);
             $('.unidade_detalhe').html(data[7]);
             $('.validade_detalhe').html(validade);
             $('.cod_barra_detalhe').html(data[9]);
-            $('.estoque_minimo').html(data[12]);
+            $('.estoque_minimo_detalhe').html(data[10]);
+            $('.preco_custo_detalhe').html(data[11]);
+            $('.preco_minimo_detalhe').html(data[12]);
+            $('.ncm_detalhe').html(data[13]);
+            $('.cest_detalhe').html(data[14]);
+            $('.extipi_detalhe').html(data[15]);
+            $('.cfop_detalhe').html(data[16]);
+            $('.origem_detalhe').html(data[17]);
+            $('.situacao_tributaria_detalhe').html(data[18]);
         });
 
         $(document).delegate(".edt_btn","click",function(){
@@ -329,20 +337,63 @@
                 return $(this).html();
             }).get();
 
-            var preco_compra = data[3].slice(3);
-            var preco_venda = data[4].slice(3);
+            var preco_compra = data[11].slice(3);
+            var preco_venda  = data[4].slice(3);
+            var preco_minimo = data[12].slice(3);
+
+            var cod_barra;      
+            var estoque_minimo; 
+            var ncm;           
+            var cest;           
+            var extipi;         
+            
+            if(data[9] == 'Não informado')
+                cod_barra = '';
+            else
+                cod_barra = data[9];
+
+            if(data[10] == 'Não informado')
+                estoque_minimo = '';
+            else
+                estoque_minimo = data[10];
+
+            if(data[13] == 'Não informado')
+                ncm = '';
+            else
+                ncm = data[13];
+
+            if(data[14] == 'Não informado')
+                cest = '';
+            else
+                cest = data[14];
+
+            if(data[15] == 'Não informado')
+                extipi = '';
+            else
+                extipi = data[15];
 
             $('.img_editar').html(data[0]);
             $('.id_editar').val(data[1]);
-            $('.produto_editar').val(data[2]);
-            $('.preco_compra_editar').val(preco_compra);
+            $('.categoria_editar').val(data[2]);
+            $('.produto_editar').val(data[3]);
             $('.preco_venda_editar').val(preco_venda);
+            $('#vuntrib_editar').val(preco_venda);
             $('.estoque_editar').val(data[5]);
+            $('#qtrib_editar').val(data[5]);
             $('.descricao_editar').val(data[6]);
-            $('.unidade_editar').val(data[7]);
+            $('.unidade_medida_editar').val(data[7]);
             $('.validade_editar').val(data[8]);
-            $('.cod_barra_editar').val(data[9]);
-
+            $('.cod_barra_editar').val(cod_barra);
+            $('#ceantrib_editar').val(cod_barra);
+            $('.estoque_minimo_editar').val(estoque_minimo);
+            $('.preco_compra_editar').val(preco_compra);
+            $('.preco_minimo_editar').val(preco_minimo);
+            $('.ncm_editar').val(ncm);
+            $('.cest_editar').val(cest);
+            $('.extipi_editar').val(extipi);
+            $('.cfop_editar').val(data[16]);
+            $('.origem_editar').val(data[17]);
+            $('.situacao_tributaria_editar').val(data[18]);
             selectCategoria(data[1]);
             
         });
@@ -460,12 +511,14 @@
                         }).then(() =>{
                             $('#editar_produto_modal').modal('hide');
                             $(".errors").html("");
+                            $(".errors_editar_produto").html("");
+
                             getCategoria();
                             getProduto();
-                            selectCategoria()
+                            selectCategoria();
                         });
                     }else{
-                        $.each(data.error, function( index, value) {
+                        $.each(data.error, function(index, value) {
                             $(".errors_editar_produto").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
                         });
                     }
@@ -563,6 +616,7 @@
                         }).then(() => {
                             $('#editar_categoria_modal').modal('hide');
                             $(".errors").html("");
+
                             getCategoria();
                             getProduto();
                             selectCategoria();
@@ -599,7 +653,8 @@
             $('.img_produto_input span').next().text(e.target.files[0].name);
 
         })
-        getCategoria()
+
+        getCategoria();
         getProduto();
         listaTotalItens();
         selectCategoria();

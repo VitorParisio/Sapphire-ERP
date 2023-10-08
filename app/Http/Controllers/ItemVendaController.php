@@ -83,9 +83,12 @@ class ItemVendaController extends Controller
                 $itens->where('id', $data->item_venda_id)->update(['qtd' => $itens->qtd, 'sub_total' => $itens->sub_total]);
                 
                 $estoque_atualizado = $produto->estoque - $qtd;
-                $produto->estoque   = $estoque_atualizado;
-
-                $produto->where('cod_barra', $cod_barra)->update(['estoque' => $produto->estoque]);
+              
+                $produto->estoque = $estoque_atualizado;
+               
+                $produto->where('cod_barra', $cod_barra)
+                ->orWhere('nome', $cod_barra)
+                ->update(['estoque' => $produto->estoque]);
 
                 return;
             }
@@ -111,7 +114,9 @@ class ItemVendaController extends Controller
             $estoque_atualizado = $produto->estoque - $qtd;
             $produto->estoque   = $estoque_atualizado;
 
-            $produto->where('cod_barra', $cod_barra)->update(['estoque' => $produto->estoque]);
+            $produto->where('cod_barra', $cod_barra)
+            ->orWhere('nome', $cod_barra)
+            ->update(['estoque' => $produto->estoque]);
            
         } 
         else 
@@ -133,7 +138,9 @@ class ItemVendaController extends Controller
             $estoque_atualizado = $produto->estoque - $qtd;
             $produto->estoque   = $estoque_atualizado;
 
-            $produto->where('cod_barra', $cod_barra)->update(['estoque' => $produto->estoque]);
+            $produto->where('cod_barra', $cod_barra)
+            ->orWhere('nome', $cod_barra)
+            ->update(['estoque' => $produto->estoque]);
         }
     }
 

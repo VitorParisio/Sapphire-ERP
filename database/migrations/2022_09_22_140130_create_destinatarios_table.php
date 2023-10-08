@@ -31,6 +31,7 @@ class CreateDestinatariosTable extends Migration
             $table->string('xCpl')->nullable();
             $table->string('fone')->nullable();
             $table->string('email')->nullable();
+            $table->timestamps();
         });
     }
 
