@@ -3,6 +3,7 @@
 @section('title', 'AdminLTE')
 
 @section('content_header')
+    <div id="preloader_full"><img src="{{asset('img/preloader.gif')}}" alt=""></div>
     <div style="display:flex; justify-content:space-between" >
         <h5 class="m-0 text-dark"><i class="fas fa-play-circle"></i> Produtos</h5>
         <ol class="breadcrumb float-sm-right" style="font-size: 13px;">
@@ -423,8 +424,12 @@
                     $.ajax({
                         url:'/delete_produto/'+$id,
                         type: 'DELETE',
+                        beforeSend: () =>{
+                            $("#preloader_full").css({'display' : 'block'});
+                        }, 
                         success:function(data)
                         {
+                            $("#preloader_full").css({'display' : 'none'});
                             swal({
                                 type: "warning",
                                 text: data.message,
@@ -456,9 +461,13 @@
                 processData: false,  
                 contentType: false,  
                 dataType: 'json',
+                beforeSend: () =>{
+                    $("#preloader_full").css({'display' : 'block'});
+                }, 
                 success: function(data)
                 {
                     $(".errors").html("");
+                    $("#preloader_full").css({'display' : 'none'});
                     if($.isEmptyObject(data.error)){
                         swal({
                             text: data.message,
@@ -482,6 +491,7 @@
                         });
                     }else{
                         $.each(data.error, function( index, value) {
+                            $("#preloader_full").css({'display' : 'none'});
                             $(".errors").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
                         });
                     }
@@ -502,8 +512,12 @@
                 processData: false,  
                 contentType: false,  
                 dataType: 'json',
+                beforeSend: () =>{
+                    $("#preloader_full").css({'display' : 'block'});
+                }, 
                 success: function(data)
                 {
+                    $("#preloader_full").css({'display' : 'none'});
                     if($.isEmptyObject(data.error)){
                         swal({
                             text: data.message,
@@ -519,6 +533,7 @@
                         });
                     }else{
                         $.each(data.error, function(index, value) {
+                            $("#preloader_full").css({'display' : 'none'});
                             $(".errors_editar_produto").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
                         });
                     }
@@ -568,8 +583,12 @@
                     $.ajax({
                         url:'/categoria_delete/'+$id,
                         type: 'DELETE',
+                        beforeSend: () =>{
+                            $("#preloader_full").css({'display' : 'block'});
+                        }, 
                         success:function(data)
                         {
+                            $("#preloader_full").css({'display' : 'none'});
                             swal({
                                 type: "warning",
                                 text: data.message,
@@ -603,8 +622,12 @@
                 processData: false,  
                 contentType: false,  
                 dataType: 'json',
+                beforeSend: () =>{
+                    $("#preloader_full").css({'display' : 'block'});
+                }, 
                 success: function(data)
                 {
+                    $("#preloader_full").css({'display' : 'none'});
                     if($.isEmptyObject(data.error)){
                         swal({
                         type: "warning",
@@ -623,6 +646,7 @@
                         });
                     }else{
                         $.each(data.error, function( index, value) {
+                            $("#preloader_full").css({'display' : 'none'});
                             $(".errors_editar_categoria").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
                         });
                     }
@@ -700,10 +724,11 @@
         var descricao = $('#descricao_categoria').val();
 
         $(".errors").html("");  
+        $("#preloader_full").css({'display' : 'block'});
 
         $.post('categorias', {categoria:categoria, descricao:descricao}, function(data){
-
             if($.isEmptyObject(data.error)){
+                $("#preloader_full").css({'display' : 'none'});
                 swal({
                     text: data.message,
                     icon: "success"
@@ -715,6 +740,7 @@
                 });
             }else{
                 $.each(data.error, function( index, value) {
+                    $("#preloader_full").css({'display' : 'none'})
                     $(".errors").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
                 });
             } 

@@ -123,7 +123,7 @@ class ProductController extends Controller
       'extipi'         => 'nullable|numeric',
       'estoque_minimo' => 'nullable|numeric',
       'descricao'      => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]*$/',
-      'img'            => 'image|max:2048|mimes:jpg,jpeg,png'
+      'img'            => 'nullable|image|max:2048|mimes:jpg,jpeg,png'
     ],
     [
       'category_id.required'   => 'Campo "Categoria" deve ser preenchido.',

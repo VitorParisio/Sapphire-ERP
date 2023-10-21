@@ -36,6 +36,7 @@ a{
     z-index: 1000;
     background-color: rgba(0,0,0,.6);
     text-align: center;
+    z-index: 99999;
 }
 
 #preloader_full > img{
@@ -49,7 +50,7 @@ a{
     background-color: rgba(0,0,0,.6);
     z-index: 100;
     width: 100%;
-    height: 383px;
+    height: 318px;
     position: absolute;
     text-align: center;
 }
@@ -568,6 +569,7 @@ input{
     border: none;
     color:#FFF;
     font-weight: bold;
+    text-align: center;
 }
 
 .table_itens_vendas {

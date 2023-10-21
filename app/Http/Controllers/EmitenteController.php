@@ -48,10 +48,10 @@ class EmitenteController extends Controller
               <tr>
                 <td>'.$row->id.'</td>
                 <td>'.$row->cnpj.'</td>
-                <td>'.ucfirst($row->razao_social).'</td>
+                <td>'.ucfirst($row->nome_fantasia).'</td>
                 <td>'.$row->ie.'</td>
                 <td>'.$row->cidade.'</td>
-                <td style="display:none;">'.ucfirst($row->nome_fantasia).'</td>
+                <td style="display:none;">'.ucfirst($row->razao_social).'</td>
                 <td style="display:none;">'.$im.'</td>
                 <td style="display:none;">'.$cnae.'</td>
                 <td style="display:none;">'.$row->cep.'</td>
@@ -90,23 +90,22 @@ class EmitenteController extends Controller
         $data      = $request->all();
         $validator = Validator::make($data, [
             'cnpj'              => 'required|regex:/^[0-9]+$/|max:14|min:11|unique:emitentes,cnpj',
-            'razao_social'      => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/|min:2',
+            'razao_social'      => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/|min:2',
             'nome_fantasia'     => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/|min:2',
-            'ie'                => 'required|numeric|unique:emitentes,ie',
+            'ie'                => 'nullable|numeric|unique:emitentes,ie',
             'im'                => 'nullable|numeric|unique:emitentes,im',
             'cnae'              => 'nullable|numeric|unique:emitentes,cnae',
-            'cep'               => 'required|regex:/^[0-9]+$/|max:8',
-            'rua'               => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/',
-            'numero'            => 'required|numeric',
+            'cep'               => 'nullable|regex:/^[0-9]+$/|max:8',
+            'rua'               => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/',
+            'numero'            => 'nullable|numeric',
             'complemento'       => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/',
-            'bairro'            => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]+$/',
-            'cidade'            => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ ]+$/',
+            'bairro'            => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]+$/',
+            'cidade'            => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ ]+$/',
             'uf'                => 'nullable|regex:/^[A-Z]+$/|max:2',
             'cuf'               => 'nullable|numeric',
             'cibge'             => 'nullable|numeric',
             'telefone'          => 'nullable|numeric',
-            'certificado_a1'    => 'required|mimetypes:application/octet-stream',
-            'senha_certificado' => 'required',
+            'certificado_a1'    => 'nullable|mimetypes:application/octet-stream',
         ],
         [
             'cnpj.required'             => 'Campo "CNPJ/CPF" deve ser preenchido.',
@@ -114,13 +113,11 @@ class EmitenteController extends Controller
             'cnpj.max'                  => 'Excedeu o limite de digitos no campo "CNPJ/CPF".',
             'cnpj.min'                  => 'Poucos dígitos no campo "CNPJ/CPF".',
             'cnpj.unique'               => 'CNPJ já cadastrado.',
-            'razao_social.required'     => 'Campo "Razão Social" deve ser preenchido.',
             'razao_social.regex'        => 'Digitar apenas letras e/ou números no campo "Razão Social".',
             'razao_social.min'          => 'Poucos dígitos no campo "Razão Social".',
             'nome_fantasia.required'    => 'Campo "Fantasia" deve ser preenchido.',
             'nome_fantasia.regex'       => 'Digitar apenas letras e/ou números no campo "Fantasia".',
             'nome_fantasia.min'         => 'Poucos dígitos no campo "Fantasia".',
-            'ie.required'               => 'Campo "Inscrição Estadual" deve ser preenchido.',
             'ie.numeric'                => 'Digitar apenas números no campo "Inscrição Estadual".',
             'ie.unique'                 => 'Insc. Estadual já cadastrado.',
             'im.numeric'                => 'Digitar apenas números no campo "Inscrição Municipal".',
@@ -128,29 +125,20 @@ class EmitenteController extends Controller
             'cnae.numeric'              => 'Digitar apenas números no campo "CNAE".',
             'cnae.unnique'              => 'CNAE já cadastrado.',
             'cep.regex'                 => 'Digite apenas números no campo "Cep".',
-            'cep.required'              => 'Campo "Cep" deve ser preenchido.',
             'cep.max'                   => 'Excedeu o limite de digitos no campo "Cep".',
-            'rua.required'              => 'Campo "Logradouro" deve ser preenchido.',
             'rua.regex'                 => 'Digitar apenas letras e/ou números no campo "Logradouro".',
             'complemento.regex'         => 'Digitar apenas letras e/ou números no campo "Complemento".',
-            'numero.required'           => 'Campo "Número" deve ser preenchido.',
             'numero.numeric'            => 'Digitar apenas números no campo "Número".',
-            'bairro.required'           => 'Campo "Bairro" deve ser preenchido.',
             'bairro.regex'              => 'Digitar apenas letras no campo "Bairro".',
-            'cidade.required'           => 'Campo "Cidade" deve ser preenchido.',
             'cidade.regex'              => 'Digitar apenas letras no campo "Cidade".',
-            'uf.required'               => 'Campo "UF" deve ser preenchido.',
             'uf.regex'                  => 'Digitar apenas a sigla do estado no campo "UF".',
-            'cuf.required'              => 'Campo "cUF" deve ser preenchido.',
             'cuf.numeric'               => 'Digitar apenas números no campo "cUF".',
             'cuf.max'                   => 'Máximo de 2 dígitos no campo "cUF',
-            'cibge.required'            => 'Campo "cIBGE" deve ser preenchido.',
             'cibge.numeric'             => 'Digitar apenas números no campo "cIBGE".',
             'cibge.max'                 => 'Máximo de 7 dígitos no campo "cIBGE".',
             'telefone.numeric'          => 'Digite apenas números no campo "Telefone".',
-            'certificado_a1.required'   => 'Campo "Certificado Digital" deve ser preenchido.',
             'certificado_a1.mimetypes'  => 'Campo "Certificado Digital" aceita apenas a extensão .pfx',
-            'senha_certificado.required'=> 'Campo "Senha (certificado)" deve ser preenchido.'
+            
         ]);
 
         if ($validator->fails()) {
@@ -181,22 +169,21 @@ class EmitenteController extends Controller
         return redirect()->back();
 
       $data     = $request->all();
-      $emitente = Emitente::where('id', $id)
-      ->first();
+      $emitente = Emitente::find($id);
         
       $validator = Validator::make($data, [
         'cnpj'              => 'required|regex:/^[0-9]+$/|max:14|min:11|unique:emitentes,cnpj,'.$emitente->id,
-        'razao_social'      => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/|min:2',
+        'razao_social'      => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/|min:2',
         'nome_fantasia'     => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]*$/|min:2',
-        'ie'                => 'required|numeric|unique:emitentes,ie,'.$emitente->id,
+        'ie'                => 'nullable|numeric|unique:emitentes,ie,'.$emitente->id,
         'im'                => 'nullable|numeric|unique:emitentes,im,'.$emitente->id,
         'cnae'              => 'nullable|numeric|unique:emitentes,cnae,'.$emitente->id,
-        'cep'               => 'required|regex:/^[0-9]+$/|max:8',
-        'rua'               => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/',
-        'numero'            => 'required|numeric',
+        'cep'               => 'nullable|regex:/^[0-9]+$/|max:8',
+        'rua'               => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/',
+        'numero'            => 'nullable|numeric',
         'complemento'       => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]*$/',
-        'bairro'            => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]+$/',
-        'cidade'            => 'required|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ ]+$/',
+        'bairro'            => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9]+$/',
+        'cidade'            => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ ]+$/',
         'uf'                => 'nullable|regex:/^[A-Z]+$/|max:2',
         'cuf'               => 'nullable|numeric',
         'cibge'             => 'nullable|numeric',
@@ -210,13 +197,11 @@ class EmitenteController extends Controller
         'cnpj.max'                  => 'Excedeu o limite de digitos no campo "CNPJ/CPF".',
         'cnpj.min'                  => 'Poucos dígitos no campo "CNPJ/CPF".',
         'cnpj.unique'               => 'CNPJ já cadastrado.',
-        'razao_social.required'     => 'Campo "Razão Social" deve ser preenchido.',
         'razao_social.regex'        => 'Digite apenas letras e/ou números no campo "Razão Social".',
         'razao_social.min'          => 'Poucos dígitos no campo "Razão Social".',
         'nome_fantasia.required'    => 'Campo "Fantasia" deve ser preenchido.',
         'nome_fantasia.regex'       => 'Digite apenas letras e/ou números no campo "Fantasia".',
         'nome_fantasia.min'         => 'Poucos dígitos no campo "Fantasia".',
-        'ie.required'               => 'Campo "Inscrição Estadual" deve ser preenchido.',
         'ie.numeric'                => 'Digite apenas números no campo "Inscrição Estadual".',
         'ie.unique'                 => 'Insc. Estadual já cadastrado.',
         'im.numeric'                => 'Digite apenas números no campo "Inscrição Municipal".',
@@ -224,16 +209,11 @@ class EmitenteController extends Controller
         'cnae.numeric'              => 'Digite apenas números no campo "CNAE".',
         'cnae.unnique'              => 'CNAE já cadastrado.',
         'cep.regex'                 => 'Digite apenas números no campo "Cep".',
-        'cep.required'              => 'Campo "Cep" deve ser preenchido.',
         'cep.max'                   => 'Excedeu o limite de digitos no campo "Cep".',
-        'rua.required'              => 'Campo "Logradouro" deve ser preenchido.',
         'rua.regex'                 => 'Digite apenas letras e/ou números no campo "Logradouro".',
         'complemento.regex'         => 'Digite apenas letras e/ou números no campo "Complemento".',
-        'numero.required'           => 'Campo "Número" deve ser preenchido.',
         'numero.numeric'            => 'Digite apenas números no campo "Número".',
-        'bairro.required'           => 'Campo "Bairro" deve ser preenchido.',
         'bairro.regex'              => 'Digitar apenas letras no campo "Bairro".',
-        'cidade.required'           => 'Campo "Cidade" deve ser preenchido.',
         'cidade.regex'              => 'Digitar apenas letras no campo "Cidade".',
         'uf.max'                    => 'Digite a sigla do estado no campo "UF".',
         'uf.regex'                  => 'Digite a sigla do estado no campo "UF".',

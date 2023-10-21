@@ -20,17 +20,17 @@
                   <input type="text" class="cnpj_editar" id="cnpj_editar" name="cnpj" autocomplete="off"/>
                 </div>
                 <div style="text-align:right">
-                  <label for="ie_editar">Isnc. Estadual:*</label>
+                  <label for="ie_editar">Isnc. Estadual:</label>
                   <input type="text" class="ie_editar" id="ie_editar" name="ie" style="text-align:right" autocomplete="off"/>
                 </div>
               </div>
               <div style="display:flex; justify-content: space-between">
                 <div>
-                  <label for="razao_editar">Razão Social:*</label>
+                  <label for="razao_editar">Razão Social:</label>
                   <input type="text" class="razao_editar" id="razao_editar" name="razao_social" autocomplete="off"/>
                 </div>
                 <div style="text-align:right">
-                  <label for="nome_fantasia">Fantasia:*</label>
+                  <label for="nome_fantasia">Fantasia*:</label>
                   <input type="text" class="fantasia_editar" id="nome_fantasia" name="nome_fantasia" style="text-align:right" autocomplete="off"/>
                 </div>
               </div>
@@ -64,17 +64,17 @@
               <hr>
               <div style="display:flex; justify-content: space-between">
                 <div>
-                  <label for="cep_editar">CEP:*</label>
+                  <label for="cep_editar">CEP:</label>
                   <input type="text" class="cep_editar" id="cep_editar" name="cep"/>
                 </div>
                 <div style="text-align:right">
-                  <label for="logradouro_editar">Logradouro:*</label>
+                  <label for="logradouro_editar">Logradouro:</label>
                   <input type="text" class="logradouro_editar" id="logradouro_editar" name="rua" style="text-align:right"/>
                 </div>
               </div>
               <div style="display:flex; justify-content: space-between">
                 <div>
-                  <label for="numero_editar">Número:*</label>
+                  <label for="numero_editar">Número:</label>
                   <input type="text" class="numero_editar" id="numero_editar" name="numero"/>
                 </div>
                 <div style="text-align:right">
@@ -84,16 +84,16 @@
               </div>
               <div style="display:flex; justify-content: space-between">
                 <div>
-                  <label for="bairro_editar">Bairro:*</label>
+                  <label for="bairro_editar">Bairro:</label>
                   <input type="text" class="bairro_editar" id="bairro_editar" name="bairro"/>
                 </div>
                 <div style="text-align:right">
-                  <label for="cidade_editar">Cidade:*</label>
+                  <label for="cidade_editar">Cidade:</label>
                   <input type="text" class="cidade_editar" id="cidade_editar" name="cidade" style="text-align:right"/>
                 </div>
               </div>
               <div>
-                <label for="uf_editar">UF:*</label><br>
+                <label for="uf_editar">UF:</label><br>
                 <input type="text" class="uf_editar" id="uf_editar" name="uf"/>
               </div>
               <hr>

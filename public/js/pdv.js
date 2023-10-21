@@ -39,7 +39,7 @@ $(function(){
     $('#cod_barra').keypress(function(){
         document.getElementById('qtd').focus();
     });
-
+   
     $('#form_cod_barra').submit(function(e){
         e.preventDefault();
         
@@ -308,11 +308,20 @@ function finalizarVenda(){
     var desconto        = $('#valor_desconto').val();
     var total_venda     = $('#total_pagamento').val();
     var troco           = $('#troco').val();
-
-    $.post('finalizavenda', {user_id: user_id, caixa_id_pdv:caixa_id_pdv, numero: numero, id_cupom: id_cupom, total_venda: total_venda, valor_recebido: valor_recebido, forma_pagamento: forma_pagamento, desconto : desconto, troco : troco}, function(data){
-        removeProdutos();
+    var datos_itens     = {user_id: user_id, caixa_id_pdv:caixa_id_pdv, numero: numero, id_cupom: id_cupom, total_venda: total_venda, valor_recebido: valor_recebido, forma_pagamento: forma_pagamento, desconto : desconto, troco : troco}
+    
+$.ajax({
+    type: "POST",
+    url: 'finalizavenda',
+    data: datos_itens,
+    beforeSend: () =>{
         $('.modal').hide();
         $('.modal-backdrop').hide();
+        $("#preloader_full").css({'display' : 'block'});
+    },
+    success:function(data)
+    {
+        removeProdutos();
         $('.total_venda').val('R$ 0,00');
         $('.table_itens_vendas tbody').html("");
         $('#valor_recebido').val('');
@@ -328,8 +337,34 @@ function finalizarVenda(){
         $('#subtotal').val('');
         $('.letreiro').val("CAIXA LIVRE");
         document.getElementById('cod_barra').focus();
+        $("#preloader_full").css({'display' : 'none'});
         openCupom();
-    });
+    }
+  });
+
+  
+
+    // $.post('finalizavenda', {user_id: user_id, caixa_id_pdv:caixa_id_pdv, numero: numero, id_cupom: id_cupom, total_venda: total_venda, valor_recebido: valor_recebido, forma_pagamento: forma_pagamento, desconto : desconto, troco : troco}, function(data){
+        // removeProdutos();
+        // $('.modal').hide();
+        // $('.modal-backdrop').hide();
+        // $('.total_venda').val('R$ 0,00');
+        // $('.table_itens_vendas tbody').html("");
+        // $('#valor_recebido').val('');
+        // $('#desconto').val('');
+        // $('#valor_recebido').prop('placeholder', 'A RECEBER');
+        // $('#desconto').prop('placeholder', 'DESCONTO%');
+        // $('#valor_desconto').val('');
+        // $('#troco').val('');
+        // $('#total_pagamento').val('').prop('placeholder', '0,00');
+        // $('#descricao').val('');
+        // $('#qtd_produto').val('');
+        // $('#valor_unitario').val('');
+        // $('#subtotal').val('');
+        // $('.letreiro').val("CAIXA LIVRE");
+        // document.getElementById('cod_barra').focus();
+        // openCupom();
+    // });
 }
 
 

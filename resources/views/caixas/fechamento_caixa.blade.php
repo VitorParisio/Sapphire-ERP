@@ -83,10 +83,28 @@
             font-family: monospace;
             font-style: italic;
         }
+        #preloader_full{
+            display: none;
+            position: absolute;
+            height:100vh;
+            width: 100%;
+            overflow: none;
+            z-index: 1000;
+            background-color: rgba(0,0,0,.6);
+            text-align: center;
+            z-index: 99999;
+        }
+        #preloader_full > img{
+            margin: 290px auto;
+            position: relative;
+            height: 100px;
+        }
+
     </style>
 </head>
 <body>
     <div class="fechamento_caixa" style="margin: 0 auto;">
+        <div id="preloader_full"><img src="{{asset('img/preloader.gif')}}" alt=""></div>
         <div class="errors"></div>
         <div class="header_fechamento_caixa">
             <span><i class="fas fa-cash-register"></i>&nbsp{{$caixa_info->descricao}} - FECHAMENTO</span>
@@ -497,17 +515,20 @@
         $.ajax({
             url: '/fechamento_caixa',
             method:'POST',
-            data: data, 
+            data: data,
+            beforeSend: () =>{
+                $("#preloader_full").css({'display' : 'block'});
+            }, 
             success:  function(data){
                 $(".errors").html("");
                 if($.isEmptyObject(data.error)){
                     imprimirCupomFechamento(caixa_id);
-                    setTimeout(() => {
-                        caixaLogout(caixa_id);
-                    }, 2000);   
+                    caixaLogout(caixa_id);
+                    $("#preloader_full").css({'display' : 'none'});
                 }else{
                     $.each(data.error, function(index, value) {
                         $(".errors").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
+                        $("#preloader_full").css({'display' : 'none'});s
                     });
                 }
             }

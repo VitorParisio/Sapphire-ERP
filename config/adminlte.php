@@ -303,8 +303,8 @@ return [
             'icon' => 'fas fa-tachometer-alt',
         ],
         [
-            'text' => 'Unidades',
-            'url'  => '/unidades',
+            'text' => 'Empresas',
+            'url'  => '/empresas',
             'icon' => 'fas fa-building',
         ],  
         [
@@ -338,22 +338,22 @@ return [
                 ],
             ],
         ],
-        [
-            'text'    => 'Configurações',
-            'icon'    => 'fas fa-cog',
-            'submenu' => [
-                [
-                'text' => 'Dados da empresa',
-                'url'  => '/unidades',
-                'icon' => 'fas fa-building'
-                ],
-                [
-                'text' => 'Usuários',
-                'url'  => '/cadastrar_nota',
-                'icon' => 'far fa-user-circle'
-                ],
-            ],  
-        ],
+        // [
+        //     'text'    => 'Configurações',
+        //     'icon'    => 'fas fa-cog',
+        //     'submenu' => [
+        //         [
+        //         'text' => 'Dados da empresa',
+        //         'url'  => '/unidades',
+        //         'icon' => 'fas fa-building'
+        //         ],
+        //         [
+        //         'text' => 'Usuários',
+        //         'url'  => '/cadastrar_nota',
+        //         'icon' => 'far fa-user-circle'
+        //         ],
+        //     ],  
+        // ],
     ],
 
     /*

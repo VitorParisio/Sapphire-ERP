@@ -3,6 +3,7 @@
 @section('title', 'AdminLTE')
 
 @section('content_header')
+    <div id="preloader_full"><img src="{{asset('img/preloader.gif')}}" alt=""></div>     
     <div style="display:flex; justify-content:space-between" >
         <h5 class="m-0 text-dark"><i class="fas fa-play-circle"></i> Empresas</h5>
         <ol class="breadcrumb float-sm-right" style="font-size: 13px;">
@@ -12,7 +13,7 @@
     </div>
     <div class="errors"></div>
 @stop
-@section('content')
+@section('content')   
     <div class="card card-primary card-tabs">
         <div class="tabcontainer">
             <div>
@@ -66,16 +67,16 @@
                                         <input type="text" class="form-control" name="cnpj" id="cnpj" placeholder="" value="{{ old('cnpj')}}" autocomplete="off">
                                     </label>
                                    
-                                    <label for="inscricao_estadual">Inscrição Estadual*
+                                    <label for="inscricao_estadual">Inscrição Estadual
                                         <input type="text" class="form-control" id="inscricao_estadual" name="ie" value="{{ old('IE')}}" autocomplete="off"/>
                                     </label>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="razao_social">Razão Social*
-                                        <input type="text" class="form-control" name="razao_social" id="razao_social" value="{{ old('razao_social')}}" autocomplete="off">
-                                    </label>
                                     <label for="fantasia">Fantasia*
                                         <input type="text" class="form-control" name="nome_fantasia" id="fantasia" value="{{old('nome_fantasia')}}"  autocomplete="off">
+                                    </label>
+                                    <label for="razao_social">Razão Social
+                                        <input type="text" class="form-control" name="razao_social" id="razao_social" value="{{ old('razao_social')}}" autocomplete="off">
                                     </label>
                                 </div>
                                 <div class="col-md-3">
@@ -88,12 +89,12 @@
                                 </div>
                                 <div class="col-md-3">
                                     <input type="file" name="certificado_a1" id="file_empresa_input" />
-                                    <label>Certificado Digital*</label>
+                                    <label>Certificado Digital</label>
                                     <label for="file_empresa_input" class="file_empresa_input">
                                         <span>Procurar</span>
                                         <span>Selecionar certificado</span>
                                     </label>
-                                    <label for="senha_certificado">Senha (certificado)*
+                                    <label for="senha_certificado">Senha (certificado)
                                         <input type="password" class="form-control" name="senha_certificado" id="senha_certificado" value="" style="text-align: right">
                                     </label>
                                 </div> 
@@ -102,15 +103,15 @@
                                     <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px; margin-bottom:15px; margin-top:15px;"><i class="fas fa-map-marker-alt"></i> ENDEREÇO:</h4>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="cep">CEP*
+                                    <label for="cep">CEP
                                         <input type="text" class="form-control" name="cep" id="cep" placeholder="" value="{{old('cep')}}" autocomplete="off" onblur="pesquisacep(this.value);"  maxlength="9">
                                     </label>
-                                    <label for="rua">Logradouro*
+                                    <label for="rua">Logradouro
                                         <input type="text" class="form-control" name="rua" id="rua" placeholder="" value="{{old('rua')}}" autocomplete="off" readonly>
                                     </label>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="numero">Número*
+                                    <label for="numero">Número
                                         <input type="text" class="form-control" name="numero" id="numero" placeholder="" value="{{old('numero')}}" autocomplete="off">
                                     </label>
                                     <label for="complemento">Complemento
@@ -118,15 +119,15 @@
                                     </label>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="bairro">Bairro*
+                                    <label for="bairro">Bairro
                                         <input type="text" class="form-control" name="bairro" id="bairro" placeholder="" value="{{old('bairro')}}" autocomplete="off" readonly>
                                     </label>
-                                    <label for="cidade">Cidade*
+                                    <label for="cidade">Cidade
                                         <input type="text" class="form-control" name="cidade" id="cidade" placeholder="" value="{{old('cidade')}}" autocomplete="off" readonly>
                                     </label>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="uf">UF*
+                                    <label for="uf">UF
                                         <input type="text" class="form-control" name="uf" id="uf" placeholder="" value="PE" autocomplete="off" readonly>
                                         <input type="hidden" name="cibge" type="text" id="ibge" value="2610707" /></label><br />
                                     </label>
@@ -202,10 +203,10 @@
 
             $('.id_editar').val(data[0]);
             $('.cnpj_editar').val(data[1]);
-            $('.razao_editar').val(data[2]);
+            $('.fantasia_editar').val(data[2]);
             $('.ie_editar').val(data[3]);
             $('.cidade_editar').val(data[4]);
-            $('.fantasia_editar').val(data[5]);
+            $('.razao_editar').val(data[5]);
             $('.im_editar').val(data[6]);
             $('.cnae_editar').val(data[7]);
             $('.cep_editar').val(data[8]);
@@ -226,7 +227,7 @@
 
             $id = data[0];
 
-            swal("Tem certeza que deseja remover a empresa?", {
+            swal("Tem certeza que deseja excluir esta empresa?", {
                 buttons: {
                     yes: {
                         text: "Sim",
@@ -242,8 +243,12 @@
                     $.ajax({
                         url:'/delete_empresa/'+$id,
                         type: 'DELETE',
+                        beforeSend: () =>{
+                            $("#preloader_full").css({'display' : 'block'});
+                        },
                         success:function(data)
                         {
+                            $("#preloader_full").css({'display' : 'none'});
                             swal({
                                 type: "warning",
                                 text: data.message,
@@ -274,9 +279,13 @@
                 processData: false,  
                 contentType: false,  
                 dataType: 'json',
+                beforeSend: () =>{
+                    $("#preloader_full").css({'display' : 'block'});
+                }, 
                 success: function(data)
                 {
                     $(".errors").html("");
+                    $("#preloader_full").css({'display' : 'none'});
                     if($.isEmptyObject(data.error)){
                         swal({
                             text: data.message,
@@ -291,6 +300,7 @@
                         });
                     }else{
                         $.each(data.error, function( index, value) {
+                            $("#preloader_full").css({'display' : 'none'});
                             $(".errors").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
                         });
                     }
@@ -311,8 +321,12 @@
                 processData: false,  
                 contentType: false,  
                 dataType: 'json',
+                beforeSend: () =>{
+                    $("#preloader_full").css({'display' : 'block'});
+                }, 
                 success: function(data)
                 {
+                    $("#preloader_full").css({'display' : 'none'});
                     if($.isEmptyObject(data.error)){
                         swal({
                             text: data.message,
@@ -328,6 +342,7 @@
                         });
                     }else{
                         $.each(data.error, function( index, value) {
+                            $("#preloader_full").css({'display' : 'none'});
                             $(".errors_editar_empresa").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
                         });
                     }

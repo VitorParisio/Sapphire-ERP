@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VendasController;
@@ -11,7 +15,6 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\NfeController;
 use App\Http\Controllers\ItemVendaNfeController;
 use App\Http\Controllers\CaixaController;
-use App\Http\Controllers\TstController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -24,7 +27,25 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes();
+//Auth::routes();
+
+// ------------ ROUTE AUTH ------------
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+// Reset password
+// Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+// Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+// Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+// Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
+
+// Route::group(['middleware' => 'register.domain.main'], function(){
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+
+// });
+// ------------------------------------
 
 Route::get('/', function () {
     return view('auth.login');
@@ -34,15 +55,14 @@ Route::get('/funcionario', function () {
     return view('login.index');
 });
 
-
-// Route::fallback(function(){
-//     return redirect()->back();
-// });
+Route::get('/404_error', function () {
+    return view('404');
+})->name('404_error');
 
 Route::group(['middleware' => 'auth'], function (){
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::get('/unidades', [EmitenteController::class, 'index'])->name('index.empresa');
+    Route::get('/empresas', [EmitenteController::class, 'index'])->name('index.empresa');
     Route::post('/empresas', [EmitenteController::class, 'store'])->name('store.empresa');
     Route::get('/empresas/page', [EmitenteController::class, 'getEmpresa'])->name('empresa.search_empresa');
     Route::post('/update_empresa/{id}', [EmitenteController::class, 'update'])->name('empresa.update');
@@ -73,8 +93,6 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/total_itens', [ProductController::class, 'totalItem'])->name('produtos.total_item');
     Route::get('/notifications', [ProductController::class, 'notifications'])->name('produtos.notifications');
 
-    // Route::get('/estoque', [ProductController::class, 'index'])->name('estoque');
-
     Route::get('/getproduto/{produto_pdv}', [ItemVendaController::class, 'index'])->name('item_vendas.get_produto');
     Route::post('/addproduto', [ItemVendaController::class, 'store'])->name('item_vendas.add_produto');
     Route::delete('/deletaprodutocod/{item_venda_id}/{product_id}/{qtd}', [ItemVendaController::class, 'destroy'])->name('item_vendas.deletaprotudocod');
@@ -97,8 +115,8 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('/abertura_caixa_op', [CaixaController::class, 'abrirCaixaOp'])->name('abrir_caixa_op.caixa');
     Route::get('/get_caixa_aberto/{id}', [CaixaController::class, 'getCaixaAberto'])->name('get_caixa_aberto.caixa');
     Route::get('/op_abre_caixa', [CaixaController::class, 'opAbreCaixa'])->name('op_abre_caixa.caixa');
-    Route::get('/suprimento_valores/{descricao_caixa}', [CaixaController::class, 'suprimentoCaxiaValores'])->name('sangria.caixa');
-    Route::post('/suprimento', [CaixaController::class, 'suprimentoCaixa'])->name('sangria.caixa');
+    Route::get('/suprimento_valores/{descricao_caixa}', [CaixaController::class, 'suprimentoCaixaValores'])->name('suprimento_valores.caixa');
+    Route::post('/suprimento', [CaixaController::class, 'suprimentoCaixa'])->name('suprimento.caixa');
     Route::get('/sangria_valores/{descricao_caixa}', [CaixaController::class, 'sangriaCaxiaValores'])->name('sangria.caixa');
     Route::post('/retirada_caixa', [CaixaController::class, 'retiradaSangria'])->name('retirada_sangria.caixa');
     Route::get('/fecha_caixa', [CaixaController::class, 'fechaCaixa'])->name('fecha_caixa.caixa');
@@ -108,7 +126,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/op_logout', [CaixaController::class, 'opLogout'])->name('op_logout.caixa');
 
     Route::get('/vender', [VendasController::class, 'index'])->name('vender.vendas');
-    Route::get('/cash_verify/{id}', [VendasController::class, 'cashVerify'])->name('vender.vendas');
+    Route::get('/cash_verify/{id}', [VendasController::class, 'cashVerify'])->name('verify_cash.vendas');
     Route::get('/pdv', [VendasController::class, 'pdv'])->name('pdv.vendas');
     Route::post('/finalizavenda', [VendasController::class, 'finalizaVenda'])->name('finaliza_venda.vendas');
     Route::get('/cupom', [VendasController::class, 'cupom'])->name('cupom.vendas');
@@ -129,5 +147,5 @@ Route::group(['middleware' => 'auth'], function (){
     Route::fallback(function(){
         return redirect()->back();
     });
- });
+});
 

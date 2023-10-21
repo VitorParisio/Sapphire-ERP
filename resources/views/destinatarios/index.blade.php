@@ -3,6 +3,7 @@
 @section('title', 'AdminLTE')
 
 @section('content_header')
+    <div id="preloader_full"><img src="{{asset('img/preloader.gif')}}" alt=""></div> 
     <div style="display:flex; justify-content:space-between" >
         <h5 class="m-0 text-dark"><i class="fas fa-play-circle"></i> Clientes</h5>
         <ol class="breadcrumb float-sm-right" style="font-size: 13px;">
@@ -63,12 +64,12 @@
                                     <label for="nome">Cliente*
                                         <input type="text" class="form-control" name="nome" id="nome" placeholder="" value="{{ old('nome')}}" autocomplete="off">
                                     </label>
-                                    <label for="cpf_cnpj">CPF/CNPJ*
+                                    <label for="cpf_cnpj">CPF/CNPJ
                                         <input type="text" class="form-control" name="cpf_cnpj" id="cpf_cnpj" value="{{ old('cnpj_cpf')}}" autocomplete="off">
                                     </label>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="rg_ie">RG/Insc. Estadual*
+                                    <label for="rg_ie">RG/Insc. Estadual
                                         <input type="text" class="form-control" name="rg_ie" id="fantasia" value="{{old('rg_ie')}}"  autocomplete="off">
                                     </label>
                                     <label for="fone_dest">Telefone
@@ -85,15 +86,15 @@
                                     <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px; margin-bottom:15px; margin-top:15px;"><i class="fas fa-map-marker-alt"></i> Endereço</h4>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="cep">CEP*
+                                    <label for="cep">CEP
                                         <input type="text" class="form-control" name="cep" id="cep" placeholder="" value="{{old('cep')}}" autocomplete="off" onblur="pesquisacep(this.value);"  maxlength="9">
                                     </label>
-                                    <label for="rua">Logradouro*
+                                    <label for="rua">Logradouro
                                         <input type="text" class="form-control" name="rua" id="rua" placeholder="" value="{{old('rua')}}" autocomplete="off" readonly>
                                     </label>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="numero">Número*
+                                    <label for="numero">Número
                                         <input type="text" class="form-control" name="numero" id="numero" placeholder="" value="{{old('numero')}}" autocomplete="off">
                                     </label>
                                     <label for="complemento">Complemento
@@ -101,15 +102,15 @@
                                     </label>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="bairro">Bairro*
+                                    <label for="bairro">Bairro
                                         <input type="text" class="form-control" name="bairro" id="bairro" placeholder="" value="{{old('bairro')}}" autocomplete="off" readonly>
                                     </label>
-                                    <label for="cidade">Cidade*
+                                    <label for="cidade">Cidade
                                         <input type="text" class="form-control" name="cidade" id="cidade" placeholder="" value="{{old('cidade')}}" autocomplete="off" readonly>
                                     </label>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="uf">UF*
+                                    <label for="uf">UF
                                         <input type="text" class="form-control" name="uf" id="uf" placeholder="" value="PE" autocomplete="off" readonly>
                                         <input type="hidden" name="cibge" type="text" id="ibge" value="2610707" readonly/></label><br />
                                     </label>
@@ -205,7 +206,7 @@
 
             $id = data[0];
 
-            swal("Tem certeza que deseja este cliente?", {
+            swal("Tem certeza que desejas excluir este cliente?", {
                 buttons: {
                     yes: {
                         text: "Sim",
@@ -221,8 +222,12 @@
                     $.ajax({
                         url:'/delete_cliente/'+$id,
                         type: 'DELETE',
+                        beforeSend: () =>{
+                            $("#preloader_full").css({'display' : 'block'});
+                        }, 
                         success:function(data)
                         {
+                            $("#preloader_full").css({'display' : 'none'});
                             swal({
                                 type: "warning",
                                 text: data.message,
@@ -253,9 +258,13 @@
                 processData: false,  
                 contentType: false,  
                 dataType: 'json',
+                beforeSend: () =>{
+                    $("#preloader_full").css({'display' : 'block'});
+                }, 
                 success: function(data)
                 {
                     $(".errors").html("");
+                    $("#preloader_full").css({'display' : 'none'});
                     if($.isEmptyObject(data.error)){
                         swal({
                             text: data.message,
@@ -267,6 +276,7 @@
                         });
                     }else{
                         $.each(data.error, function( index, value) {
+                            $("#preloader_full").css({'display' : 'none'});
                             $(".errors").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
                         });
                     }
@@ -287,8 +297,12 @@
                 processData: false,  
                 contentType: false,  
                 dataType: 'json',
+                beforeSend: () =>{
+                            $("#preloader_full").css({'display' : 'block'});
+                },
                 success: function(data)
                 {
+                    $("#preloader_full").css({'display' : 'none'});
                     if($.isEmptyObject(data.error)){
                         swal({
                             text: data.message,
@@ -300,6 +314,7 @@
                         });
                     }else{
                         $.each(data.error, function( index, value) {
+                            $("#preloader_full").css({'display' : 'none'});
                             $(".errors_editar_cliente").html('<div style="background: red; color: #FFF; padding:10px; font-weight: bold; font-size: 14px">'+value+'</div>');
                         });
                     }
@@ -328,7 +343,6 @@
 
     function getCliente(query = '')
     {   
-        
         $.ajax({
             url:"{{ route('clientes.search_client') }}",
             method: 'GET',
