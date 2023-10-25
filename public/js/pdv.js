@@ -125,7 +125,7 @@ $(function(){
     $('#valor_recebido').mask("000.000.000.000.000,00", {reverse: true});
 
     getProduto();
-    getProdutoTabela();
+    
 });
 
 function getProduto(data)
@@ -164,7 +164,7 @@ function getProduto(data)
             $.each(pdv,function(index,data){
                 var preco_venda = formatNumber.format(data.preco_venda);
                 var sub_total   = formatNumber.format(data.sub_total);
-                var img_tag     = data.img != null ? '<img src="storage/'+data.img+'" alt="img-item" />' : '<i class="fas fa-file-image fa-3x"></i>'
+                var img_tag     = data.img != null ? '<img src="storage/'+data.img+'" alt="img-item" />' : '<img src="img/sem_image.png"/>';
                 
                 $('.table_itens_vendas tbody').append('<tr>\
                     <td>'+img_tag+'</td>\
@@ -180,6 +180,7 @@ function getProduto(data)
             $('#qtd').val('');
             $('.total_venda').val(total_venda);
             totalPagamento();
+            getProdutoTabela();
         }
     });
 }
@@ -189,8 +190,8 @@ function getProdutoSearch(data = '')
     $.ajax({
         url: "getprodutosearch/"+data,
         type:'GET',
-        success: async function(data) {
-           await $('.lista_produtos_input').html(data);
+        success: function(data) {
+          $('.lista_produtos_input').html(data);
         }
     })
 }
@@ -198,10 +199,8 @@ function getProdutoSearch(data = '')
 function getProdutoTabela(query = '')
 {   
     $.ajax({
-        url:"/getprodutotable",
+        url:"/getprodutotable/"+query,
         method: 'GET',
-        dataType: 'json',
-        data:{query: query},
         success:function(data)
         {   
            $('.table_produto_list_pdv tbody').html(data.produto_nome_busca);
@@ -222,12 +221,12 @@ function totalPagamento(){
         type: 'GET',
         beforeSend: () => {
             $("#preloader_troco").css({'display' : 'block'});
-            $("#disabled_btn_finaliza_venda").prop('disabled', true)
+            $("#disabled_btn_finaliza_venda").prop('disabled', true);
         },
         success:function(data){
             $("#preloader_troco").css({'display' : 'none'});
-            $("#disabled_btn_finaliza_venda").prop('disabled', false)
-         
+            $("#disabled_btn_finaliza_venda").prop('disabled', false);
+           
             var options = { 
                 currency: 'BRL', 
                 minimumFractionDigits: 2, 
@@ -281,8 +280,8 @@ function deletaProdutoCod(item_venda_id, product_id, qtd)
             document.getElementById('cod_barra').focus();
 
             getProduto();
-            getProdutoTabela();
         }
+       
     });
 }
 

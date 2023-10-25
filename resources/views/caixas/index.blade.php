@@ -16,9 +16,9 @@
     <div class="card card-success">
         <div class="card-header" style="background-color: #2b5a7a;">
             <span class="card-title"></span>
-            <div class="card-tools">
+            {{-- <div class="card-tools">
                 <button style="border:none"><i class="fas fa-cog"></i> Gerenciar caixas</button>
-            </div>
+            </div> --}}
         </div>
         <div class="card-body" style="display:flex; gap: 0 20px; flex-wrap:wrap">
         </div>

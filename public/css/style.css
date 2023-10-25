@@ -1,6 +1,5 @@
 ::-webkit-scrollbar {
   width: 7px;
-
 }
 
 ::-webkit-scrollbar-track {
@@ -26,6 +25,11 @@ a{
     cursor: pointer;
 }
 
+.list_produtos_estoque_baixo{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
 /* ---------------------------------- PRELOADERS ------------------------------------- */
 #preloader_full{
     display: none;
@@ -338,16 +342,6 @@ input{
     gap: 10px;
 }
 
-/* .detalhes_produto > div:nth-child(1){
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align:center;
-    border-right: 1px solid rgba(0,0,0,0.2);
-    margin-right: 15px;
-} */
-
-
 .img_detalhe > img{
     width: 95px !important;
     height: 66px !important;
@@ -534,9 +528,8 @@ input{
 /* -------------------- VENDAS CSS ------------------------ */
 
 .dados_itens_venda{
-    width: 400px;
+    width: 354px;
     text-align:center;
-    margin-right: 5px;
 }
 
 .dados_itens_venda .dados_descricao, .dados_qtd, 
@@ -655,6 +648,7 @@ input{
     color: #FFF;
     border: none;
     text-align: center;
+    width: 364px;
 }
 
 .lista_produtos_input {

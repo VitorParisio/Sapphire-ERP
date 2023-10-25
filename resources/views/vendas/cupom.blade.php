@@ -10,29 +10,37 @@
         <span style="font-size:15px;">{{$emitente->nome_fantasia}}</span>
         <div style="font-size:11px;">
             <span><b>CNPJ:</b> {{$emitente->cnpj}}</span>
-            <span><b>IE:</b> {{$emitente->ie}}</span>
+            @if ($emitente->ie)
+                <span><b>IE:</b> {{$emitente->ie}}</span>
+            @endif
         </div>
-       <span style="font-size:11px;">{{$emitente->rua}}, {{$emitente->numero}}, {{$emitente->bairro}}, {{$emitente->cidade}}-{{$emitente->uf}}</span>
-       <span style="font-size:11px;">CEP: {{$emitente->cep}}</span><br>
+        @if ($emitente->rua && $emitente->numero && $emitente->bairro && $emitente->cidade)
+            <span style="font-size:11px;">{{$emitente->rua}}, {{$emitente->numero}}, {{$emitente->bairro}}, {{$emitente->cidade}}-{{$emitente->uf}}</span>
+        @endif
+        @if ($emitente->cep)
+            <span style="font-size:11px;">CEP: {{$emitente->cep}}</span><br>
+        @endif
        <span style="font-size:11px;">------------------------------------------------------</span>
     </div>
     <div>
-        <table style="font-size:11px; text-align:center;">
+        <table style="font-size:11px; text-align:center; width:100%">
             <thead style="font-size:9px;">
-                <td>DESCRIÇÃO</td>
-                <td>QTD</td>
-                <td>VL. UNIT</td>
-                <td>VL. TOTAL</td>
+                <tr>
+                    <th>DESCRIÇÃO</th>
+                    <th>Qtd.</th>
+                    <th>VL. UNIT</th>
+                    <th>VL. TOTAL</th>
+                </tr>
             </thead>
-                <tbody>
-                    @foreach($itens as $data)
-                        <tr>
-                            <td>{{$data->nome}}</td>
-                            <td>{{$data->qtd}}</td>
-                            <td>{{number_format($data->preco_venda, 2, ',','.')}}</td>
-                            <td>{{number_format($data->sub_total, 2, ',','.')}}</td>
-                        </tr>    
-                    @endforeach
+            <tbody>
+                @foreach($itens as $data)
+                    <tr>
+                        <td>{{$data->nome}}</td>
+                        <td>{{$data->qtd}}</td>
+                        <td>{{number_format($data->preco_venda, 2, ',','.')}}</td>
+                        <td>{{number_format($data->sub_total, 2, ',','.')}}</td>
+                    </tr>    
+                @endforeach
             </tbody>
         </table>
         <span style="font-size:11px;">------------------------------------------------------</span>

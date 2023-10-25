@@ -41,9 +41,9 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>CNPJ</th>
-                                <th>Razão Social</th>
-                                <th>Insc. Estadual</th>
+                                <th>CNPJ/CPF</th>
+                                <th>Fantasia</th>
+                                <th>Razão social</th>
                                 <th>Localidade</th>
                                 <th colspan=3>Ações</th>
                             </tr>
@@ -175,13 +175,13 @@
             var data = $tr.children("td").map(function(){
                 return $(this).html();
             }).get();
-
+            
             $('.id_empresa_detalhe').html(data[0]);
             $('.cnpj_detalhe').html(data[1]);
-            $('.razao_detalhe').html(data[2]);
-            $('.ie_detalhe').html(data[3]);
-            $('.cidade').html(data[4]);
-            $('.fantasia_detalhe').html(data[5]);
+            $('.fantasia_detalhe').html(data[2]);
+            $('.razao_detalhe').html(data[3]);
+            $('.uf').html(data[4]);
+            $('.ie_detalhe').html(data[5]);
             $('.im_detalhe').html(data[6]);
             $('.cnae_detalhe').html(data[7]);
             $('.cep').html(data[8]);
@@ -189,7 +189,7 @@
             $('.numero').html(data[10]);
             $('.complemento').html(data[11]);
             $('.bairro').html(data[12]);
-            $('.uf').html(data[13]);
+            $('.cidade').html(data[13]);
         });
 
         $(document).delegate(".edt_btn","click",function(){
@@ -204,9 +204,9 @@
             $('.id_editar').val(data[0]);
             $('.cnpj_editar').val(data[1]);
             $('.fantasia_editar').val(data[2]);
-            $('.ie_editar').val(data[3]);
-            $('.cidade_editar').val(data[4]);
-            $('.razao_editar').val(data[5]);
+            $('.razao_editar').val(data[3]);
+            $('.uf_editar').val(data[4]);
+            $('.ie_editar').val(data[5]);
             $('.im_editar').val(data[6]);
             $('.cnae_editar').val(data[7]);
             $('.cep_editar').val(data[8]);
@@ -214,7 +214,7 @@
             $('.numero_editar').val(data[10]);
             $('.complemento_editar').val(data[11]);
             $('.bairro_editar').val(data[12]);
-            $('.uf_editar').val(data[13]);
+            $('.cidade_editar').val(data[13]);
             
         });
 

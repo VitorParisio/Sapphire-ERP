@@ -48,9 +48,9 @@
                             <table class="table-striped tb_categorias">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Categorias</th>
-                                        <th>Descrições</th>
+                                        <th>Código</th>
+                                        <th>Categoria</th>
+                                        <th>Descrição</th>
                                         <th colspan="2">Ações</th>
                                     </tr>
                                 </thead>
@@ -179,7 +179,10 @@
                 </div>
                 <div class="tabbody" id="tab2" style="display: none;">
                     <div class="lista_produto">
-                        <span id="total_produtos" style="font-size:13px; position:absolute; margin: -34px 0; font-weight:900"></span>
+                        <div>
+                            <span id="total_produtos" style="font-size:13px; position:absolute; margin: -34px 0; font-weight:900"></span>
+                            <a class="estoque_baixo_modal" href="javascript:void(0);" style="font-size: 13px; position: absolute; margin: -34px 99px; font-weight: 900; color:red; display:none"><i>estoque baixo</i></a>
+                        </div>
                         <input class="search_product" id="search_product" name="search_product" type="text" placeholder="Pesquisar produto" style="outline: none" autocomplete="off">
                         <hr>
                         <div style="height: 465px; width:100%; overflow:auto;">
@@ -187,7 +190,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>ID</th>
+                                        <th>Código</th>
                                         <th>Categoria</th>
                                         <th>Produto</th>
                                         <th>Preço venda</th>
@@ -239,6 +242,9 @@
         </div>
         <div>
             @include('modals.categoria.editar')
+        </div>
+        <div>
+            @include('modals.estoque_baixo')
         </div>
     </div>
 @stop
@@ -440,7 +446,7 @@
                             }).then(() => {
                                 $('.errors').html("");
                                 getProduto();
-                                
+                                notifications();
                             });  
                         }
                     });
@@ -488,6 +494,7 @@
                             getCategoria();
                             getProduto();
                             selectCategoria();
+                            notifications();
                         });
                     }else{
                         $.each(data.error, function( index, value) {
@@ -526,10 +533,11 @@
                             $('#editar_produto_modal').modal('hide');
                             $(".errors").html("");
                             $(".errors_editar_produto").html("");
-
+                            $('.search_product').val("");
                             getCategoria();
                             getProduto();
                             selectCategoria();
+                            notifications();
                         });
                     }else{
                         $.each(data.error, function(index, value) {
@@ -654,6 +662,28 @@
             });
         });
 
+        $('.estoque_baixo_modal').on('click', function(){
+            $('#estoque_baixo_modal').modal('show');
+
+            $.ajax({
+                url:"{{ route('estoque_baixo.notifications') }}",
+                method: 'GET',
+                dataType: 'json',
+                success:function(data)
+                {
+                    $('.list_produtos_estoque_baixo').html(data.dados_produtos_estoque_baixo); 
+                }
+            });
+        })
+        $(document).delegate('.select_produto_estoque_baixo', 'click', function(e){
+
+            $('#estoque_baixo_modal').modal('hide');
+
+            var produto_selecionado_estoque_baixo = $(this).text();
+
+            $('.search_product').val(produto_selecionado_estoque_baixo).focus().trigger("keypress");
+        });
+     
         $('.tabheading li').click(function () {
             
             var tab_id = $(this).attr("rel");
@@ -675,7 +705,6 @@
 
         $('#img_produto_input').change(function(e){
             $('.img_produto_input span').next().text(e.target.files[0].name);
-
         })
 
         getCategoria();

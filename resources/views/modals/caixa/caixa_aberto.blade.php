@@ -46,9 +46,9 @@
             <div class="bg-danger" style="padding:10px">
                 <a href="javascript:void(0)" class="sangria_master"><i class="fas fa-minus-square"></i>&nbspSangria</a>
             </div>
-            <div class="bg-secondary" style="padding:10px">
-                <i class="fas fa-lock"></i>&nbsp<a href="http://">Fechar caixa</a>
-            </div>
+                <div class="bg-secondary" style="padding:10px">
+                    <i class="fas fa-lock"></i>&nbsp<a href="{{route('fecha_caixa.caixa')}}">Fechar caixa</a>
+                </div>
           </div>
       </div>
     </div>

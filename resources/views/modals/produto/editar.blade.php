@@ -74,6 +74,11 @@
                   <label for="validade">Validade</label>
                   <input type="date" class="validade_editar" id="validade" name="validade"/>
                 </div>
+                <div style="margin-top: 4px;">
+                  <label for="validade">Entrada de produto</label>
+                  <input type="radio" name="entrada" value="yes">Sim&nbsp
+                  <input type="radio" name="entrada" value="no">Não
+                </div>
               </div>
               <div>
                 <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px; margin-top:10px;"><i class="fas fa-file-invoice-dollar"></i> Dados fiscais</h4>

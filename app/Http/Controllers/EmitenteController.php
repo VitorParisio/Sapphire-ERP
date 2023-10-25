@@ -49,9 +49,9 @@ class EmitenteController extends Controller
                 <td>'.$row->id.'</td>
                 <td>'.$row->cnpj.'</td>
                 <td>'.ucfirst($row->nome_fantasia).'</td>
-                <td>'.$row->ie.'</td>
-                <td>'.$row->cidade.'</td>
-                <td style="display:none;">'.ucfirst($row->razao_social).'</td>
+                <td>'.ucfirst($row->razao_social).'</td>
+                <td>'.$row->uf.'</td>
+                <td style="display:none;">'.$row->ie.'</td>
                 <td style="display:none;">'.$im.'</td>
                 <td style="display:none;">'.$cnae.'</td>
                 <td style="display:none;">'.$row->cep.'</td>
@@ -59,10 +59,10 @@ class EmitenteController extends Controller
                 <td style="display:none;">'.$row->numero.'</td>
                 <td style="display:none;">'.$complemento.'</td>
                 <td style="display:none;">'.$row->bairro.'</td>
-                <td style="display:none;">'.$row->uf.'</td>
-                <td><a href="#" class="dtls_btn"><i class="fas fa-eye fa-sm" title="Detalhes da empresa"></i></a></td>
-                <td><a href="#" class="edt_btn" style="color:gray"><i class="fas fa-edit fa-sm" title="Editar empresa"></i></a></td>
-                <td><a href="#" class="del_btn" style="color:red"><i class="fas fa-times-circle fa-sm" title="Deletar empresa"></i></i></a></td>
+                <td style="display:none;">'.$row->cidade.'</td>
+                <td><a href="javascript:void(0);" class="dtls_btn"><i class="fas fa-eye fa-sm" title="Detalhes da empresa"></i></a></td>
+                <td><a href="javascript:void(0);" class="edt_btn" style="color:gray"><i class="fas fa-edit fa-sm" title="Editar empresa"></i></a></td>
+                <td><a href="javascript:void(0);" class="del_btn" style="color:red"><i class="fas fa-times-circle fa-sm" title="Deletar empresa"></i></i></a></td>
               </tr>
             ';
           }

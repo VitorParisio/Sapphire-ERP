@@ -36,6 +36,8 @@
         .callout.callout-info{
             border-left-color: #117a8b;
             padding: 0px;
+            width: 300px;
+            margin-left: 10px;
         }
         .callout .header_valores_caixa{
             text-align: center;
@@ -53,6 +55,7 @@
         .btn_fechar_caixa{
             display: flex;
             align-items: center;
+            justify-content: center;
         }
 
         .btn_fechar_caixa button{
@@ -109,7 +112,7 @@
         <div class="header_fechamento_caixa">
             <span><i class="fas fa-cash-register"></i>&nbsp{{$caixa_info->descricao}} - FECHAMENTO</span>
         </div>
-        <div style="display: flex; flex-wrap:wrap; margin-top:10px; justify-content: space-evenly">
+        <div style="display: flex; margin-top:10px;">
             <div class="callout callout-info">
                 <div class="header_valores_caixa">
                     <span>VALORES</span>
@@ -122,38 +125,36 @@
                     <li><b>TOTAL CAIXA:</b> R$ {{number_format($caixa_info->total_caixa, 2,',','.')}}</li>
                 </ul>
             </div>
-            <div style="display: flex;">
-                <ul style="display:flex; flex-direction:column; gap:5px">
+            <div style="display: block; text-align: center; width: 100%;">
+                <ul style="display:inline-block; padding: 0;">
                     <li style="text-align:center; background:#0098ff; color:#FFF; font-weight:900; padding:10px;">PAGAMENTOS</li><hr>
                     @foreach($data as $key => $forma_pagamento_fechamento)
                         <li><input type="text" name="forma_pagamento_fechamento[]" class="forma_pagamento_fechamento_{{$forma_pagamento_fechamento}}" value="{{$forma_pagamento_fechamento}}" style="text-align:center; border:none; background: darkgrey; color:#FFF; padding:5px 0"></li>
                         <span class="msg_forma_pagamento_fechamento_{{$forma_pagamento_fechamento}}" style="display:none"></span>
                     @endforeach
-                   
                 </ul>
-                <ul style="display:flex; flex-direction:column; gap:5px">
+                <ul style="display:inline-block; padding: 0;">
                     <li style="text-align:center; background:#0098ff; color:#FFF; font-weight:900; padding:10px;">PREVISTOS(R$)</li><hr>
                     @foreach($conta_fechamentos as $key => $conta_fechamento_total)
                         <li><input type="text" name="total_fechamento[]" class="conta_fechamento_total_{{$data[$key]}}" value="{{$conta_fechamento_total->total_venda_fechamento}}" style="text-align:center; border:none; background: darkgrey; color:#FFF; padding:5px 0"></li>
                     @endforeach
                 </ul>
-                <ul style="display:flex; flex-direction:column; gap:5px">
+                <ul style="display:inline-block; padding: 0;">
                     <li style="text-align:center; background:#0098ff; color:#FFF; font-weight:900; padding:10px;">REALIZADOS(R$)</li><hr>
                     @for($i = 0; $i < count($conta_fechamentos); $i++)
                         <li><input type="text" name="valor_informado_fechamento[]" class="forma_pagamento_numero_{{$data[$i]}}" id="{{$conta_fechamentos[$i]->forma_pagamento}}" style="text-align:center; background: #ececec; border:none; padding:5px 0; outline:none"></li>
                     @endfor
                 </ul>
-                <ul style="display:flex; flex-direction:column; gap:5px">
+                <ul style="display:inline-block; padding: 0;">
                     <li style="text-align:center; background:#0098ff; color:#FFF; font-weight:900; padding:10px;">DIFERENÇAS(R$)</li><hr>
                     @for($i = 0; $i < count($conta_fechamentos); $i++)
                         <li><input type="text" name="diferenca_fechamento[]" class="diferenca_fechamento_{{$data[$i]}}" id="{{$conta_fechamentos[$i]->forma_pagamento}}" style="text-align:center; border:none; background: darkgrey; color:#FFF; padding:5px 0;"></li>
                     @endfor
                 </ul>
-               
             </div> 
-            <div class="btn_fechar_caixa">
-                <button onclick="fechamentoCaixa({{$caixa_info->caixa_id}})"><i class="fas fa-lock"></i> FECHAR {{$caixa_info->descricao}}</button>
-            </div>
+        </div>
+        <div class="btn_fechar_caixa">
+            <button onclick="fechamentoCaixa({{$caixa_info->caixa_id}})"><i class="fas fa-lock"></i> FECHAR {{$caixa_info->descricao}}</button>
         </div>
         <hr>
         @if ($qtd_itens_vendidos > 0)
@@ -519,11 +520,13 @@
             beforeSend: () =>{
                 $("#preloader_full").css({'display' : 'block'});
             }, 
-            success:  function(data){
+            success: function(data){
                 $(".errors").html("");
                 if($.isEmptyObject(data.error)){
                     imprimirCupomFechamento(caixa_id);
-                    caixaLogout(caixa_id);
+                    setTimeout(() => {
+                        caixaLogout(caixa_id);
+                    }, 1000);
                     $("#preloader_full").css({'display' : 'none'});
                 }else{
                     $.each(data.error, function(index, value) {

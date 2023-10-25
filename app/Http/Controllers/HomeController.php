@@ -39,7 +39,7 @@ class HomeController extends Controller
             $total_mes          = [];
             $totalMesEspecifico = [];
             
-            $totalCompraMes = Product::select(Product::raw('MONTH(created_at) as mes'), Product::raw('SUM(preco_compra) as total'))
+            $totalCompraMes = Product::select(Product::raw('MONTH(created_at) as mes'), Product::raw('SUM(total_compra) as total'))
             ->where(Product::raw('MONTH(created_at)'), date('m'))
             ->where(Product::raw('YEAR(created_at)'), date('Y'))
             ->groupBy('mes')
@@ -67,12 +67,13 @@ class HomeController extends Controller
             });
 
             $itens_vendidos = ItemVenda::join('products', 'products.id', '=', 'item_vendas.product_id')
-            ->selectRaw('products.id, products.nome, products.estoque, products.preco_venda , SUM(item_vendas.qtd) as total_item_venda')
+            ->selectRaw('products.id, products.nome, products.estoque, products.preco_venda, SUM(item_vendas.qtd) as total_item_venda')
             ->where(ItemVenda::raw('MONTH(item_vendas.data_venda)'), date('m'))
             ->where(ItemVenda::raw('YEAR(item_vendas.data_venda)'), date('Y'))
+            ->havingRaw('SUM(item_vendas.qtd) >= 10') 
             ->groupBy('products.id', 'products.nome', 'products.preco_venda', 'products.estoque','item_vendas.data_venda')
             ->get();
-
+            
             foreach ($meses_bar_grafico as $key => $values)
             { 
                 $mes_venda[] = $key;

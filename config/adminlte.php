@@ -323,11 +323,11 @@ return [
             'icon' => 'fas fa-cash-register',
         ],
         [
-            'text'    => 'Nota Fiscal',
+            'text'    => 'Fiscal',
             'icon'    => 'fas fa-file-alt',
             'submenu' => [
                 [
-                'text' => 'Fiscal',
+                'text' => 'Notas fiscais',
                 'url'  => '/notas_fiscais',
                 'icon' => 'fas fa-clone'
                 ],

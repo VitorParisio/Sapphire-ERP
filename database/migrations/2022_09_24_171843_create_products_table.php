@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->string('cest')->nullable();
             $table->string('icms')->nullable();
             $table->decimal('preco_compra', 10,2)->default(0.00)->nullable();
+            $table->decimal('total_compra', 10,2)->default(0.00)->nullable();
             $table->decimal('preco_venda', 10,2);
             $table->decimal('preco_minimo', 10,2)->default(0.00)->nullable();
             $table->integer('qtd_compra');

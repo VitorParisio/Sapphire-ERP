@@ -262,7 +262,7 @@ class CaixaController extends Controller
         ->where('user_abertura_id', $user_auth)
         ->where('status', '=', 1)
         ->first();
-       
+  
         $data                             = $request->all();
         $total_fechamento                 = 0.0;
         $total_valor_informado_fechamento = 0.0;
@@ -324,8 +324,8 @@ class CaixaController extends Controller
             $valor_fechamento_caixa = $caixa_info->total_caixa + $caixa_info->suplemento - $caixa_info->sangria - $total_diferenca; 
             $valor_vendido          = $caixa_info->valor_vendido - $total_diferenca;
 
-            Caixa::where('caixas.user_abertura_id', $user_auth)
-            ->where('caixas.status', '=', 1)
+            Caixa::where('user_abertura_id', $user_auth)
+            ->where('status', '=', 1)
             ->update([
                 "user_fechamento_id" => $user_auth,
                 "data_fechamento"    => date('Y:m:d'),
@@ -340,8 +340,8 @@ class CaixaController extends Controller
             $valor_fechamento_caixa = $caixa_info->total_caixa + $caixa_info->suplemento + $total_diferenca - $caixa_info->sangria ; 
             $valor_vendido          = $caixa_info->valor_vendido + $total_diferenca;
 
-            Caixa::where('caixas.user_abertura_id', $user_auth)
-            ->where('caixas.status', 1)
+            Caixa::where('user_abertura_id', $user_auth)
+            ->where('status', 1)
             ->update([
                 "user_fechamento_id" => $user_auth,
                 "data_fechamento"    => date('Y:m:d'),
@@ -351,8 +351,8 @@ class CaixaController extends Controller
             ]);
         } else {
           
-            Caixa::where('caixas.user_abertura_id', $user_auth)
-            ->where('caixas.status', '=', 1)
+            Caixa::where('user_abertura_id', $user_auth)
+            ->where('status', '=', 1)
             ->update([
                 "user_fechamento_id" => $user_auth,
                 "data_fechamento"    => date('Y:m:d'),
@@ -418,7 +418,7 @@ class CaixaController extends Controller
     }
 
     function cupomFechamento($caixa_id){
-     
+    
         $user_auth  = Auth::user()->id;
      
         $info_caixa = Caixa::join('numero_caixas', 'numero_caixas.id', '=', 'caixas.nro_caixa_id')
@@ -427,7 +427,7 @@ class CaixaController extends Controller
         ->where('caixas.id', $caixa_id)
         ->where('caixas.status', 1)
         ->first();
-
+        
         $fechamento = $info_caixa->valor_fechamento != 0 ? $info_caixa->valor_fechamento : $info_caixa->total_caixa;
 
         $pagamentos = ContaFechamento::join('caixas', 'caixas.id', '=', 'conta_fechamentos.caixa_id')
@@ -436,7 +436,7 @@ class CaixaController extends Controller
         ->where('caixas.status', 1)
         ->groupBy('conta_fechamentos.forma_pagamento_fechamento', 'diferenca_pagamento')
         ->get();
-        
+       
         $view = view('caixas.cupom_fechamento', compact('info_caixa', 'pagamentos', 'fechamento'));
 
         $pdf = PDF::loadHTML($view)->setPaper([0, 0, 807.874, 321.102], 'landscape');
@@ -470,7 +470,7 @@ class CaixaController extends Controller
         Auth::logout();
     }
 
-    function suprimentoCaxiaValores($desricao_caixa)
+    function suprimentoCaixaValores($desricao_caixa)
     {
         $total_caixa = NumeroCaixa::join('caixas', 'numero_caixas.id', '=', 'caixas.nro_caixa_id')
         ->select('caixas.total_caixa')

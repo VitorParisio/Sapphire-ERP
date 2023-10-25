@@ -5,11 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta http-equiv="Cache-Control" content="no-cache" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <title>PDV - SapphireRP</title>
   </head>
   <body style="background:linear-gradient(45deg, black, transparent);">
@@ -46,7 +47,7 @@
           </table>
         </div>
         <div style="display: flex; align-items:center; margin-top: 438px; justify-content: space-between; position: absolute;">
-          <div style="display: flex; margin-top:-180px;">
+          <div style="display: flex; margin-top:-180px; width: 477px;">
             <div class="lista_produtos_input" style="width: 485px;"></div>
             <input type="text" id="cod_barra" placeholder="Código/Produto" style="outline:none; text-align:center; width: 485px;" autocomplete="off" >
             <form id="form_cod_barra" action="#">
@@ -90,7 +91,10 @@
     </div>
     <div class="lista_atalhos">
       <div class="lista_teclas">
-        <div></div>
+        <div style="position: relative;">
+          <img src="{{asset('img/sapphire_logo.png')}}" alt="logo" style="position: absolute; height: 63px; margin: 9px 0;">
+          <span></span>
+        </div>
         <div>
           <span>Alt + 3 - INICIAR VENDA&nbsp<i class="fas fa-sticky-note"></i></span>
           <span>Alt + Q - BUSCAR PRODUTO&nbsp<i class="fas fa-search"></i></span>
@@ -167,25 +171,22 @@
 
         $('#valor_recebido').blur(function(){
           if ($('#valor_recebido').val() == '')
-            $('#valor_recebido').prop( "placeholder", "A RECEBER" );
+            $('#valor_recebido').prop( "placeholder", "A RECEBER");
+          totalPagamento();
         });
 
         $('#desconto').blur(function(){
           if ($('#desconto').val() == '')
-            $('#desconto').prop( "placeholder", "DESCONTO%" );
-          totalPagamento();
-        });
-
-        $('#valor_recebido').blur(function(){
+            $('#desconto').prop( "placeholder", "DESCONTO%");
           totalPagamento();
         });
 
         $('#valor_recebido').focus(function(){
-          $('#valor_recebido').prop( "placeholder", "0,00" );
+          $('#valor_recebido').prop( "placeholder", "0,00");
         });
 
         $('#desconto').focus(function(){
-          $('#desconto').prop( "placeholder", "%" );
+          $('#desconto').prop( "placeholder", "%");
         });
       });
 

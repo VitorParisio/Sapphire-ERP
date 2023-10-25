@@ -72,7 +72,6 @@ class ItemVendaController extends Controller
     
         foreach($item as $data)
         {   
-          
             if ($produto->id == $data->product_id)
             {
                 $itens = ItemVenda::where('id', $data->item_venda_id)->first();
@@ -175,9 +174,8 @@ class ItemVendaController extends Controller
         return view('vendas.pdv');
     }
 
-    function getProdutoTable(Request $request)
+    function getProdutoTable(Request $request, $query = null)
     {
-        $query              = $request->get('query');
         $produto_nome_busca = '';
         $total_row          = '';
     
@@ -187,12 +185,10 @@ class ItemVendaController extends Controller
           {
             $produto = Product::where('nome','LIKE','%'.$query.'%')
             ->get(); 
-
           }
           else
           {
             $produto = Product::orderBy('nome', 'ASC')->get();
-            
           }
     
           $total_row   = $produto->count();
@@ -204,7 +200,7 @@ class ItemVendaController extends Controller
               $produto_nome_busca .='
                 <tr>
                   <td>'.$row->id.'</td>
-                  <td class="produto_nome_busca"><a href="javascript:void(0)">'.ucfirst($row->nome).'</a></td>
+                  <td class="produto_nome_busca"><a href="javascript:void(0);">'.ucfirst($row->nome).'</a></td>
                   <td>R$ '.number_format($row->preco_venda, 2, ',', '.').'</td>
                   <td>'.$row->estoque.'</td>
                 </tr>

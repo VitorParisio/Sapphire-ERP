@@ -28,7 +28,7 @@ class ProductController extends Controller
       {
         $produto = Category::join('products', 'categories.id', '=', 'products.category_id')
         ->where('products.nome','LIKE','%'.$query.'%')
-        ->orderBy('categories.categoria', 'ASC')
+        ->orderBy('products.nome', 'ASC')
         ->get(); 
 
         $total_itens = $produto->count();
@@ -36,7 +36,7 @@ class ProductController extends Controller
       else
       {
         $produto = Category::join('products', 'categories.id', '=', 'products.category_id')
-        ->orderBy('categories.categoria', 'ASC')->get();
+        ->orderBy('products.nome', 'ASC')->get();
         
         $total_itens = $produto->count();
       }
@@ -47,7 +47,7 @@ class ProductController extends Controller
       {
         foreach($produto as $row)
         {
-          $img_prod       = $row->img ? '<img src="storage/'.$row->img.'" alt="img_item" style="width:55px; height:30px;"/>' : '<img src="img/sem_imagem.jpg" alt="img_item" style="width:55px; height:30px;"/>';
+          $img_prod       = $row->img ? '<img src="storage/'.$row->img.'" alt="img_item" style="width:55px; height:30px;"/>' : '<img src="img/sem_image.png" alt="img_item" style="width:55px; height:30px;"/>';
           $cod_barra      = $row->cod_barra == null ? "Não informado" : $row->cod_barra;
           $estoque_minimo = $row->estoque_minimo == null ? "Não informado" : $row->estoque_minimo;
           $descricao      = $row->descricao == null ? "Não informado" : $row->descricao;
@@ -77,9 +77,9 @@ class ProductController extends Controller
               <td style="display:none;">5101</td>
               <td style="display:none;">0 - Nacional</td>
               <td style="display:none;">102 - Simples Nacional sem permissão de crédito</td>
-              <td><a href="#" class="dtls_btn"><i class="fas fa-eye fa-sm" title="Detalhes do produto"></i></a></td>
-              <td><a href="#" class="edt_btn" style="color: gray;"><i class="fas fa-edit fa-sm" title="Editar produto"></i></a></td>
-              <td><a href="#" class="del_btn" style="color: red;"><i class="fas fa-times-circle fa-sm" title="Deletar produto"></i></a></td>
+              <td><a href="javascript:void(0);" class="dtls_btn"><i class="fas fa-eye fa-sm" title="Detalhes do produto"></i></a></td>
+              <td><a href="javascript:void(0);" class="edt_btn" style="color: gray;"><i class="fas fa-edit fa-sm" title="Editar produto"></i></a></td>
+              <td><a href="javascript:void(0);" class="del_btn" style="color: red;"><i class="fas fa-times-circle fa-sm" title="Deletar produto"></i></a></td>
             </tr>
           ';
         }
@@ -128,7 +128,7 @@ class ProductController extends Controller
     [
       'category_id.required'   => 'Campo "Categoria" deve ser preenchido.',
       'category_id.numeric'    => 'Selecione uma categoria existente.',
-      'category_id.not_in'     => 'Campo "Categoria" deve ser preenchido".',
+      'category_id.not_in'     => 'Campo "Categoria" deve ser preenchido.',
       'cod_barra.regex'        => 'Digitar apenas números no campo "EAN (Código Barra)".',
       'cod_barra.unique'       => 'EAN (Código Barra) já cadastrado.',
       'ncm.regex'              => 'Digitar apenas números no campo "NCM".',
@@ -157,7 +157,7 @@ class ProductController extends Controller
             'error' => $validator->errors()->all()
         ]);
     }
-
+ 
     if ($data['preco_compra'] == null)
     {
       $data['preco_compra'] = 0.00;
@@ -178,16 +178,18 @@ class ProductController extends Controller
 
     $preco_venda_formatado  = str_replace('.', '', $request->preco_venda);
     $vuntrib_formatado      = str_replace('.', '', $request->vuntrib);
+    $total_compra           = str_replace(',', '.', $request->preco_compra) * (float)$request->estoque;
     
     $data['preco_venda']  = str_replace(',', '.', $preco_venda_formatado);
     $data['vuntrib']      = str_replace(',', '.', $vuntrib_formatado);
     $data['qtd_compra']   = $request->estoque;
+    $data['total_compra'] = $total_compra;
     
     if ($request->img != null)
     {
       if ($request->img->isValid())
       {
-        $nome_foto = Str::of($request->nome)->slug('-'). '.' .$request->img->getClientOriginalExtension();
+        $nome_foto = Str::of($request->nome)->slug('-').'.'.$request->img->getClientOriginalExtension();
 
         $foto = $request->img->storeAs('prod_img', $nome_foto);
         $data['img'] = $foto;
@@ -207,6 +209,8 @@ class ProductController extends Controller
     $produto = Product::where('id', $id)
     ->first();
 
+    $entrada_estoque = $produto->estoque + $request->input('estoque');
+
     $validator = Validator::make($request->all(), [
       'category_id'    => 'required|numeric|not_in:0|',
       'cod_barra'      => 'nullable|regex:/^[0-9]+$/|unique:products,cod_barra,'.$produto->id,
@@ -221,28 +225,29 @@ class ProductController extends Controller
       'extipi'         => 'nullable|numeric',
       'estoque_minimo' => 'nullable|numeric',
       'descricao'      => 'nullable|regex:/^[A-Za-záàâãéêíóúçÁÀÂÃÉÊÍÓÚÇ 0-9 "-]*$/',
-      'img'            => 'image|max:2048|mimes:jpg,jpeg,png'
+      'img'            => 'image|max:2048|mimes:jpg,jpeg,png',
+      'entrada'        => 'required'
     ],
     [
       'category_id.required'   => 'Campo "Categoria" deve ser preenchido.',
       'category_id.numeric'    => 'Selecione uma categoria existente.',
-      'category_id.not_in'     => 'Campo "Categoria" deve ser preenchido".',
+      'category_id.not_in'     => 'Campo "Categoria" deve ser preenchido.',
       'cod_barra.regex'        => 'Digitar apenas números no campo "EAN (Código Barra)".',
       'cod_barra.unique'       => 'EAN (Código Barra) já cadastrado.',
       'ncm.regex'              => 'Digitar apenas números no campo "NCM".',
       'cest.regex'             => 'Digitar apenas números no campo "CEST".',
       'nome.unique'            => 'Produto já cadastrado.',
-      'nome.required'          => 'Campo "Produto" deve ser preenchido".',
+      'nome.required'          => 'Campo "Produto" deve ser preenchido.',
       'nome.max'               => 'Excedeu o limite de 100 caracteres.',
       'nome.min'               => 'Poucos dígitos no campo "Produto".',
       'nome.regex'             => 'Digitar apenas letras no campo "Produto".',
       'preco_compra.required'  => 'Campo "Preço custo" deve ser preenchido.',
       'preco_compra.regex'     => 'Valor incorreto no campo "Preço custo".',
-      'preco_venda.required'   => 'Campo "Preço venda" deve ser preenchido".',
+      'preco_venda.required'   => 'Campo "Preço venda" deve ser preenchido.',
       'preco_venda.regex'      => 'Valor incorreto no campo "Preço venda".',
       'preco_minimo.required'  => 'Campo "Preço mínimo" deve ser preenchido.',
       'preco_minimo.regex'     => 'Valor incorreto no campo "Preço mínimo".',
-      'estoque.required'       => 'Campo "Estoque atual" deve ser preenchido."',
+      'estoque.required'       => 'Campo "Estoque atual" deve ser preenchido.',
       'estoque.numeric'        => 'Digitar apenas números no campo "Estoque atual".',
       'validade.date'          => 'Data inválida.',
       'img.max'                => 'Tamanho máximo de 2MB (2048KB).',
@@ -250,8 +255,8 @@ class ProductController extends Controller
       'estoque_minimo.numeric' => 'Digitar apenas números no campo "Estoque Mínimo".',
       'descricao'              => 'Digitar apenas letras e/ou números no campo "Descrição".',
       'img.mimes'              => 'Campo "Imagem" aceita apenas as extensões .jpg, .jpeg e .png',
+      'entrada.required'       => 'Campo "Entrada" deve ser preenchido.',
     ]);
-
 
     if ($validator->fails()) {
       return response()->json([
@@ -262,7 +267,6 @@ class ProductController extends Controller
     $produto->cod_barra      = $request->input('cod_barra');
     $produto->ceantrib       = $request->input('ceantrib');
     $produto->nome           = $request->input('nome');
-    $produto->estoque        = $request->input('estoque');
     $produto->estoque_minimo = $request->input('estoque_minimo');
     $produto->descricao      = $request->input('descricao');
     $produto->category_id    = $request->input('category_id');
@@ -270,16 +274,24 @@ class ProductController extends Controller
     $produto->ncm            = $request->input('ncm');
     $produto->cest           = $request->input('cest');
     $produto->extipi         = $request->input('extipi');
-
-    $preco_compra_formatado = str_replace('.', '', $request->preco_compra);
-    $preco_venda_formatado  = str_replace('.', '', $request->preco_venda);
-    $vuntrib_formatado      = str_replace('.', '', $request->vuntrib);
-    $preco_minimo_formatado = str_replace('.', '', $request->preco_minimo);
-
-    $produto->preco_compra = str_replace(',', '.', $preco_compra_formatado);
-    $produto->preco_venda  = str_replace(',', '.', $preco_venda_formatado);
-    $produto->vuntrib      = str_replace(',', '.', $vuntrib_formatado);
-    $produto->preco_minimo = str_replace(',', '.', $preco_minimo_formatado);
+    
+    $produto->preco_compra = str_replace(',', '.', $request->preco_compra);
+    $produto->preco_venda  = str_replace(',', '.', $request->preco_venda);
+    $produto->vuntrib      = str_replace(',', '.', $request->vuntrib);
+    $produto->preco_minimo = str_replace(',', '.', $request->preco_minimo);
+    
+    if ($request->entrada == 'no')
+    {
+      $produto->estoque    = $request->input('estoque');
+      $produto->qtd_compra = $request->input('estoque');
+    }
+    else
+    {
+      $produto->estoque    = $entrada_estoque;
+      $produto->qtd_compra = $entrada_estoque;
+      
+      $produto->total_compra = $produto->total_compra + (str_replace(',', '.', $request->preco_compra) * (float)$request->input('estoque'));
+    }
 
     if ($request->img != null)
     {
@@ -390,10 +402,62 @@ class ProductController extends Controller
   }
 
   function notifications(){
-    $produtos_count = Product::where('estoque', '<=', 5)->count();
-    $estoque_baixo = false;
 
-    return response()->json(['produtos_count' => $produtos_count, 'estoque_baixo' => $estoque_baixo]);
+    $produtos_estoque_minimo = Product::select('nome')
+    ->whereColumn('estoque', '<=','estoque_minimo')
+    ->get();
+
+    $produtos_count = Product::whereColumn('estoque', '<=','estoque_minimo')->count();
+ 
+    $estoque_baixo                = false;
+    $estoque_baixo_msg            = '';
+    $lista_produtos_estoque_baixo = '';
+
+    $estoque_baixo_msg ='<span style="color: red; font-style: italic">Produtos com estoque baixo: '.$produtos_count.'</span><hr>';
+    if ($produtos_count > 0)
+    {
+      foreach($produtos_estoque_minimo as $values)
+      {
+        $lista_produtos_estoque_baixo .='<li style="border-bottom: 1px solid; padding: 5px;">'.ucfirst($values->nome).'</li>';
+      }
+    } 
+    else {
+        $lista_produtos_estoque_baixo ='<li style="padding: 5px; color: lightgray; font-family:serif;"><i>Sem informações no momento.</i></li>';
+    }
+
+    $data = array(
+            'produtos_estoque_minimo'      => $produtos_estoque_minimo, 
+            'produtos_count'               => $produtos_count, 
+            'estoque_baixo'                => $estoque_baixo, 
+            'estoque_baixo_msg'            => $estoque_baixo_msg,
+            'lista_produtos_estoque_baixo' => $lista_produtos_estoque_baixo
+          );
+
+    return response()->json($data);
+  }
+
+  public function estoqueBaixo()
+  {
+    $produtos_estoque_baixo = Product::select('id', 'nome','qtd_compra','estoque','estoque_minimo')
+    ->whereColumn('estoque', '<=','estoque_minimo')
+    ->get();
+
+    $produtos_count = Product::whereColumn('estoque', '<=','estoque_minimo')->count();
+
+    $dados_produtos_estoque_baixo = '';
+   
+    foreach($produtos_estoque_baixo as $values)
+    {
+      $dados_produtos_estoque_baixo .=
+          '<tr>
+              <td style="border-bottom: 1px solid; padding: 5px;">'.$values->id.'</td>
+              <td style="border-bottom: 1px solid; padding: 5px;"><a class="select_produto_estoque_baixo" href="javascript:void(0);">'.ucfirst($values->nome).'</a></td>
+              <td style="border-bottom: 1px solid; padding: 5px;">'.$values->estoque.'</td>
+              <td style="border-bottom: 1px solid; padding: 5px;">'.$values->estoque_minimo.'</td>
+          </tr>';
+    }
+
+    return response()->json(['dados_produtos_estoque_baixo' => $dados_produtos_estoque_baixo, 'produtos_count' => $produtos_count]);
   }
 
 }

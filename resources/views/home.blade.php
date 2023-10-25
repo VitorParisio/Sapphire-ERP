@@ -124,13 +124,13 @@
                                 <th>Valor unitário</th>
                             </tr>
                         </thead>
-                        <body>
-                            @foreach($itens_vendidos as $values)
-                                @if ($values->total_item_venda <= 10)
+                        <tbody>
+                            @if (sizeof($itens_vendidos) == 0)
                                 <tr>
-                                    <td colspan="5" style="font-weight:100; font-size: 19px"><i>Produtos mais de 10x vendidos.</i></td>
-                                </tr>
-                                @else
+                                    <td colspan="5" style="font-weight:100; font-size: 19px"><i>Mais de 10x vendidos</i></td>
+                                </tr> 
+                            @else
+                                @foreach($itens_vendidos as $values)
                                     <tr>
                                         <td>{{$values->id}}</td>
                                         <td>{{$values->nome}}</td>
@@ -138,9 +138,9 @@
                                         <td>{{$values->total_item_venda}}</td>
                                         <td>R$ {{number_format($values->preco_venda,2,',','.')}}</td>
                                     </tr>
-                                @endif
-                            @endforeach
-                        </body>
+                                @endforeach
+                            @endif
+                        </tbody>
                     </table>
                 </div>
            </div>   
@@ -153,28 +153,6 @@
     $(function(){
         const totalVendas   = document.getElementById('totalVendas');
         const totalClientes = document.getElementById('totalClientes');
-        // let data            = '';
-
-        // $('.visibility_values_dashboard').on('click', function(evt) {
-        //     $(this).each(function(index, element) {
-
-        //             data = $(this).attr("data-display");
-
-        //             $(this).css('display', data);
-        //             $('.enable_disable_tag').find('i').removeClass('fas fa-eye').addClass('fas fa-eye-slash');
-        //         }
-        //     );
-        // }); 
-
-        // $('.enable_disable_tag').on('click', function(evt){
-        //     $(this).each(function(index, element) {
-
-        //             data = $(this).attr("data-display");
-
-        //             $(this).css('display', data);
-        //         }
-        //     );
-        // });
 
         new Chart(totalVendas, {
             type: 'bar',
@@ -229,21 +207,24 @@
     function changeTagAllNone()
     {
         $('.visibility_values_dashboard').css('display', 'none');
-        $('.eye_slash_all').css('display', 'block')
-        $('.eye_all').css('display', 'none')
-        $('.eye_icon_slash_all').css('display', 'block') 
+        $('.eye_slash_all').css('display', 'block');
+        $('.eye_all').css('display', 'none');
+        $('.eye_icon_slash_all').css('display', 'block') ;
     }
 
     function changeTagAllBlock()
     {
         $('.visibility_values_dashboard').css('display', 'block');
-        $('.eye_slash_all').css('display', 'none')
-        $('.eye_all').css('display', 'block')
-        $('.eye_icon_slash_all').css('display', 'none') 
+        $('.eye_slash_all').css('display', 'none');
+        $('.eye_all').css('display', 'block');
+        $('.eye_icon_slash_all').css('display', 'none') ;
     }
    
     function changeTag(tag, icon_eye)
     {
+        $('.eye_slash_all').css('display', 'none');
+        $('.eye_all').css('display', 'block');
+
         var div_tag  = document.getElementById(tag);
         var eye_icon = document.getElementById(icon_eye);
       
