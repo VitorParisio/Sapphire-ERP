@@ -422,7 +422,7 @@ class ProductController extends Controller
       }
     } 
     else {
-        $lista_produtos_estoque_baixo ='<li style="padding: 5px; color: lightgray; font-family:serif;"><i>Sem informações no momento.</i></li>';
+        $lista_produtos_estoque_baixo ='<li style="padding: 5px; color: gray; font-family:serif;"><i>Sem informações no momento.</i></li>';
     }
 
     $data = array(

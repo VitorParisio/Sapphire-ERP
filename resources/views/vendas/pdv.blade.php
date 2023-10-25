@@ -48,7 +48,7 @@
         </div>
         <div style="display: flex; align-items:center; margin-top: 438px; justify-content: space-between; position: absolute;">
           <div style="display: flex; margin-top:-180px; width: 477px;">
-            <div class="lista_produtos_input" style="width: 485px;"></div>
+            <div class="lista_produtos_input" style="width: 289px;"></div>
             <input type="text" id="cod_barra" placeholder="Código/Produto" style="outline:none; text-align:center; width: 485px;" autocomplete="off" >
             <form id="form_cod_barra" action="#">
               @csrf
