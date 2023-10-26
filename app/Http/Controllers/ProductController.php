@@ -178,7 +178,7 @@ class ProductController extends Controller
 
     $preco_venda_formatado  = str_replace('.', '', $request->preco_venda);
     $vuntrib_formatado      = str_replace('.', '', $request->vuntrib);
-    $total_compra           = str_replace(',', '.', $request->preco_compra) * (float)$request->estoque;
+    $total_compra           = $request->preco_compra == '' ? 0.00  : str_replace(',', '.', $request->preco_compra) * (float)$request->estoque;
     
     $data['preco_venda']  = str_replace(',', '.', $preco_venda_formatado);
     $data['vuntrib']      = str_replace(',', '.', $vuntrib_formatado);
@@ -189,7 +189,7 @@ class ProductController extends Controller
     {
       if ($request->img->isValid())
       {
-        $nome_foto = Str::of($request->nome)->slug('-').'.'.$request->img->getClientOriginalExtension();
+        $nome_foto = uniqid(date('YmdHis')).'.'.$request->img->getClientOriginalExtension();
 
         $foto = $request->img->storeAs('prod_img', $nome_foto);
         $data['img'] = $foto;
