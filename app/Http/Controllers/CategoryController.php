@@ -15,9 +15,11 @@ class CategoryController extends Controller
 
         foreach($categorias as $categoria)
         {
+            $categoria->categoria = ucfirst($categoria->categoria);
+            
             if ($categoria->descricao == null)
             {
-                $categoria->descricao = "Sem descrição...";
+                $categoria->descricao = "Sem descrição";
             }  
         }
 
@@ -134,21 +136,4 @@ class CategoryController extends Controller
        
         return response()->json(['dados_categoria' => $dados_categoria, 'id' => $id, 'first_option' => $first_option]);
     }
-
-    // function selectCategoriaId($id)
-    // {
-    //     $categorias     = Category::get();
-    //     $data_categoria = [];
-       
-    //     foreach($categorias as $key => $value)
-    //     {
-    //         $data_categoria[$value->id] = $value->categoria;
-    //     }
-
-    //     $select_categorias = $data_categoria;
-        
-    //     return response()->json($select_categorias);
-    // }
-
-
 }

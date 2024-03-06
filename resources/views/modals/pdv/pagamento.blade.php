@@ -36,7 +36,7 @@
             </label>
           </div>
           <div class="btn_finalizar_venda">
-            <button type="button" class="btn btn-primary" id="disabled_btn_finaliza_venda" onclick="finalizarVenda()">Finalizar venda</button>
+            <button type="button" class="btn btn-success" id="disabled_btn_finaliza_venda" onclick="finalizarVenda()"><i class="fas fa-dollar-sign"></i> Finalizar venda</button>
           </div>
         </div>
       </div>

@@ -11,16 +11,17 @@
             <div class="editar_categoria">
             <form id="form_edit_categoria" method="POST">
                <div class="dados_editar_categoria">
-                  <div class="edit_categoria_inputs"  >
-                     <input type="hidden" class="id_editar_categoria" />
+                  <div class="edit_categoria_inputs">
                      <div>
-                        <label for="categoria_editar">Categoria:</label>
+                        <label for="categoria_editar">Categoria:
                         <input type="text" class="categoria_editar" id="categoria_editar" name="categoria"/>
+                     </label>
                      </div>
                      <div>
                         <label for="descricao_categoria">Descrição:</label>
                         <textarea type="text" rows="3" cols="31" class="descricao_categoria" id="descrica_categoria" name="descricao"/></textarea>
                      </div>
+                     <input type="hidden" class="id_editar_categoria" />
                   </div>
                </div>
                <hr>  

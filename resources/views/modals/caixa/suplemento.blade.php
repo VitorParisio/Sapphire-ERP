@@ -1,6 +1,6 @@
 <div class="modal fade" id="caixa_suprimento_modal" tabindex="-1" role="dialog" aria-labelledby="caixa_suprimento_title" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content" style="width: 582px;">
+      <div class="modal-content mobile_modal_content_suprimento" style="width: 582px;">
           <div class="modal-header" style="background:teal; color:#FFF;">
               <h5 class="modal-title"><b>Suprimento</b></h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -14,11 +14,11 @@
                     <div class="errors_suprimento_caixa"></div>
                     <h5 id="caixa_suprimento_title" style="background: #2b5a7a; padding: 5px; color:#FFF;"><b></b></h5>
                     <hr>
-                    <div style="display:flex; align-items:center; justify-content:space-between; margin: 15px; text-align: center;">
+                    <div class="suprimento_caixa_body_mobile" style="display:flex; align-items:center; justify-content:space-between; margin: 15px; text-align: center;">
                         <div>
                             <img src="{{asset('img/img_suprimento.png')}}" alt="img_suprimento" style="width:125px;">
                         </div>
-                        <div style="display: flex; flex-direction: row;">
+                        <div class="suprimento_caixa_dados_mobile" style="display: flex; flex-direction: row;">
                             <input type="hidden" class="numero_caixa_suprimento">
                             <div style="display: flex; flex-direction:column">
                                 <label for="finalizadora" style="font-weight:100;"><b>Finalizadora:</b></label>

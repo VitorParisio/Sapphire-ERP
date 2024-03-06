@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div style="display:flex; align-items:center; justify-content: space-between;">
+        <div class="mobile_detalhes_produtos_header" style="display:flex; align-items:center; justify-content: space-between;">
           <div>
             <label for="categoria_detalhe">Categoria:</label>
             <span class="categoria_detalhe"></span>

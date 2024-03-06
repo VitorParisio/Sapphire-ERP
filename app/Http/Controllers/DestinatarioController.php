@@ -46,22 +46,22 @@ class DestinatarioController extends Controller
 
             $output .='
               <tr>
-                <td>'.$row->id.'</td>
-                <td>'.ucfirst($row->nome).'</td>
-                <td>'.$row->cpf_cnpj.'</td>
-                <td>'.$row->rg_ie.'</td>
-                <td>'.$row->cidade.'</td>
+                <td data-label="Código">'.$row->id.'</td>
+                <td data-label="Cliente">'.ucfirst($row->nome).'</td>
+                <td data-label="Telefone">'.$telefone.'</td>
+                <td style="display:none;">'.$row->rg_ie.'</td>
+                <td style="display:none;">'.$row->cidade.'</td>
                 <td style="display:none;">'.$email.'</td>
-                <td style="display:none;">'.$telefone.'</td>
+                <td style="display:none;">'.$row->cpf_cnpj.'</td>
                 <td style="display:none;">'.$row->cep.'</td>
                 <td style="display:none;">'.$row->rua.'</td>
                 <td style="display:none;">'.$row->numero.'</td>
                 <td style="display:none;">'.$complemento.'</td>
                 <td style="display:none;">'.$row->bairro.'</td>
                 <td style="display:none;">'.$row->uf.'</td>
-                <td><a href="javascript:(0);" class="dtls_btn"><i class="fas fa-eye fa-sm" title="Detalhes do cliente"></i></a></td>
-                <td><a href="javascript:(0);" class="edt_btn" style="color:gray"><i class="fas fa-edit fa-sm" title="Editar cliente"></i></a></td>
-                <td><a href="javascript:(0);" class="del_btn" style="color:red"><i class="fas fa-times-circle fa-sm" title="Excluir cliente"></i></a></td>
+                <td data-label="Detalhes"><a href="javascript:(0);" class="dtls_btn"><i class="fas fa-eye fa-sm" title="Detalhes do cliente"></i></a></td>
+                <td data-label="Editar"><a href="javascript:(0);" class="edt_btn" style="color:gray"><i class="fas fa-edit fa-sm" title="Editar cliente"></i></a></td>
+                <td data-label="Excluir"><a href="javascript:(0);" class="del_btn" style="color:red"><i class="fas fa-times-circle fa-sm" title="Excluir cliente"></i></a></td>
               </tr>
             ';
           }

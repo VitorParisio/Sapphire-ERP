@@ -13,7 +13,6 @@
 
 @section('body')
     <div class="wrapper">
-
         {{-- Preloader Animation --}}
         @if($layoutHelper->isPreloaderEnabled())
             @include('adminlte::partials.common.preloader')
@@ -47,7 +46,6 @@
         @if(config('adminlte.right_sidebar'))
             @include('adminlte::partials.sidebar.right-sidebar')
         @endif
-
     </div>
 @stop
 

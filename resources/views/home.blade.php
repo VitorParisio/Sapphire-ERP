@@ -12,9 +12,9 @@
             <div class="card">
                 <div class="card-body">
                     <div style="display: flex; justify-content:space-between; align-items:center">
-                        <h5 class="mb-0" style="font-style: italic">Bem-vindo(a), {{Auth::user()->name}}.</h5>
-                        <a href="javascript:void(0);" class="eye_all" onclick="changeTagAllNone();"><i class="fas fa-eye"></i> Exibir todos</a>
-                        <a href="javascript:void(0);" class="eye_slash_all" onclick="changeTagAllBlock();" style="display:none"><i class="fas fa-eye-slash"></i> Ocultar todos</a>
+                        <h5 class="mb-0 h5-welcome" style="font-style: italic">Bem-vindo(a), {{Auth::user()->name}}.</h5>
+                        <a href="javascript:void(0);" class="eye_all" onclick="changeTagAllNone();"><i class="fas fa-eye"></i> <span class="exibir_valores_box">Exibir todos</span></a>
+                        <a href="javascript:void(0);" class="eye_slash_all" onclick="changeTagAllBlock();" style="display:none"><i class="fas fa-eye-slash"></i> <span class="exibir_valores_box">Ocultar todos</span></a>
                     </div>
                     <hr>
                     <div class="row">
@@ -26,7 +26,7 @@
                                         <h3> R$ {{count($totalVendasMes) != 0 ? number_format($totalVendasMes[0]->total,2, ',', '.') : "0,00"}}</h3>
                                     </div>
                                     <div class="mb-3">
-                                        <a style="display: flex; align-items:center; gap:10px; color:#FFF;" class="enable_disable_tag" onclick="changeTag('values_vendas_dashboard' , 'eye_vendas_dashboard')" href="javascript:void(0);"><span>VENDAS</span><i class="fas fa-eye-slash eye_icon_slash_all" style="display: none" id="eye_vendas_dashboard"></i></a>
+                                        <a style="display: flex; align-items:center; gap:10px; color:#FFF;" class="enable_disable_tag" onclick="changeTag('values_vendas_dashboard' , 'eye_vendas_dashboard')" href="javascript:void(0);"><span class="link_tags_dashboard">VENDAS</span><i class="fas fa-eye-slash eye_icon_slash_all" style="display: none" id="eye_vendas_dashboard"></i></a>
                                     </div>
                                 </div>
                                 <div class="icon">
@@ -43,7 +43,7 @@
                                         <h3>R$ {{count($totalCompraMes) != 0 ? number_format($totalCompraMes[0]->total,2, ',', '.') : "0,00"}}</h3>
                                     </div>
                                     <div class="mb-3">
-                                        <a style="display: flex; align-items:center; gap:10px; color:#FFF;" class="enable_disable_tag" onclick="changeTag('values_compras_dashboard', 'eye_compras_dashboard')" href="javascript:void(0);"><span>COMPRAS</span> <i class="fas fa-eye-slash eye_icon_slash_all" style="display: none" id="eye_compras_dashboard"></i></a>
+                                        <a style="display: flex; align-items:center; gap:10px; color:#FFF;" class="enable_disable_tag" onclick="changeTag('values_compras_dashboard', 'eye_compras_dashboard')" href="javascript:void(0);"><span class="link_tags_dashboard">COMPRAS</span> <i class="fas fa-eye-slash eye_icon_slash_all" style="display: none" id="eye_compras_dashboard"></i></a>
                                     </div>
                                 </div>
                                 <div class="icon">
@@ -60,13 +60,13 @@
                                         <h3>{{$clientes}}</h3>
                                     </div>
                                     <div class="mb-3">
-                                        <a style="display: flex; align-items:center; gap:10px; color:#FFF;" class="enable_disable_tag" onclick="changeTag('values_clientes_dashboard', 'eye_clientes_dashboard')" href="javascript:void(0);"><span>CLIENTES</span> <i class="fas fa-eye-slash eye_icon_slash_all" style="display: none" id="eye_clientes_dashboard"></i></a>
+                                        <a style="display: flex; align-items:center; gap:10px; color:#FFF;" class="enable_disable_tag" onclick="changeTag('values_clientes_dashboard', 'eye_clientes_dashboard')" href="javascript:void(0);"><span class="link_tags_dashboard">CLIENTES</span> <i class="fas fa-eye-slash eye_icon_slash_all" style="display: none" id="eye_clientes_dashboard"></i></a>
                                     </div>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-users"></i>
                                 </div>
-                                <a href="/clientes" class="small-box-footer">Ir para clientes <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="/clientes" class="small-box-footer">Ir para clientes</a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-6">
@@ -77,13 +77,13 @@
                                         <h3>{{$produtos}}</h3>
                                     </div>
                                     <div class="mb-3">
-                                        <a style="display: flex; align-items:center; gap:10px; color:#FFF;" class="enable_disable_tag" onclick="changeTag('values_produtos_dashboard', 'eye_produtos_dashboard')" href="javascript:void(0);"><span>PRODUTOS</span> <i class="fas fa-eye-slash eye_icon_slash_all" style="display: none" id="eye_produtos_dashboard"></i></a>
+                                        <a style="display: flex; align-items:center; gap:10px; color:#FFF;" class="enable_disable_tag" onclick="changeTag('values_produtos_dashboard', 'eye_produtos_dashboard')" href="javascript:void(0);"><span class="link_tags_dashboard">PRODUTOS</span> <i class="fas fa-eye-slash eye_icon_slash_all" style="display: none" id="eye_produtos_dashboard"></i></a>
                                     </div>
                                 </div>
                                 <div class="icon">
                                     <i class="fab fa-product-hunt"></i>
                                 </div>
-                                <a href="/produtos" class="small-box-footer">Ir para produtos <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="/produtos" class="small-box-footer">Ir para produtos</a>
                             </div>
                         </div>
                     </div>
@@ -107,14 +107,14 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row lista_mais_vendidos">
+        <div class="col-md-12 mais_vendidos">
            <div class="card">
                 <div class="card-header">
                     <h5>Mais vendidos - (Mês atual)</h5>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped">
+                    <table class="table table-striped tb_mais_vendidos mobile-tables">
                         <thead>
                             <tr>
                                 <th>Código</th>
@@ -132,11 +132,11 @@
                             @else
                                 @foreach($itens_vendidos as $values)
                                     <tr>
-                                        <td>{{$values->id}}</td>
-                                        <td>{{$values->nome}}</td>
-                                        <td>{{$values->estoque}}</td>
-                                        <td>{{$values->total_item_venda}}</td>
-                                        <td>R$ {{number_format($values->preco_venda,2,',','.')}}</td>
+                                        <td data-label="Código">{{$values->id}}</td>
+                                        <td data-label="Produto">{{$values->nome}}</td>
+                                        <td data-label="Estoque atual">{{$values->estoque}}</td>
+                                        <td data-label="Qtd. vendidos">{{$values->total_item_venda}}</td>
+                                        <td data-label="Valor unitário">R$ {{number_format($values->preco_venda,2,',','.')}}</td>
                                     </tr>
                                 @endforeach
                             @endif

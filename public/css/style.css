@@ -191,7 +191,9 @@ input{
 }
 
 .lista_categoria .tb_categorias,
-.lista_caixas .tb_caixa{
+.lista_caixas .tb_caixa,
+.mais_vendidos .tb_mais_vendidos,
+.lista_cliente_table{
     width: 100%;
     max-height: 300px;
     overflow: auto;
@@ -310,18 +312,6 @@ input{
     float: right;
 }
 
-.editar_categoria .edit_categoria_inputs div{
-
-}
-
-.editar_categoria .edit_categoria_inputs div:nth-child(1){
-    
-}
-
-.editar_categoria .edit_categoria_inputs div:nth-child(2){
-    
-}
-
 /* ----------------------------------------------------- */
 
 
@@ -379,7 +369,8 @@ input{
 
 .detalhes_produto > .dados_detalhe  .cod_barra_detalhe,
 .detalhes_produto > .dados_detalhe  .preco_venda_detalhe,
-.detalhes_produto > .dados_detalhe  .estoque_minimo_detalhe, .descricao_detalhe {
+.detalhes_produto > .dados_detalhe  .estoque_minimo_detalhe, .descricao_detalhe,  
+.situacao_tributaria_detalhe {
     text-align: right;
     float: right;
     width: 150px;
@@ -432,11 +423,11 @@ input{
     text-align: center;
 }
 
-.editar_produto > div > form > label{
+.editar_produto > div > label{
     position: absolute;
     left: 0;
     bottom: 0;
-    margin: 309px 38px;
+    margin: 334px 35px;
     background: #525e6a;
     color: #FFF;
     padding: 5px;
@@ -453,17 +444,13 @@ input{
     text-align: center;
 }
 
-.lista_produto > .search_product{
+.lista_produto .search_product{
     position: absolute;
     right: 0;
     margin: -38px 20px;
     border: none;
     background: rgba(0,0,0,0.2);
     text-align: center;
-}
-
-.lista_produto_table{
-    box-shadow: 0px 2px 0px 1px rgba(0,0,0,0.2);
 }
 
 .lista_produto_table thead th,
@@ -558,7 +545,6 @@ input{
     height: 46px;
     font-size: 35px;
     margin-bottom: 10px;
-    background-color: darkgray;
     border: none;
     color:#FFF;
     font-weight: bold;
@@ -571,11 +557,10 @@ input{
 
 .table > tbody > tr > td {
     vertical-align: middle;
-    padding: 0;
 }
 
 .table_itens_vendas > tbody > tr > td > img {
-    height:40px;
+    height:25px;
 }
 
 .pdv{
@@ -607,7 +592,7 @@ input{
     text-align:center;
 }
 
-.itens_vendas{
+.pdv .itens_vendas{
     display: flex;
     flex:2;
     box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.4);
@@ -621,7 +606,6 @@ input{
 }
 
 .itens_vendas .table_itens_vendas{
-    overflow: scroll;
     overflow-x: hidden;
 }
 
@@ -731,6 +715,7 @@ input{
     display: block;
 }
 
+
 .modal-footer .result_pagamento{
     display: flex;
     justify-content: space-around;
@@ -821,4 +806,312 @@ input{
 
 /* -------------------------------------------- */
 
-/* ========================= Responsividades(Mobile)  ========================= */
+/* ========================= Responsividade (Mobile)  ========================= */
+
+@media(max-width: 768px){
+    
+/* ========================= RESET ========================= */
+    .mobile-tables thead{
+        display: none;
+    }
+
+    .mobile-tables, .mobile-tables tbody, .mobile-tables tr, .mobile-tables td{
+        display: block;
+        width: 100%;
+        font-size: 13px;
+    }
+
+    .mobile-tables tbody tr{
+        background-color: #F5F5F5;
+    }
+
+    .mobile-tables td{
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .mobile-tables td::before{
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 15px;
+        text-align: left;
+    }
+
+    .mobile_path{
+        justify-content: center !important;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .tabcontainer div .tabheading{
+       text-align: center;
+    }   
+
+    .tabcontainer div .tabheading li{
+        width: 95%;
+    }   
+    
+    .mobile_search{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile_search > .total_estoque_baixo{
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+    }
+
+    .mobile_search > .total_estoque_baixo > .estoque_baixo_modal{
+        margin: 20px !important;
+        position: relative !important;
+    }
+
+    #total_empresas, #search_empresa,
+    #total_clientes, #search_client,
+    #total_categorias, .search_categoria,
+    #total_produtos, #search_product,
+    .table_itens_vendas{
+        position: relative !important;
+        margin: 0px !important;
+    }
+
+    .categorias_produto > .lista_categoria,
+    .lista_mais_vendidos, .mais_vendidos,
+    .table_itens_vendas{
+        height: auto;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .dados_editar form div{
+        display: flex !important;
+        flex-direction: column;
+        text-align: left !important;
+        gap: 0px !important;
+    }
+
+    .dados_editar form div > div > input{
+        text-align: left !important;
+    }
+
+/* ========================================================= */
+
+/* ========================= DASHBOARD ========================= */
+    .user-menu{
+        font-size: 14px;
+    }
+    
+    .small-box h3{
+        font-size: 18px;
+        text-align: left;
+    }
+
+    .pdv-navbar-item{
+        display: none;
+    }
+
+    .exibir_valores_box{
+        display: none;
+    }
+
+    .h5-welcome{
+        font-size: 16px;
+    }
+
+    .list_notifications{
+        margin: 32px 40px !important;
+        width: 41%;
+       
+    }
+
+    .estoque_baixo_msg {
+        text-align: center;
+    }
+
+/* ========================= PRODUTOS ========================= */
+    .categorias_produto{
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .editar_produto .img_editar > img {
+        height: 135px !important;
+    }
+
+    .categorias_produto > .adicionar_categoria{
+       width: 100%;
+    }
+
+    .editar_categoria .edit_categoria_inputs textarea{
+        width: 100%;
+    }
+    
+    .mobile_detalhes_produtos_header{
+        flex-direction: column-reverse;
+    }
+
+    .modal_editar_produto{
+        width: auto !important;
+    }
+
+    .editar_produto{
+        flex-direction: column;
+    }
+
+    .dados_editar #form_edit_produto div select,
+    .dados_editar #form_edit_produto div input{
+        width: 100%;
+    }
+
+    .editar_produto > .produto_imagem_editar{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .editar_produto > div > label{
+        position: relative;
+        margin: 0px;
+    }
+
+    .dados_editar_categoria > .edit_categoria_inputs{
+        display: block;
+    }
+
+    .edit_categoria_inputs > div:nth-child(1) label{
+        display: grid;
+    }
+
+    .editar_produto #form_edit_produto div > .entrada_produto_editar {
+        display: grid !important;
+        justify-content: start;
+    }
+/* ========================================================= */
+
+/* ========================= CAIXA - PDV ========================= */
+    .mobile_caixa_card-body{
+        justify-content: center;
+        gap: 0 !important;
+    }
+
+    .mobile_modal_content_sangria,
+    .mobile_modal_content_suprimento{
+        width: 100% !important;
+    }
+
+    .sangria_caixa_body_mobile,
+    .suprimento_caixa_body_mobile {
+        flex-direction: column;
+        gap:10px;
+    }
+
+    .sangria_caixa_body_mobile .sangria_caixa_dados_mobile,
+    .suprimento_caixa_body_mobile .suprimento_caixa_dados_mobile{
+        gap: 5px;
+    }
+
+    .sangria_caixa_body_mobile .sangria_caixa_dados_mobile div, 
+    .suprimento_caixa_body_mobile .suprimento_caixa_dados_mobile div{
+        width: 120px; 
+    }
+
+    .main-pdv .letreiro,
+    .dados_itens_venda, .dados_itens_venda,
+    .main-pdv .lista_atalhos{
+        display: none;
+    }
+
+    .pdv .itens_vendas{
+        margin-bottom: 0px !important;
+        margin-right: 0px !important;
+        height: 260px;
+    }
+
+    .pdv .itens_vendas div:nth-child(2) div:nth-child(1) {
+        width: 100% !important;
+        margin-top: 41px !important;
+    }
+
+    .pdv .itens_vendas div:nth-child(2) div:nth-child(1) input{
+        width: 100% !important;
+    }
+
+    .pdv .itens_vendas .lista_produtos_input_mobile{
+        margin-top: 222px !important;
+    }
+
+    .main-pdv .total_venda_pdv_mobile{
+        display: none;
+    }
+
+    .main-pdv .pagamento_pdv_mobile{
+        visibility: visible !important;
+        margin-top: 77px !important;
+    }
+
+    .main-pdv .pagamento_pdv_mobile .forma_pagamento_mobile select{
+        text-align: center;
+        width: 100%;
+    }
+
+    .main-pdv .pagamento_pdv_mobile .forma_pagamento_mobile select option{
+        text-align: center;
+        font-size: 13px;
+    }
+
+    .main-pdv .pagamento_pdv_mobile .valor_desconto_mobile{
+        display: flex;
+        text-align: center;
+    }
+
+    .main-pdv .pagamento_pdv_mobile .result_pagamento_mobile{
+        visibility: visible !important;
+        width: 100%;
+    }
+
+    .main-pdv .pagamento_pdv_mobile .result_pagamento_mobile div:nth-child(1){
+        display: flex;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .main-pdv .pagamento_pdv_mobile .result_pagamento_mobile label input{
+       width: 100%;
+    }
+
+    .main-pdv .pagamento_pdv_mobile .result_pagamento_mobile .btn_finalizar_venda_mobile{
+        display: flex;
+        justify-content: space-around;
+        margin-top: 23px;
+     }
+
+/* ========================================================= */  
+}
+
+@media(max-width: 320px){
+    .small-box h3{
+        font-size: 15px;
+    }
+   
+    .link_tags_dashboard{
+        font-size: 13px;
+        margin-top:10px;
+    }
+
+    .eye_icon_slash_all{
+        font-size: 13px;
+        margin-top:10px;
+    }
+
+    .mobile-tables tbody tr:nth-child(even){
+        margin-top: 10px;
+    }   
+    
+    .situacao_tributaria_detalhe{
+        font-size: 13px;
+    }
+}

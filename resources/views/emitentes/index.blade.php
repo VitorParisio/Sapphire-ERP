@@ -4,7 +4,7 @@
 
 @section('content_header')
     <div id="preloader_full"><img src="{{asset('img/preloader.gif')}}" alt=""></div>     
-    <div style="display:flex; justify-content:space-between" >
+    <div class="mobile_path" style="display:flex; justify-content:space-between; flex-wrap:wrap">
         <h5 class="m-0 text-dark"><i class="fas fa-play-circle"></i> Empresas</h5>
         <ol class="breadcrumb float-sm-right" style="font-size: 13px;">
             <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
@@ -34,13 +34,15 @@
         <div class="card-body">
             <div class="tabcontainer">
                 <div class="tabbody active" id="tab1" style="display: block;">
-                    <span id="total_empresas" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
-                    <input class="search_empresa" id="search_empresa" name="search_empresa" type="text" placeholder="Pesquisar empresa" style="outline: none" autocomplete="off">
+                    <div class="mobile_search">
+                        <input class="search_empresa" id="search_empresa" name="search_empresa" type="text" placeholder="Pesquisar empresa" style="outline: none" autocomplete="off">
+                        <span id="total_empresas" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
+                    </div>
                     <hr>
-                    <table class="table table-striped lista_empresa_table">
+                    <table class="table table-striped lista_empresa_table mobile-tables">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>Código</th>
                                 <th>CNPJ/CPF</th>
                                 <th>Fantasia</th>
                                 <th>Razão social</th>
@@ -141,7 +143,6 @@
                         </form>
                     </div>
                 </div>
-               
             </div>
         </div>
     </div>

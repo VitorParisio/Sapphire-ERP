@@ -53,7 +53,7 @@
                 </label>
                 <button class="add_produto_nfe btn btn-primary"><i class="fas fa-plus"></i> Adicionar</button>
             </div>
-        <div>
+        </div>
     </div>
     <hr>
     <div class="card card-primary">

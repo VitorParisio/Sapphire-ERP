@@ -46,11 +46,11 @@ class EmitenteController extends Controller
 
             $output .='
               <tr>
-                <td>'.$row->id.'</td>
-                <td>'.$row->cnpj.'</td>
-                <td>'.ucfirst($row->nome_fantasia).'</td>
-                <td>'.ucfirst($row->razao_social).'</td>
-                <td>'.$row->uf.'</td>
+                <td data-label="Código">'.$row->id.'</td>
+                <td data-label="CNPJ/CP">'.$row->cnpj.'</td>
+                <td data-label="Fantasia">'.ucfirst($row->nome_fantasia).'</td>
+                <td data-label="Razão social">'.ucfirst($row->razao_social).'</td>
+                <td data-label="Localidade">'.$row->uf.'</td>
                 <td style="display:none;">'.$row->ie.'</td>
                 <td style="display:none;">'.$im.'</td>
                 <td style="display:none;">'.$cnae.'</td>
@@ -60,9 +60,9 @@ class EmitenteController extends Controller
                 <td style="display:none;">'.$complemento.'</td>
                 <td style="display:none;">'.$row->bairro.'</td>
                 <td style="display:none;">'.$row->cidade.'</td>
-                <td><a href="javascript:void(0);" class="dtls_btn"><i class="fas fa-eye fa-sm" title="Detalhes da empresa"></i></a></td>
-                <td><a href="javascript:void(0);" class="edt_btn" style="color:gray"><i class="fas fa-edit fa-sm" title="Editar empresa"></i></a></td>
-                <td><a href="javascript:void(0);" class="del_btn" style="color:red"><i class="fas fa-times-circle fa-sm" title="Deletar empresa"></i></i></a></td>
+                <td data-label="Detalhes"><a href="javascript:void(0);" class="dtls_btn"><i class="fas fa-eye fa-sm" title="Detalhes da empresa"></i></a></td>
+                <td data-label="Editar"><a href="javascript:void(0);" class="edt_btn" style="color:gray"><i class="fas fa-edit fa-sm" title="Editar empresa"></i></a></td>
+                <td data-label="Excluir"><a href="javascript:void(0);" class="del_btn" style="color:red"><i class="fas fa-times-circle fa-sm" title="Deletar empresa"></i></i></a></td>
               </tr>
             ';
           }

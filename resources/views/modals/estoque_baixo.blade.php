@@ -9,8 +9,8 @@
         </div>
         <div class="modal-body">
           <div class="estoque_baixo_empresa">
-            <div class="dados_estoque_baixo">
-              <table class="table table-striped">
+            <div class="dados_estoque_baixo" style="height: 200px;width:100%;overflow:auto;">
+              <table class="table table-striped mobile-tables">
                 <thead>
                   <tr>
                     <th>Código</th>

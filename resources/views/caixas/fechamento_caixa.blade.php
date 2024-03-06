@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
     <title>Fechamento Caixa - SapphireRP</title>
 
@@ -97,11 +98,31 @@
             text-align: center;
             z-index: 99999;
         }
+
+       
+        .fechamento_caixa  div:nth-child(4) .valores_pagamento_pdv{
+            flex-direction: column;
+        }
+
+        .fechamento_caixa  div:nth-child(4) .valores_pagamento_pdv ul li input{
+            width: 100%;
+        } */
+ 
         #preloader_full > img{
             margin: 290px auto;
             position: relative;
             height: 100px;
         }
+
+        @media(max-width: 768px){
+            .fechamento_dados{
+                flex-wrap: wrap
+            }
+            .callout.callout-info{
+                width: 100% !important;
+                margin-left: 0px;
+            }
+        } 
 
     </style>
 </head>
@@ -112,7 +133,7 @@
         <div class="header_fechamento_caixa">
             <span><i class="fas fa-cash-register"></i>&nbsp{{$caixa_info->descricao}} - FECHAMENTO</span>
         </div>
-        <div style="display: flex; margin-top:10px;">
+        <div class="fechamento_dados" style="display: flex; margin-top: 10px; gap: 10px;">
             <div class="callout callout-info">
                 <div class="header_valores_caixa">
                     <span>VALORES</span>
@@ -125,27 +146,27 @@
                     <li><b>TOTAL CAIXA:</b> R$ {{number_format($caixa_info->total_caixa, 2,',','.')}}</li>
                 </ul>
             </div>
-            <div style="display: block; text-align: center; width: 100%;">
-                <ul style="display:inline-block; padding: 0;">
+            <div class="valores_pagamento_pdv" style="display: flex; gap: 10px; width: 100%; justify-content: center;">
+                <ul style="display:flex; flex-direction: column; gap: 10px; padding: 0;">
                     <li style="text-align:center; background:#0098ff; color:#FFF; font-weight:900; padding:10px;">PAGAMENTOS</li><hr>
                     @foreach($data as $key => $forma_pagamento_fechamento)
                         <li><input type="text" name="forma_pagamento_fechamento[]" class="forma_pagamento_fechamento_{{$forma_pagamento_fechamento}}" value="{{$forma_pagamento_fechamento}}" style="text-align:center; border:none; background: darkgrey; color:#FFF; padding:5px 0"></li>
                         <span class="msg_forma_pagamento_fechamento_{{$forma_pagamento_fechamento}}" style="display:none"></span>
                     @endforeach
                 </ul>
-                <ul style="display:inline-block; padding: 0;">
+                <ul style="display:flex; flex-direction: column; gap: 10px; padding: 0;">
                     <li style="text-align:center; background:#0098ff; color:#FFF; font-weight:900; padding:10px;">PREVISTOS(R$)</li><hr>
                     @foreach($conta_fechamentos as $key => $conta_fechamento_total)
                         <li><input type="text" name="total_fechamento[]" class="conta_fechamento_total_{{$data[$key]}}" value="{{$conta_fechamento_total->total_venda_fechamento}}" style="text-align:center; border:none; background: darkgrey; color:#FFF; padding:5px 0"></li>
                     @endforeach
                 </ul>
-                <ul style="display:inline-block; padding: 0;">
+                <ul style="display:flex; flex-direction: column; gap: 10px; padding: 0;">
                     <li style="text-align:center; background:#0098ff; color:#FFF; font-weight:900; padding:10px;">REALIZADOS(R$)</li><hr>
                     @for($i = 0; $i < count($conta_fechamentos); $i++)
                         <li><input type="text" name="valor_informado_fechamento[]" class="forma_pagamento_numero_{{$data[$i]}}" id="{{$conta_fechamentos[$i]->forma_pagamento}}" style="text-align:center; background: #ececec; border:none; padding:5px 0; outline:none"></li>
                     @endfor
                 </ul>
-                <ul style="display:inline-block; padding: 0;">
+                <ul style="display:flex; flex-direction: column; gap: 10px; padding: 0;">
                     <li style="text-align:center; background:#0098ff; color:#FFF; font-weight:900; padding:10px;">DIFERENÇAS(R$)</li><hr>
                     @for($i = 0; $i < count($conta_fechamentos); $i++)
                         <li><input type="text" name="diferenca_fechamento[]" class="diferenca_fechamento_{{$data[$i]}}" id="{{$conta_fechamentos[$i]->forma_pagamento}}" style="text-align:center; border:none; background: darkgrey; color:#FFF; padding:5px 0;"></li>
@@ -191,6 +212,7 @@
                 <h3>Nenhuma  venda foi realizado ao {{$caixa_info->descricao}}. <i class="fas fa-meh"></i></h3> 
             </div>
         @endif
+    </div>
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>

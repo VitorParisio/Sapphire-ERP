@@ -92,8 +92,8 @@
                   <input type="text" class="cidade_editar" id="cidade_editar" name="cidade" style="text-align:right"/>
                 </div>
               </div>
-              <div>
-                <label for="uf_editar">UF:</label><br>
+              <div style="display:inline-grid">
+                <label for="uf_editar">UF:</label>
                 <input type="text" class="uf_editar" id="uf_editar" name="uf"/>
               </div>
               <hr>

@@ -145,7 +145,6 @@ class VendasController extends Controller
     }
 
     function cupom(){
-        
         $user_auth = Auth::user()->id;
         $emitente = Emitente::first();
         $cupom_id = Cupom::orderBy('id', 'desc')->skip(1)->limit(1)->first();
@@ -156,7 +155,7 @@ class VendasController extends Controller
         ->where('caixas.user_abertura_id', $user_auth)
         ->where('caixas.status', 1)
         ->first();
-      
+
         $itens = ItemVenda::join('products', 'products.id', '=', 'item_vendas.product_id')
         ->join('cupoms', 'cupoms.id', '=', 'item_vendas.cupom_id')
         ->select('products.nome', 'products.preco_venda', 'item_vendas.qtd', 'item_vendas.sub_total')
@@ -175,9 +174,9 @@ class VendasController extends Controller
         $total = $cupom[0]->total_venda + $cupom[0]->desconto;
 
         $view = view('vendas.cupom', compact('descricao_caixa', 'emitente', 'itens', 'cupom', 'qtd_itens', 'total'));
-        
+       
         $pdf = PDF::loadHTML($view)->setPaper([0, 0, 807.874, 221.102], 'landscape');
-
+        
         return $pdf->stream();
     }
 }

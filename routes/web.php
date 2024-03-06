@@ -68,7 +68,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('/update_empresa/{id}', [EmitenteController::class, 'update'])->name('empresa.update');
     Route::delete('/delete_empresa/{id}', [EmitenteController::class, 'destroy'])->name('empresa.delete');
 
-    Route::get('/usuarios', [UsuariosController::class, 'index'])->name('index.usuarios');
+    Route::get('/usuarios', [UsuarioController::class, 'index'])->name('index.usuarios');
 
     Route::get('/clientes', [DestinatarioController::class, 'index'])->name('index.clientes');
     Route::post('/clientes', [DestinatarioController::class, 'store'])->name('store.clientes');

@@ -4,7 +4,7 @@
 
 @section('content_header')
     <div id="preloader_full"><img src="{{asset('img/preloader.gif')}}" alt=""></div> 
-    <div style="display:flex; justify-content:space-between" >
+    <div class="mobile_path" style="display:flex; justify-content:space-between" >
         <h5 class="m-0 text-dark"><i class="fas fa-play-circle"></i> Clientes</h5>
         <ol class="breadcrumb float-sm-right" style="font-size: 13px;">
             <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
@@ -34,17 +34,17 @@
         <div class="card-body">
             <div class="tabcontainer">
                 <div class="tabbody active" id="tab1" style="display: block;">
-                    <span id="total_clientes" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
-                    <input class="search_cliente" id="search_client" name="search_client" type="text" placeholder="Pesquisar cliente" style="outline: none" autocomplete="off">
+                    <div class="mobile_search">
+                        <input class="search_cliente" id="search_client" name="search_client" type="text" placeholder="Pesquisar cliente" style="outline: none" autocomplete="off">
+                        <span id="total_clientes" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></span>
+                    </div>
                     <hr>
-                    <table class="table table-striped lista_cliente_table">
+                    <table class="table table-striped lista_cliente_table mobile-tables">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>Código</th>
                                 <th>Cliente</th>
-                                <th>CPF/CNPJ</th>
-                                <th>RG/Insc. Estadual</th>
-                                <th>Cidade</th>
+                                <th>Telefone</th>
                                 <th colspan=3>Ações</th>
                             </tr>
                         </thead>
@@ -159,11 +159,11 @@
 
             $('.id_cliente_detalhe').html(data[0]);
             $('.cliente_detalhe').html(data[1]);
-            $('.cpf_cnpj_detalhe').html(data[2]);
+            $('.fone_detalhe').html(data[2]);
             $('.rg_ie_detalhe').html(data[3]);
             $('.cidade').html(data[4]);
             $('.email_detalhe').html(data[5]);
-            $('.fone_detalhe').html(data[6]);
+            $('.cpf_cnpj_detalhe').html(data[6]);
             $('.cep').html(data[7]);
             $('.logradouro').html(data[8]);
             $('.numero').html(data[9]);
@@ -183,10 +183,10 @@
 
             $('.id_editar').val(data[0]);
             $('.cliente_editar').val(data[1]);
-            $('.cpf_cnpj_editar').val(data[2]);
+            $('.fone_editar').val(data[2]);
             $('.rg_ie_editar').val(data[3]);
             $('.email_editar').val(data[5]);
-            $('.fone_editar').val(data[6]);
+            $('.cpf_cnpj_editar').val(data[6]);
             $('.cep_editar').val(data[7]);
             $('.logradouro_editar').val(data[8]);
             $('.cidade_editar').val(data[4]);

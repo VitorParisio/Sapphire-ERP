@@ -19,8 +19,8 @@
             {{-- <div class="card-tools">
                 <button style="border:none"><i class="fas fa-cog"></i> Gerenciar caixas</button>
             </div> --}}
-        </div>
-        <div class="card-body" style="display:flex; gap: 0 20px; flex-wrap:wrap">
+        </div> 
+        <div class="card-body mobile_caixa_card-body" style="display:flex; gap: 0 20px; flex-wrap:wrap">
         </div>
     </div>
     <div>

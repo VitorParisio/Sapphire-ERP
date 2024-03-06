@@ -4,10 +4,18 @@ $(function(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    var element = document.getElementById("pagamento_pdv_mobile");
+    var mq      = window.matchMedia( "(max-width: 768px)" );
     
     document.getElementById('cod_barra').focus();
 
     $('#cod_barra').on('keyup', function(){
+        var data = $(this).val();
+        getProdutoSearch(data);
+    });
+
+    $('#cod_barra_mobile').on('keyup', function(){
         var data = $(this).val();
         getProdutoSearch(data);
     });
@@ -20,8 +28,10 @@ $(function(){
     $(document).on('click', 'li', function(){
         var item = $(this).text();
         $('#cod_barra').val(item);
+        $('#cod_barra_mobile').val(item);
         document.getElementById('qtd').focus();
         $('.lista_produtos_input').html("")
+        $('.lista_produtos_mobile').html("")
     });
 
     $(document).on('click', '.produto_nome_busca', function(){
@@ -42,7 +52,9 @@ $(function(){
    
     $('#form_cod_barra').submit(function(e){
         e.preventDefault();
-        
+        if ( $('#cod_barra').val() == ""){
+            return
+        }
         var user_id      = $('#user_id').val();
         var numero       = $('#numero').val();
         var cod_barra    = $('#cod_barra').val();
@@ -122,6 +134,10 @@ $(function(){
         });
     }); 
 
+    if (!mq.matches) {
+        element.remove();
+    } 
+
     $('#valor_recebido').mask("000.000.000.000.000,00", {reverse: true});
 
     getProduto();
@@ -164,15 +180,15 @@ function getProduto(data)
             $.each(pdv,function(index,data){
                 var preco_venda = formatNumber.format(data.preco_venda);
                 var sub_total   = formatNumber.format(data.sub_total);
-                var img_tag     = data.img != null ? '<img src="storage/'+data.img+'" alt="img-item" />' : '<img src="img/sem_image.png"/>';
+                var img_tag     = data.img != null ? '<img src="storage/'+data.img+'" alt="img-item" />' : '<img src="img/sem_imagem.png"/>';
                 
                 $('.table_itens_vendas tbody').append('<tr>\
-                    <td>'+img_tag+'</td>\
-                    <td>'+data.nome+'</td>\
-                    <td>'+preco_venda+'</td>\
-                    <td>'+data.qtd+'</td>\
-                    <td>'+sub_total+'</td>\
-                    <td><a href="#" onclick="deletaProdutoCod('+ data.item_venda_id +','+ data.product_id +', '+ data.qtd +')"><i class="fas fa-times-circle" style="color:red;"></i></a></td>\
+                    <td data-label="#">'+img_tag+'</td>\
+                    <td data-label="Item">'+data.nome+'</td>\
+                    <td data-label="V. Unitário">'+preco_venda+'</td>\
+                    <td data-label="Quantidade">'+data.qtd+'</td>\
+                    <td data-label="Subtotal">'+sub_total+'</td>\
+                    <td data-label="Excluir"><a href="#" onclick="deletaProdutoCod('+ data.item_venda_id +','+ data.product_id +', '+ data.qtd +')"><i class="fas fa-times-circle" style="color:red;"></i></a></td>\
                     </tr>');
             });
 
@@ -192,6 +208,8 @@ function getProdutoSearch(data = '')
         type:'GET',
         success: function(data) {
           $('.lista_produtos_input').html(data);
+          $('.lista_produtos_mobile').html(data);
+          console.log(data);
         }
     })
 }

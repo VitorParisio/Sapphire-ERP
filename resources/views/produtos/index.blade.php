@@ -4,7 +4,7 @@
 
 @section('content_header')
     <div id="preloader_full"><img src="{{asset('img/preloader.gif')}}" alt=""></div>
-    <div style="display:flex; justify-content:space-between" >
+    <div class="mobile_path" style="display:flex; justify-content:space-between" >
         <h5 class="m-0 text-dark"><i class="fas fa-play-circle"></i> Produtos</h5>
         <ol class="breadcrumb float-sm-right" style="font-size: 13px;">
             <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
@@ -40,12 +40,14 @@
         <div class="card-body">
             <div class="tabcontainer">
                 <div class="tabbody active" id="tab1" style="display: block;">  
-                    <div class="total_categorias" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></div>
-                    <input class="search_categoria" id="search_categoria" name="search_categoria" type="text" placeholder="Pesquisar categoria" style="outline: none" autocomplete="off">
+                    <div class="mobile_search">
+                        <input id="search_categoria" class="search_categoria" name="search_categoria" type="text" placeholder="Pesquisar categoria" style="outline: none" autocomplete="off">
+                        <div id="total_categorias" class="total_categorias" style="font-size:13px; position:absolute; margin: -18px 0; font-weight:900"></div>
+                    </div>
                     <hr>
                     <div class="categorias_produto">
                         <div class="lista_categoria">
-                            <table class="table-striped tb_categorias">
+                            <table class="table-striped tb_categorias mobile-tables">
                                 <thead>
                                     <tr>
                                         <th>Código</th>
@@ -83,18 +85,18 @@
                                 <label for="select_categoria">Categoria*
                                     <select class="form-control select_categoria" id="select_categoria" name="category_id"></select>
                                 </label>
-                                <label for="estoque">Estoque atual*
-                                    <input type="text" class="form-control" name="estoque" id="estoque" placeholder="" value="{{old('estoque')}}" autocomplete="off">
+                                <label for="nome">Produto*
+                                    <input type="text" class="form-control" name="nome" id="nome" placeholder="" value="{{ old('nome')}}" autocomplete="off">
                                 </label>
-                                <label for="preco_compra">Preço custo(R$)
+                                <label for="preco_compra">Preço custo(R$)*
                                     <input type="text" class="form-control" name="preco_compra" id="preco_compra" value="{{old('preco_compra')}}" style="text-align: right" autocomplete="off">
                                 </label>
                             </div>
                             <div class="col-md-3">
-                                <label for="nome">Produto*
-                                    <input type="text" class="form-control" name="nome" id="nome" placeholder="" value="{{ old('nome')}}" autocomplete="off">
+                                <label for="estoque">Estoque atual*
+                                    <input type="text" class="form-control" name="estoque" id="estoque" placeholder="" value="{{old('estoque')}}" autocomplete="off">
                                 </label>
-                                <label for="estoque_minimo">Estoque mínimo
+                                <label for="estoque_minimo">Estoque mínimo*
                                     <input type="text" class="form-control" name="estoque_minimo" id="estoque_minimo" placeholder="" value="{{old('estoque_minimo')}}" autocomplete="off">
                                 </label>
                                 <label for="preco_venda">Preço venda(R$)*
@@ -115,7 +117,7 @@
                             <div class="col-md-3">
                                 <label for="descricao">Descrição
                                     <input type="text" class="form-control" name="descricao" id="descricao" value="{{old('descricao')}}" autocomplete="off">
-                                </label>
+                                </label><br>
                                 <label for="validade">Validade
                                     <input type="date" class=" form-control datetimepicker-input" data-target="#reservationdate" name="validade" id="validade" value="{{old('validade')}}">
                                 </label>
@@ -179,14 +181,16 @@
                 </div>
                 <div class="tabbody" id="tab2" style="display: none;">
                     <div class="lista_produto">
-                        <div>
-                            <span id="total_produtos" style="font-size:13px; position:absolute; margin: -34px 0; font-weight:900"></span>
-                            <a class="estoque_baixo_modal" href="javascript:void(0);" style="font-size: 13px; position: absolute; margin: -34px 99px; font-weight: 900; color:red; display:none"><i>estoque baixo</i></a>
+                        <div class="mobile_search">
+                            <input class="search_product" id="search_product" name="search_product" type="text" placeholder="Pesquisar produto" style="outline: none" autocomplete="off">
+                            <div class="total_estoque_baixo">
+                                <span id="total_produtos" style="font-size:13px; position:absolute; margin: -34px 0; font-weight:900"></span>
+                                <a class="estoque_baixo_modal" href="javascript:void(0);" style="font-size: 13px; position: absolute; margin: -34px 99px; font-weight: 900; color:red; display:none"><i>estoque baixo</i></a>
+                            </div>
                         </div>
-                        <input class="search_product" id="search_product" name="search_product" type="text" placeholder="Pesquisar produto" style="outline: none" autocomplete="off">
                         <hr>
                         <div style="height: 465px; width:100%; overflow:auto;">
-                            <table class="table table-striped lista_produto_table">
+                            <table class="table table-striped lista_produto_table mobile-tables">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -735,11 +739,11 @@
                 {
                     $.each(data.categorias, function(index,value){
                         $('.tb_categorias tbody').append('<tr>\
-                            <td>'+value.id+'</td>\
-                            <td>'+value.categoria+'</td>\
-                            <td>'+value.descricao+'</td>\
-                            <td><a href="#" title="Editar categoria" class="edt_cate" style="font-size: 13px; color: #656565;"><i class="fas fa-edit"></i></a></td>\
-                            <td><a href="#" title="Deletar categoria" class="del_cate" style="font-size: 13px; color: red;"><i class="fas fa-times-circle"></i></a></td></tr>'
+                            <td data-label="Código">'+value.id+'</td>\
+                            <td data-label="Categoria">'+value.categoria+'</td>\
+                            <td data-label="Descrição">'+value.descricao+'</td>\
+                            <td data-label="Editar"><a href="#" title="Editar categoria" class="edt_cate" style="font-size: 13px; color: #656565;"><i class="fas fa-edit"></i></a></td>\
+                            <td data-label="Excluir"><a href="#" title="Deletar categoria" class="del_cate" style="font-size: 13px; color: red;"><i class="fas fa-times-circle"></i></a></td></tr>'
                         ); 
                     }); 
                 }
