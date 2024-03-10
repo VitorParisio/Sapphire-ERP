@@ -20,7 +20,7 @@ class SwitchDatabase
     {
         $manager_tenant = app(ManagerTenant::class);
         $tenant         = $this->getTenant($request->getHost());
-     
+        
         if ($manager_tenant->domainIsMain())
             return $next($request);
         

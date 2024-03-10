@@ -37,10 +37,10 @@ class ProductController extends Controller
       {
         $produto = Category::join('products', 'categories.id', '=', 'products.category_id')
         ->orderBy('products.nome', 'ASC')->get();
-        
+       
         $total_itens = $produto->count();
       }
-
+   
       $total_row   = $produto->count();
       
       if ($total_row > 0)
@@ -105,7 +105,7 @@ class ProductController extends Controller
   function store(Request $request){
 
     $data = $request->all();
-    
+   
     $data['ucom']  = "UNID";
     $data['utrib'] = "UNID";
 
@@ -160,14 +160,10 @@ class ProductController extends Controller
         ]);
     }
  
-    if ($data['preco_compra'] == null)
+    if ($data['descricao'] == null)
     {
-      $data['preco_compra'] = 0.00;
-    } else
-    {
-      $preco_compra_formatado = str_replace('.', '', $request->preco_compra);
-      $data['preco_compra']   = str_replace(',', '.', $preco_compra_formatado);
-    }
+      $data['descricao'] = "Não informado";
+    } 
 
     if ($data['preco_minimo'] == null)
     {
@@ -178,10 +174,12 @@ class ProductController extends Controller
       $data['preco_minimo']   = str_replace(',', '.', $preco_minimo_formatado);
     }
 
+    $preco_compra_formatado = str_replace('.', '', $request->preco_compra);
     $preco_venda_formatado  = str_replace('.', '', $request->preco_venda);
     $vuntrib_formatado      = str_replace('.', '', $request->vuntrib);
     $total_compra           = str_replace(',', '.', $request->preco_compra) * (float)$request->estoque;
     
+    $data['preco_compra'] = str_replace(',', '.', $preco_compra_formatado);
     $data['preco_venda']  = str_replace(',', '.', $preco_venda_formatado);
     $data['vuntrib']      = str_replace(',', '.', $vuntrib_formatado);
     $data['qtd_compra']   = $request->estoque;

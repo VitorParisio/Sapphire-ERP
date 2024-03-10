@@ -87,7 +87,6 @@ class VendasController extends Controller
 
     function finalizaVenda(Request $request){
         $data              = $request->all();
-    
         $numero_caixa      = $request->caixa_id_pdv;
         $slc_ult_id_cupom  = Cupom::orderBy('id', 'desc')->limit(1)->first();
         $cupom             = Cupom::get();
@@ -140,7 +139,7 @@ class VendasController extends Controller
 
         $novo_cupom = new Cupom();
         $novo_cupom->save();
-
+     
         return redirect()->route('cupom.vendas');
     }
 

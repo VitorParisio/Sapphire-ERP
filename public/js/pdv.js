@@ -162,6 +162,7 @@ function getProduto(data)
             var pdv          = data.pdv;
 
             var total_venda  = formatNumber.format(data.total_venda);
+            var total_itens_mobile = data.total_itens_mobile;
 
             $('tbody').html("");
             $('.total_venda').val();
@@ -170,7 +171,7 @@ function getProduto(data)
                 var valor_unitario = formatNumber.format(data.preco_venda);
                 var subtotal       = formatNumber.format(data.sub_total);
               
-                $('#letreiro').val(data.nome).css({'letter-spacing' : '5px', 'font-weight' : 'bold', 'text-transform': 'uppercase', 'color' : 'grey'});
+                $('#letreiro').val(data.nome).css({'letter-spacing' : '5px', 'font-weight' : 'bold', 'text-transform': 'uppercase', 'color' : 'grey', 'font-style': 'italic'});
                 $('#descricao').val(data.descricao);
                 $('#qtd_produto').val(data.qtd);
                 $('#valor_unitario').val(valor_unitario);
@@ -185,7 +186,7 @@ function getProduto(data)
                 $('.table_itens_vendas tbody').append('<tr>\
                     <td data-label="#">'+img_tag+'</td>\
                     <td data-label="Item">'+data.nome+'</td>\
-                    <td data-label="V. Unitário">'+preco_venda+'</td>\
+                    <td data-label="VL. Unitário">'+preco_venda+'</td>\
                     <td data-label="Quantidade">'+data.qtd+'</td>\
                     <td data-label="Subtotal">'+sub_total+'</td>\
                     <td data-label="Excluir"><a href="#" onclick="deletaProdutoCod('+ data.item_venda_id +','+ data.product_id +', '+ data.qtd +')"><i class="fas fa-times-circle" style="color:red;"></i></a></td>\
@@ -195,6 +196,8 @@ function getProduto(data)
             $('#cod_barra').val('');
             $('#qtd').val('');
             $('.total_venda').val(total_venda);
+            $('.total_produtos_mobile span').text(total_itens_mobile);
+
             totalPagamento();
             getProdutoTabela();
         }
@@ -288,13 +291,18 @@ function deletaProdutoCod(item_venda_id, product_id, qtd)
             "product_id"   : product_id,
             "qtd"          : qtd,
         },
+        beforeSend: () =>{
+            $("#preloader_full").css({'display' : 'block'});
+        },
         success: function(){
             $('#letreiro').val('Produto removido')
-            .css({'letter-spacing' : '5px', 'font-weight' : 'bold', 'text-transform': 'uppercase', 'font-style' : 'italic'});
+            .css({'letter-spacing' : '5px', 'font-weight' : 'bold', 'text-transform': 'uppercase', 'color' : 'grey', 'font-style': 'italic'});
             $('#descricao').val('')
             $('#qtd_produto').val('')
             $('#valor_unitario').val('')
             $('#subtotal').val('')
+            $("#preloader_full").css({'display' : 'none'});
+      
             document.getElementById('cod_barra').focus();
 
             getProduto();
@@ -353,8 +361,9 @@ $.ajax({
         $('#valor_unitario').val('');
         $('#subtotal').val('');
         $('.letreiro').val("CAIXA LIVRE");
-        document.getElementById('cod_barra').focus();
+        $('.total_produtos_mobile span').text("0");
         $("#preloader_full").css({'display' : 'none'});
+        document.getElementById('cod_barra').focus();
         openCupom();
     }
   });

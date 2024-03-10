@@ -18,16 +18,18 @@ class ItemVendaController extends Controller
         ->where('products.cod_barra', '=', $produto_pdv)
         ->orWhere('products.nome', '=', $produto_pdv)
         ->get();
-       
+
         $itens = PDV::join('products', 'products.id', '=', 'p_d_v_s.product_id')
         ->join('item_vendas', 'item_vendas.id', '=', 'p_d_v_s.item_venda_id')
         ->select('products.nome', 'products.preco_venda', 'products.img', 'item_vendas.id AS item_venda_id', 'item_vendas.product_id', 'item_vendas.qtd', 'item_vendas.sub_total')
         ->get();
-
+        
         $total_venda = PDV::join('item_vendas', 'item_vendas.id', '=', 'p_d_v_s.item_venda_id')
         ->sum('item_vendas.sub_total');
 
-        return response()->json(['produto' => $produto, 'itens' => $itens, 'pdv' => $itens, 'total_venda' => $total_venda]);
+        $total_itens_mobile = PDV::count();
+     
+        return response()->json(['produto' => $produto, 'pdv' => $itens, 'total_venda' => $total_venda, 'total_itens_mobile' => $total_itens_mobile]);
     }
 
     function estoqueNegativo(Request $request)
@@ -115,8 +117,7 @@ class ItemVendaController extends Controller
 
             $produto->where('cod_barra', $cod_barra)
             ->orWhere('nome', $cod_barra)
-            ->update(['estoque' => $produto->estoque]);
-           
+            ->update(['estoque' => $produto->estoque]); 
         } 
         else 
         {
@@ -156,7 +157,7 @@ class ItemVendaController extends Controller
           
           if ($produto_search != null)
           {
-              $output.='<ul class="list-group" style="display:block; position:relative;">';
+              $output.='<ul class="list-group" style="display:block; position:relative; margin:41px 0px;">';
                   foreach($produto_nome as $nomes)
                   {
                       $output.='<li class="list-group-item item_search">'.$nomes->nome.'</li>';

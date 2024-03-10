@@ -1028,12 +1028,13 @@ input{
     .pdv .itens_vendas{
         margin-bottom: 0px !important;
         margin-right: 0px !important;
-        height: 260px;
+        height: 221px;
     }
 
     .pdv .itens_vendas div:nth-child(2) div:nth-child(1) {
         width: 100% !important;
-        margin-top: 41px !important;
+        margin-top: 0px !important;
+        z-index: 999;
     }
 
     .pdv .itens_vendas div:nth-child(2) div:nth-child(1) input{
@@ -1041,8 +1042,17 @@ input{
     }
 
     .pdv .itens_vendas .lista_produtos_input_mobile{
-        margin-top: 222px !important;
+        margin-top: 237px !important;
     }
+
+    .pdv .itens_vendas .lista_produtos_input_mobile .total_produtos_mobile{
+        position: absolute;
+        margin-top: 81px;
+        font-weight: bold;
+        font-size: 11px;
+        margin-left: 5px;
+        display: block !important;
+    } 
 
     .main-pdv .total_venda_pdv_mobile{
         display: none;
@@ -1050,7 +1060,7 @@ input{
 
     .main-pdv .pagamento_pdv_mobile{
         visibility: visible !important;
-        margin-top: 77px !important;
+        margin-top: 100px !important;
     }
 
     .main-pdv .pagamento_pdv_mobile .forma_pagamento_mobile select{
@@ -1071,6 +1081,7 @@ input{
     .main-pdv .pagamento_pdv_mobile .result_pagamento_mobile{
         visibility: visible !important;
         width: 100%;
+        margin-top: 45px;
     }
 
     .main-pdv .pagamento_pdv_mobile .result_pagamento_mobile div:nth-child(1){
@@ -1081,6 +1092,7 @@ input{
 
     .main-pdv .pagamento_pdv_mobile .result_pagamento_mobile label input{
        width: 100%;
+       text-align: center;
     }
 
     .main-pdv .pagamento_pdv_mobile .result_pagamento_mobile .btn_finalizar_venda_mobile{

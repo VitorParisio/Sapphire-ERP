@@ -66,6 +66,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'csrf' => \Http\Middleware\VerifyCsrfToken::class,
         'check.domain.main' => \App\Http\Middleware\CheckDomainMain::class,
-        'register.domain.main'   => \App\Http\Middleware\RegisterDomainMain::class,
+        'register.domain.main' => \App\Http\Middleware\RegisterDomainMain::class,
     ];
 }

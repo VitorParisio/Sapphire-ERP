@@ -37,8 +37,8 @@
         <center><h1 style="color:#FFF; ">Abertura do Caixa</h1></center>
         <div style="display: flex; justify-content: space-between; padding: 30px 0; flex-wrap: wrap; text-align: center; align-items: center; width: 50%; position: relative; background: rgba(0,0,0,0.3); margin: 0px auto;">
             <div class="errors_abertura_caixa"></div>
-            <div style="position: absolute; left: 0; margin-left: 50px;">
-                <img src="{{asset('img/balcao_caixa.png')}}" alt="" style="width:269px">
+            <div style="position: absolute;">
+                <img src="{{asset('img/balcao_caixa.png')}}" alt="" style="width:244px">
             </div>
             <div style="display: flex; flex-direction:column; margin-right:50px;">
                 <label for="user_name_op" style="font-size: 22px; color:#fff;">Operador:</label>
@@ -56,7 +56,9 @@
         </div>
         <div style="height: auto; width: 300px; font-size: 30px; background: teal; color: #FFF; font-weight: bold; border: none; padding: 10px; margin: 10px auto; text-align:center; display:flex; flex-direction:column">
             <a href="javascript:void(0)" class="abre_caixa" style="color:#FFF; text-decoration:none">ABRIR CAIXA</a>
-            <a href="javascript:void(0)" class="op_logout">Sair</a>
+        </div>
+        <div  style="height: auto; width: 100%; text-align:center;">
+            <a href="javascript:void(0)" class="op_logout" style="color: #FFF; text-decoration:none">Sair</a>
         </div>
     </div>
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>

@@ -99,11 +99,6 @@
             z-index: 99999;
         }
 
-       
-        .fechamento_caixa  div:nth-child(4) .valores_pagamento_pdv{
-            flex-direction: column;
-        }
-
         .fechamento_caixa  div:nth-child(4) .valores_pagamento_pdv ul li input{
             width: 100%;
         } */
@@ -122,6 +117,11 @@
                 width: 100% !important;
                 margin-left: 0px;
             }
+            
+            table thead tr{
+              display: none;
+            }
+
         } 
 
     </style>
@@ -196,11 +196,11 @@
                         <tbody>
                             @foreach($itens_vendidos as $item_vendido)
                             <tr>
-                                <td>{{$item_vendido->id}}</td>
-                                <td>{{$item_vendido->nome}}</td>
-                                <td>R$ {{number_format($item_vendido->preco_venda, 2, ',','.')}}</td>
-                                <td>{{$item_vendido->item_qtd}}</td>
-                                <td>R$ {{number_format($item_vendido->item_soma_total, 2, ',','.')}}</td>
+                                <td data-title="Código">{{$item_vendido->id}}</td>
+                                <td data-title="Produto">{{$item_vendido->nome}}</td>
+                                <td data-title="Valor venda">R$ {{number_format($item_vendido->preco_venda, 2, ',','.')}}</td>
+                                <td data-title="Quantidade">{{$item_vendido->item_qtd}}</td>
+                                <td data-title="Total">R$ {{number_format($item_vendido->item_soma_total, 2, ',','.')}}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -209,7 +209,7 @@
             </div>
         @else
             <div class="not_shell">
-                <h3>Nenhuma  venda foi realizado ao {{$caixa_info->descricao}}. <i class="fas fa-meh"></i></h3> 
+                <h3>Nenhuma venda realizada ao {{$caixa_info->descricao}}. <i class="fas fa-meh"></i></h3> 
             </div>
         @endif
     </div>

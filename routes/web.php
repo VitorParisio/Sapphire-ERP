@@ -27,12 +27,12 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//Auth::routes();
+Auth::routes();
 
 // ------------ ROUTE AUTH ------------
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+// Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+// Route::post('login', [LoginController::class, 'login']);
+// Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 // Reset password
 // Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
@@ -41,8 +41,8 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 // Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
 
 // Route::group(['middleware' => 'register.domain.main'], function(){
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
+// Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+// Route::post('/register', [RegisterController::class, 'register']);
 
 // });
 // ------------------------------------

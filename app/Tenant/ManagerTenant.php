@@ -21,7 +21,7 @@ class ManagerTenant {
 
     public function domainIsMain()
     {
-    
+        // dd(request()->getHost());
         return request()->getHost() == config('tenant.domain_main');
     }
 }

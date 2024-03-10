@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="Cache-Control" content="no-cache" />
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    {{-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> --}}
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
@@ -58,6 +58,9 @@
                 <button type="submit" style="display: none;"></button>
               </form>
             </div>
+            <div class="total_produtos_mobile" style="display: none">
+             Item(s): <span></span>
+            </div>
           </div>
         </div>
         <div class="dados_itens_venda">
@@ -85,22 +88,6 @@
         <label  for="total_venda" style="font-size:35px; font-weight:bold;">TOTAL</label><br>
         <input type="text" class="total_venda" id="total_venda"/>
       </div>
-      <div class="lista_atalhos">
-        <div class="lista_teclas">
-          <div style="position: relative;">
-            <img src="{{asset('img/sapphire_logo.png')}}" alt="logo" style="position: absolute; height: 63px; margin: 9px 0;">
-            <span></span>
-          </div>
-          <div>
-            <span>Alt + 3 - INICIAR VENDA&nbsp<i class="fas fa-sticky-note"></i></span>
-            <span>Alt + Q - BUSCAR PRODUTO&nbsp<i class="fas fa-search"></i></span>
-          </div>
-          <div>
-            <span>Alt + ENTER - PAGAMENTO&nbsp<i class="fas fa-money-bill-wave"></i></span>
-            <span>Alt + R - FECHAR CAIXA&nbsp<i class="fas fa-cash-register"></i></span>
-          </div>
-        </div>
-      </div>
       <div id="pagamento_pdv_mobile" class="pagamento_pdv_mobile" style="visibility: hidden">
         <div class="forma_pagamento_mobile">
           <select id="forma_pagamento" class="form-control forma_pagamento">
@@ -116,6 +103,7 @@
             <input type="hidden" class="form-control" id="valor_desconto" autocomplete="off">
           </div>
         </div>
+        <hr>
         <div class="result_pagamento_mobile" style="visibility: hidden">
           <div>
             <label for="troco" style="position: relative">
@@ -130,6 +118,22 @@
           <div class="btn_finalizar_venda_mobile">
             <button type="button" class="btn btn-success" id="disabled_btn_finaliza_venda" onclick="finalizarVenda()"><i class="fab fa-sellcast"></i> Finalizar venda</button>
             <button type="button" class="btn btn-secondary" onclick="fecharCaixaPDV()"><i class="fas fa-lock"></i> Fechar caixa</button>
+          </div>
+        </div>
+      </div>
+      <div class="lista_atalhos">
+        <div class="lista_teclas">
+          <div style="position: relative;">
+            <img src="{{asset('img/sapphire_logo.png')}}" alt="logo" style="position: absolute; height: 63px; margin: 9px 0;">
+            <span></span>
+          </div>
+          <div>
+            <span>Alt + 3 - INICIAR VENDA&nbsp<i class="fas fa-sticky-note"></i></span>
+            <span>Alt + Q - BUSCAR PRODUTO&nbsp<i class="fas fa-search"></i></span>
+          </div>
+          <div>
+            <span>Alt + ENTER - PAGAMENTO&nbsp<i class="fas fa-money-bill-wave"></i></span>
+            <span>Alt + R - FECHAR CAIXA&nbsp<i class="fas fa-cash-register"></i></span>
           </div>
         </div>
       </div>
@@ -154,10 +158,10 @@
             tecla_pressionada[e.key] = true;
             
             if (tecla_pressionada['Alt'] && e.key == 'Enter')
-              $( "#btn_modal_venda" ).trigger( "click" ); 
+              $("#btn_modal_venda").trigger( "click" ); 
 
             if (tecla_pressionada['Alt'] && e.key == 'q')
-              $( "#btn_modal_tabela_produto" ).trigger( "click" ); 
+              $("#btn_modal_tabela_produto").trigger( "click" ); 
 
             if (tecla_pressionada['Alt'] && e.key == 'r')
             {
@@ -228,7 +232,7 @@
           } 
         }); 
       }
-
+      
       function openCupom() {
         var popupWindow = window.open('/cupom', '_blank', "width=300, height=600");
         popupWindow.focus();
