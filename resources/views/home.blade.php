@@ -102,6 +102,15 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
+                    <canvas id="totalCompras"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
                     <canvas id="totalClientes"></canvas>
                 </div>
             </div>
@@ -152,6 +161,7 @@
 <script>
     $(function(){
         const totalVendas   = document.getElementById('totalVendas');
+        const totalCompras  = document.getElementById('totalCompras');
         const totalClientes = document.getElementById('totalClientes');
 
         new Chart(totalVendas, {
@@ -161,6 +171,36 @@
                 datasets: [{
                 label: ["{!! $totalVendasLabel !!}"],
                 data: [{{ $totalMesDado }}],
+                backgroundColor: ['rgba(75, 192, 192, 0.2)'],
+                borderColor:['rgb(75, 192, 192)'],
+                borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                        y: {
+                        beginAtZero: true,
+                        ticks:{
+                            callback: (value, index, values) => {
+                                return new Intl.NumberFormat('br-BR',{
+                                    style:'currency',
+                                    currency: 'BRL',
+                                    maximumSignificantDigits:3
+                                    }).format(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            new Chart(totalCompras, {
+            type: 'bar',
+            data: {
+                labels: {!!$mesComprasDado!!},
+                datasets: [{
+                label: ["{!! $totalComprasLabel !!}"],
+                data: [{{ $totalMesDadoCompras }}],
                 backgroundColor: ['rgba(75, 192, 192, 0.2)'],
                 borderColor:['rgb(75, 192, 192)'],
                 borderWidth: 1
