@@ -55,7 +55,7 @@ class HomeController extends Controller
             ->groupBy('mesCompra')
             ->orderBy('mesCompra')
             ->get();
-
+           
             $meses_bar_grafico = VendaCupom::select('created_at', 'total_venda')
             ->where(VendaCupom::raw('YEAR(created_at)'), date('Y'))
             ->get()
@@ -126,8 +126,8 @@ class HomeController extends Controller
                 $total_cliente[] = count($values);
             }
          
-            $clienteLabel     = "'Comparativo - Clientes'";
-            $totalVendasLabel = "'Comparativo - Vendas'";
+            $clienteLabel      = "'Comparativo - Clientes'";
+            $totalVendasLabel  = "'Comparativo - Vendas'";
             $totalComprasLabel = "'Comparativo - Compras'";
 
             $mesClienteDados = json_encode($mes_cliente);

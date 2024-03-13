@@ -638,7 +638,6 @@ input{
 .lista_produtos_input {
     position: absolute;
     width: 325px;
-    margin-top: 41px;
 }
 
 .lista_produtos_input ul li{
@@ -815,7 +814,8 @@ input{
         display: none;
     }
 
-    .mobile-tables, .mobile-tables tbody, .mobile-tables tr, .mobile-tables td{
+    .mobile-tables, .mobile-tables tbody, .mobile-tables tr, 
+    .mobile-tables td{
         display: block;
         width: 100%;
         font-size: 13px;
@@ -1099,7 +1099,11 @@ input{
         display: flex;
         justify-content: space-around;
         margin-top: 23px;
-     }
+    }
+
+    .fechamento_dados .valores_pagamento_pdv{
+        flex-direction: column !important;
+    }
 
 /* ========================================================= */  
 }

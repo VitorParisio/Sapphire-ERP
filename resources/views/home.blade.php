@@ -40,7 +40,7 @@
                                 <div class="inner">
                                     <div class="mb-3" style="position: relative;">
                                         <div class="visibility_values_dashboard" id="values_compras_dashboard" style="background: #2b302d; height:40px; width:100%; border-radius: 5px; position:absolute; display:block"></div>
-                                        <h3>R$ {{count($totalCompraMes) != 0 ? number_format($totalCompraMes[0]->total,2, ',', '.') : "0,00"}}</h3>
+                                        <h3>R$ {{count($totalCompraMes) != 0 ? number_format($totalCompraMes[0]->totalCompra,2, ',', '.') : "0,00"}}</h3>
                                     </div>
                                     <div class="mb-3">
                                         <a style="display: flex; align-items:center; gap:10px; color:#FFF;" class="enable_disable_tag" onclick="changeTag('values_compras_dashboard', 'eye_compras_dashboard')" href="javascript:void(0);"><span class="link_tags_dashboard">COMPRAS</span> <i class="fas fa-eye-slash eye_icon_slash_all" style="display: none" id="eye_compras_dashboard"></i></a>

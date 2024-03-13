@@ -9,7 +9,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="author" content="SapphireRP - Vitor Parísio">
     <meta name="keywords" content=" b2code, b2c, sapphirerp, saphira, safira, sapphira, sistemas de vendas, softwares de vendas">
-    <meta http-equiv="Cache-Control" content="no-cache" />
     {{-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> --}}
 
 
