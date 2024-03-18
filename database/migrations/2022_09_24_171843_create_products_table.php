@@ -24,9 +24,13 @@ class CreateProductsTable extends Migration
             $table->decimal('total_compra', 10,2)->default(0.00)->nullable();
             $table->decimal('preco_venda', 10,2);
             $table->decimal('preco_minimo', 10,2)->default(0.00)->nullable();
+            $table->decimal('margem_lucro_per', 10,2)->default(0.00)->nullable();
+            $table->decimal('margem_lucro', 10,2)->default(0.00)->nullable();
             $table->integer('qtd_compra');
             $table->integer('estoque');
             $table->integer('estoque_minimo')->nullable();
+            $table->decimal('preco_atacado', 10,2)->default(0.00)->nullable();
+            $table->integer('qtd_atacado')->nullable();
             $table->string('ucom')->default('UNID');
             $table->string('utrib')->default('UNID');
             $table->string('qtrib')->nullable();

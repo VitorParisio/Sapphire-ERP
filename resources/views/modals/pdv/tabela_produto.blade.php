@@ -17,7 +17,7 @@
                         <th>ID</th>
                         <th>Produto</th>
                         <th>Preço venda</th>
-                        <th>Estoque</th>
+                        <th>Preço atacado</th>
                     </thead>
                     <tbody>
                     </tbody>

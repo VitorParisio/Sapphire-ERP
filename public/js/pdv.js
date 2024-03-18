@@ -161,15 +161,19 @@ function getProduto(data)
             var produto      = data.produto;
             var pdv          = data.pdv;
 
-            var total_venda  = formatNumber.format(data.total_venda);
+            var total_venda        = formatNumber.format(data.total_venda);
             var total_itens_mobile = data.total_itens_mobile;
 
             $('tbody').html("");
             $('.total_venda').val();
             
             $.each(produto, function(index, data){
-                var valor_unitario = formatNumber.format(data.preco_venda);
-                var subtotal       = formatNumber.format(data.sub_total);
+                if (data.qtd_atacado != null)
+                    var valor_unitario = data.qtd >= data.qtd_atacado ? formatNumber.format(data.preco_atacado) : formatNumber.format(data.preco_venda);
+                else
+                    var valor_unitario = formatNumber.format(data.preco_venda);
+
+                var subtotal = formatNumber.format(data.sub_total);
               
                 $('#letreiro').val(data.nome).css({'letter-spacing' : '5px', 'font-weight' : 'bold', 'text-transform': 'uppercase', 'color' : 'grey', 'font-style': 'italic'});
                 $('#descricao').val(data.descricao);
@@ -179,9 +183,13 @@ function getProduto(data)
             })
 
             $.each(pdv,function(index,data){
-                var preco_venda = formatNumber.format(data.preco_venda);
-                var sub_total   = formatNumber.format(data.sub_total);
-                var img_tag     = data.img != null ? '<img src="storage/'+data.img+'" alt="img-item" />' : '<img src="img/sem_imagem.png"/>';
+                if (data.qtd_atacado != null)
+                    var preco_venda = data.qtd >= data.qtd_atacado ? formatNumber.format(data.preco_atacado) : formatNumber.format(data.preco_venda);
+                else
+                    var preco_venda = formatNumber.format(data.preco_venda);
+
+                var sub_total = formatNumber.format(data.sub_total);
+                var img_tag   = data.img != null ? '<img src="storage/'+data.img+'" alt="img-item" />' : '<img src="img/sem_imagem.png"/>';
                 
                 $('.table_itens_vendas tbody').append('<tr>\
                     <td data-label="#">'+img_tag+'</td>\
@@ -367,30 +375,6 @@ $.ajax({
         openCupom();
     }
   });
-
-  
-
-    // $.post('finalizavenda', {user_id: user_id, caixa_id_pdv:caixa_id_pdv, numero: numero, id_cupom: id_cupom, total_venda: total_venda, valor_recebido: valor_recebido, forma_pagamento: forma_pagamento, desconto : desconto, troco : troco}, function(data){
-        // removeProdutos();
-        // $('.modal').hide();
-        // $('.modal-backdrop').hide();
-        // $('.total_venda').val('R$ 0,00');
-        // $('.table_itens_vendas tbody').html("");
-        // $('#valor_recebido').val('');
-        // $('#desconto').val('');
-        // $('#valor_recebido').prop('placeholder', 'A RECEBER');
-        // $('#desconto').prop('placeholder', 'DESCONTO%');
-        // $('#valor_desconto').val('');
-        // $('#troco').val('');
-        // $('#total_pagamento').val('').prop('placeholder', '0,00');
-        // $('#descricao').val('');
-        // $('#qtd_produto').val('');
-        // $('#valor_unitario').val('');
-        // $('#subtotal').val('');
-        // $('.letreiro').val("CAIXA LIVRE");
-        // document.getElementById('cod_barra').focus();
-        // openCupom();
-    // });
 }
 
 

@@ -38,16 +38,30 @@
               </div>
               <div style="display:flex; justify-content: space-between">
                 <div>
-                  <label for="preco_compra">Preço custo*</label>
+                  <label for="preco_compra">Preço custo(R$)*</label>
                   <input type="text" class="preco_compra_editar" id="preco_compra" name="preco_compra" autocomplete="off"/>
                 </div>
                 <div>
-                  <label for="preco_venda">Preço venda*</label>
+                  <label for="preco_venda">Preço venda(R$)*</label>
                   <input type="text" class="preco_venda_editar" id="preco_venda" name="preco_venda" autocomplete="off"/>
                 </div>
                 <div>
-                  <label for="preco_minimo">Preço mínimo</label>
+                  <label for="preco_minimo">Preço mínimo(R$)</label>
                   <input type="text" class="preco_minimo_editar" id="preco_minimo" name="preco_minimo" autocomplete="off"/>
+                </div>
+              </div>
+              <div style="display:flex; justify-content: space-between">
+                <div>
+                  <label for="lucro_real_editar">Lucro Real(R$)</label>
+                  <input type="text" class="lucro_real_editar" id="lucro_real_editar" name="margem_lucro" autocomplete="off" readonly="readonly"/>
+                </div>
+                <div>
+                  <label for="lucro_per_editar">Lucro %</label>
+                  <input type="text" class="lucro_per_editar" id="lucro_per_editar" name="margem_lucro_per" autocomplete="off" readonly="readonly"/>
+                </div>
+                <div>
+                  <label for="descricao">Descrição</label>
+                  <input type="text" class="descricao_editar" id="descricao" name="descricao" autocomplete="off"/>
                 </div>
               </div>
               <div style="display:flex; justify-content: space-between">
@@ -60,19 +74,25 @@
                   <input type="text" class="estoque_minimo_editar" id="estoque_minimo" name="estoque_minimo" autocomplete="off"/>
                 </div>
                 <div>
-                  <label for="descricao">Descrição</label>
-                  <input type="text" class="descricao_editar" id="descricao" name="descricao" autocomplete="off"/>
+                  <label for="unidade_medida">Unidade/Medida</label>
+                  <input type="text" class="unidade_medida_editar" id="unindade_medida" name="unindade_medida" />
                 </div>
               </div>
               <div style="display:flex; justify-content: start; gap:36px">
                 <div>
-                  <label for="unidade_medida">Unidade/Medida</label>
-                  <input type="text" class="unidade_medida_editar" id="unindade_medida" name="unindade_medida" />
+                  <label for="qtd_atacado">Qtd. Atacado</label>
+                  <input type="text" class="qtd_atacado_editar" id="qtd_atacado" name="qtd_atacado" autocomplete="off"/>
+                </div>
+                <div>
+                  <label for="preco_atacado">Preço Atacado(R$)</label>
+                  <input type="text" class="preco_atacado_editar" id="preco_atacado" name="preco_atacado" autocomplete="off"/>
                 </div>
                 <div>
                   <label for="validade">Validade</label>
                   <input type="date" class="validade_editar" id="validade" name="validade"/>
                 </div>
+              </div>
+              <div style="display:flex; justify-content: space-between">
                 <div style="margin-top: 4px;">
                   <label for="validade">Entrada de produto?</label>
                   <div class="entrada_produto_editar">

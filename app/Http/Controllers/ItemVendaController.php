@@ -14,14 +14,14 @@ class ItemVendaController extends Controller
     function index($produto_pdv)
     { 
         $produto = Product::join('item_vendas', 'products.id', '=', 'item_vendas.product_id')
-        ->select('products.nome', 'products.preco_venda', 'item_vendas.qtd', 'item_vendas.sub_total','products.descricao')
+        ->select('products.nome', 'products.preco_venda', 'products.preco_atacado', 'products.qtd_atacado', 'products.descricao', 'item_vendas.qtd', 'item_vendas.sub_total')
         ->where('products.cod_barra', '=', $produto_pdv)
         ->orWhere('products.nome', '=', $produto_pdv)
         ->get();
 
         $itens = PDV::join('products', 'products.id', '=', 'p_d_v_s.product_id')
         ->join('item_vendas', 'item_vendas.id', '=', 'p_d_v_s.item_venda_id')
-        ->select('products.nome', 'products.preco_venda', 'products.img', 'item_vendas.id AS item_venda_id', 'item_vendas.product_id', 'item_vendas.qtd', 'item_vendas.sub_total')
+        ->select('products.nome', 'products.preco_venda', 'products.img', 'products.preco_atacado', 'products.qtd_atacado','item_vendas.id AS item_venda_id', 'item_vendas.product_id', 'item_vendas.qtd', 'item_vendas.sub_total')
         ->get();
         
         $total_venda = PDV::join('item_vendas', 'item_vendas.id', '=', 'p_d_v_s.item_venda_id')
@@ -32,40 +32,13 @@ class ItemVendaController extends Controller
         return response()->json(['produto' => $produto, 'pdv' => $itens, 'total_venda' => $total_venda, 'total_itens_mobile' => $total_itens_mobile]);
     }
 
-    function estoqueNegativo(Request $request)
-    {
-        $cod_barra        = $request->cod_barra;
-        
-        $qtd              = $request->qtd > 0 ? $request->qtd : 1;
-        $estoque_negativo = false;
-       
-        $produto = Product::select('cod_barra', 'nome','id', 'estoque', 'preco_venda')
-        ->where('cod_barra', $cod_barra)
-        ->orWhere('nome', $cod_barra)
-        ->first();
-       
-        if ($produto != null){
-            if ($produto->estoque < $qtd)
-            {
-                $estoque_negativo = true;
-                return response()->json($estoque_negativo);
-            }
-            else{
-                return response()->json($estoque_negativo);
-            }
-        }else{
-            return response()->json(['error' => 'Produto não cadastrado']);
-        }
-
-    }
-    
     function store(Request $request)
     {
         $cod_barra = $request->cod_barra;
         $qtd       = $request->qtd > 0 ? $request->qtd : 1;
         $slc_ult_id_cupom  = Cupom::orderBy('id', 'desc')->limit(1)->first();
        
-        $produto = Product::select('cod_barra', 'nome','id', 'estoque', 'preco_venda')
+        $produto = Product::select('cod_barra', 'nome','id', 'estoque', 'preco_venda', 'qtd_atacado', 'preco_atacado')
         ->where('cod_barra', $cod_barra)
         ->orWhere('nome', $cod_barra)
         ->first();
@@ -76,10 +49,13 @@ class ItemVendaController extends Controller
         {   
             if ($produto->id == $data->product_id)
             {
-                $itens = ItemVenda::where('id', $data->item_venda_id)->first();
-              
-                $itens->qtd       += $qtd;
-                $itens->sub_total  = $produto->preco_venda * $itens->qtd;
+                $itens      = ItemVenda::where('id', $data->item_venda_id)->first();
+                $itens->qtd += $qtd;
+
+                if ($produto->qtd_atacado != null)
+                  $itens->sub_total = $qtd >= $produto->qtd_atacado ? $produto->preco_atacado * $itens->qtd : $produto->preco_venda * $itens->qtd;
+                else
+                  $itens->sub_total = $produto->preco_venda * $itens->qtd;
 
                 $itens->where('id', $data->item_venda_id)->update(['qtd' => $itens->qtd, 'sub_total' => $itens->sub_total]);
                 
@@ -126,13 +102,19 @@ class ItemVendaController extends Controller
             $item_venda->caixa_id   = $request->caixa_id_pdv;
             $item_venda->cupom_id   = $slc_ult_id_cupom->id;
             $item_venda->qtd        = $qtd;
-            $item_venda->sub_total  = $produto->preco_venda * $qtd;
             $item_venda->data_venda = date("Y-m-d");
+            
+            if ($produto->qtd_atacado != null)
+              $item_venda->sub_total  = $qtd >= $produto->qtd_atacado ? $produto->preco_atacado * $qtd : $produto->preco_venda * $qtd;
+            else
+              $item_venda->sub_total  = $produto->preco_venda * $qtd;
+            
             $item_venda->save();
 
             $pdv = new PDV();
-            $pdv->product_id = $produto->id;
+            $pdv->product_id    = $produto->id;
             $pdv->item_venda_id = $item_venda->id;
+
             $pdv->save();
 
             $estoque_atualizado = $produto->estoque - $qtd;
@@ -144,6 +126,33 @@ class ItemVendaController extends Controller
         }
     }
 
+    function estoqueNegativo(Request $request)
+    {
+        $cod_barra        = $request->cod_barra;
+        
+        $qtd              = $request->qtd > 0 ? $request->qtd : 1;
+        $estoque_negativo = false;
+       
+        $produto = Product::select('cod_barra', 'nome','id', 'estoque', 'preco_venda')
+        ->where('cod_barra', $cod_barra)
+        ->orWhere('nome', $cod_barra)
+        ->first();
+       
+        if ($produto != null){
+            if ($produto->estoque < $qtd)
+            {
+                $estoque_negativo = true;
+                return response()->json($estoque_negativo);
+            }
+            else{
+                return response()->json($estoque_negativo);
+            }
+        }else{
+            return response()->json(['error' => 'Produto não cadastrado']);
+        }
+
+    }
+    
     function getProdutoSearch(Request $request, $produto_search = null)
     {
       if ($request->ajax())
@@ -184,12 +193,15 @@ class ItemVendaController extends Controller
         {
           if ($query != '')
           {
-            $produto = Product::where('nome','LIKE','%'.$query.'%')
+            $produto = Product::select('nome', 'preco_venda', 'preco_atacado')
+            ->where('nome','LIKE','%'.$query.'%')
             ->get(); 
           }
           else
           {
-            $produto = Product::orderBy('nome', 'ASC')->get();
+            $produto = Product::select('nome', 'preco_venda', 'preco_atacado')
+            ->orderBy('nome', 'ASC')
+            ->get();
           }
     
           $total_row   = $produto->count();
@@ -203,7 +215,7 @@ class ItemVendaController extends Controller
                   <td>'.$row->id.'</td>
                   <td class="produto_nome_busca"><a href="javascript:void(0);">'.ucfirst($row->nome).'</a></td>
                   <td>R$ '.number_format($row->preco_venda, 2, ',', '.').'</td>
-                  <td>'.$row->estoque.'</td>
+                  <td>R$ '.number_format($row->preco_atacado, 2, ',', '.').'</td>
                 </tr>
               ';
             }

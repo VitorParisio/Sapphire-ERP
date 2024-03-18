@@ -498,6 +498,7 @@
             function()
             {
                 return $(this).attr('id');
+                
             }).get();
         
         var forma_pagamento_fechamento = $("input[name='forma_pagamento_fechamento[]']").map(
@@ -510,7 +511,6 @@
         var total_fechamento = $("input[name='total_fechamento[]']").map(
             function()
             {  
-                
                 return $(this).val();
 
             }).get();

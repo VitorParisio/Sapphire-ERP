@@ -46,6 +46,16 @@
             </div>
             <div style="display:flex; justify-content: space-between">
               <div>
+                <label for="lucro_real_detalhe">Lucro Real</label>
+                <span class="lucro_real_detalhe"></span>
+              </div>
+              <div>
+                <label for="lucro_per_detalhe" style="text-align:right">Lucro %</label>
+                <span class="lucro_per_detalhe"></span>
+              </div>
+            </div>
+            <div style="display:flex; justify-content: space-between">
+              <div>
                 <label for="preco_minimo_detalhe">Preço mínimo:</label>
                 <span class="preco_minimo_detalhe"></span>
               </div>
@@ -62,6 +72,16 @@
               <div>
                 <label for="estoque_minimo" style="text-align:right">Estoque mínimo</label>
                 <span class="estoque_minimo_detalhe"></span>
+              </div>
+            </div>
+            <div style="display:flex; justify-content: space-between">
+              <div>
+                <label for="qtd_atacado_detalhe">Qtd. Atacado</label>
+                <span class="qtd_atacado_detalhe"></span>
+              </div>
+              <div>
+                <label for="preco_atacado" style="text-align:right">Preço Atacado</label>
+                <span class="preco_atacado_detalhe"></span>
               </div>
             </div>
             <div style="display:flex; justify-content: space-between">

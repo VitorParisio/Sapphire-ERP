@@ -88,19 +88,25 @@
                                 <label for="nome">Produto*
                                     <input type="text" class="form-control" name="nome" id="nome" placeholder="" value="{{ old('nome')}}" autocomplete="off">
                                 </label>
-                                <label for="preco_compra">Preço custo(R$)*
+                                <label for="preco_compra">Preço Custo(R$)*
                                     <input type="text" class="form-control" name="preco_compra" id="preco_compra" value="{{old('preco_compra')}}" style="text-align: right" autocomplete="off">
+                                </label>
+                                <label for="qtd_atacado">Qtd. Atacado
+                                    <input type="text" class="form-control" name="qtd_atacado" id="qtd_atacado" value="{{old('qtd_atacado')}}" style="text-align: right" autocomplete="off">
                                 </label>
                             </div>
                             <div class="col-md-3">
-                                <label for="estoque">Estoque atual*
+                                <label for="estoque">Estoque Atual*
                                     <input type="text" class="form-control" name="estoque" id="estoque" placeholder="" value="{{old('estoque')}}" autocomplete="off">
                                 </label>
-                                <label for="estoque_minimo">Estoque mínimo*
+                                <label for="estoque_minimo">Estoque Mínimo*
                                     <input type="text" class="form-control" name="estoque_minimo" id="estoque_minimo" placeholder="" value="{{old('estoque_minimo')}}" autocomplete="off">
                                 </label>
-                                <label for="preco_venda">Preço venda(R$)*
+                                <label for="preco_venda">Preço Venda(R$)*
                                     <input type="text" class="form-control" name="preco_venda" id="preco_venda" value="{{old('preco_venda')}}" style="text-align: right" autocomplete="off">
+                                </label>
+                                <label for="preco_atacado">Preço Atacado(R$)
+                                    <input type="text" class="form-control" name="preco_atacado" id="preco_atacado" value="{{old('preco_atacado')}}" style="text-align: right" autocomplete="off">
                                 </label>
                             </div>
                             <div class="col-md-3">
@@ -110,16 +116,22 @@
                                 <label for="ucom">Unid. comercial*
                                     <input type="text" class="form-control" name="ucom" id="ucom" value="UNID" autocomplete="off" disabled>
                                 </label>
-                                <label for="preco_minimo">Preço mínimo(R$)
-                                    <input type="text" class="form-control" name="preco_minimo" id="preco_minimo" value="{{old('preco_minimo')}}" style="text-align: right" autocomplete="off">
+                                <label for="lucro_real">Lucro Real(R$)
+                                    <input type="text" class="form-control" name="margem_lucro" id="lucro_real" autocomplete="off">
+                                </label>
+                                <label for="validade">Validade
+                                    <input type="date" class=" form-control datetimepicker-input" data-target="#reservationdate" name="validade" id="validade" value="{{old('validade')}}">
                                 </label>
                             </div>
                             <div class="col-md-3">
                                 <label for="descricao">Descrição
                                     <input type="text" class="form-control" name="descricao" id="descricao" value="{{old('descricao')}}" autocomplete="off">
                                 </label><br>
-                                <label for="validade">Validade
-                                    <input type="date" class=" form-control datetimepicker-input" data-target="#reservationdate" name="validade" id="validade" value="{{old('validade')}}">
+                                <label for="preco_minimo">Preço Mínimo(R$)
+                                    <input type="text" class="form-control" name="preco_minimo" id="preco_minimo" value="{{old('preco_minimo')}}" style="text-align: right" autocomplete="off">
+                                </label>
+                                <label for="lucro_per">Lucro %
+                                    <input type="text" class="form-control" name="margem_lucro_per" id="lucro_per" value="{{old('margem_lucro_per')}}" style="text-align: right" autocomplete="off">
                                 </label>
                                 <div>
                                     <input type="file" name="img" id="img_produto_input" accept="image/*">
@@ -159,7 +171,7 @@
                                     <input type="text" class="form-control" name="origem" id="origem" value="0 - Nacional"  autocomplete="off" disabled>
                                 </label>
                             </div> 
-                            <label for="situacao_tributaria">Situação tributária
+                            <label for="situacao_tributaria">Situação Tributária
                                 <input type="text" class="form-control" name="situacao_tributaria" id="situacao_tributaria" value="102 - Tributada pelo Simples Nacional sem permissão de crédito">
                             </label>
                             <label for="ceantrib" style="display: none">EAN Unid. Tributável
@@ -207,12 +219,6 @@
                             </table>
                         </div>
                     </div>
-                    <div>
-                        @include('modals.produto.detalhe')
-                    </div>
-                    <div>
-                        @include('modals.produto.editar')
-                    </div>
                 </div>                   
             </div>
             <div class="tabbody" id="tab4" style="display: none;">
@@ -245,6 +251,12 @@
             </div> 
         </div>
         <div>
+            @include('modals.produto.detalhe')
+        </div>
+        <div>
+            @include('modals.produto.editar')
+        </div>
+        <div>
             @include('modals.categoria.editar')
         </div>
         <div>
@@ -265,10 +277,13 @@
         $('#cfop').prop('disabled', true);
         $('#situacao_tributaria').prop('disabled', true);
         $('#origem').prop('disabled', true);
-
         $('.unidade_medida_editar').prop('disabled', true);
         $('#cfop_editar').prop('disabled', true);
         $('#origem_editar').prop('disabled', true);
+        $('#lucro_real').attr("readonly","true");
+        $('#lucro_per').attr('readonly', "true");
+        $('#lucro_real_editar').attr('readonly', "true");
+        $('#lucro_per_editar').attr('readonly', "true");
         $('#situacao_tributaria_editar').prop('disabled', true);
 
         $('.search_category').on('keyup',function(){
@@ -301,6 +316,36 @@
             $('#qtrib').val(value);
         });
 
+        $('#preco_compra').blur(function(){
+            var preco_compra_lucro = $(this).val();
+            var preco_venda_lucro  = $('#preco_venda').val();
+
+            if (preco_compra_lucro != "" && preco_venda_lucro != "")
+                lucroValores(preco_compra_lucro, preco_venda_lucro)
+        });  
+
+        $('#preco_venda').blur(function(){
+            var preco_venda_lucro = $(this).val();
+            var preco_compra_lucro  = $('#preco_compra').val();
+            
+            if (preco_compra_lucro != "" && preco_venda_lucro != "")
+                lucroValores(preco_compra_lucro, preco_venda_lucro)
+        }); 
+        
+        $('.preco_compra_editar').blur(function(){
+            var preco_compra_lucro = $(this).val();
+            var preco_venda_lucro  = $('.preco_venda_editar').val();
+
+            lucroValores(preco_compra_lucro, preco_venda_lucro)
+        });  
+
+        $('.preco_venda_editar').blur(function(){
+            var preco_venda_lucro  = $(this).val();
+            var preco_compra_lucro = $('.preco_compra_editar').val();
+
+            lucroValores(preco_compra_lucro, preco_venda_lucro)
+        });  
+            
         $(document).delegate(".dtls_btn","click",function(){
             $('#detalhe_produto_modal').modal('show');
 
@@ -311,7 +356,7 @@
             }).get();
         
             var validade = "";
-            var validade_split = data[8].split('-');
+            var validade_split = data[10].split('-');
 
             if (validade_split == "Não informado")
                 validade = validade_split
@@ -324,19 +369,23 @@
             $('.produto_detalhe').html(data[3]);
             $('.preco_venda_detalhe').html(data[4]);
             $('.estoque_detalhe').html(data[5]);
-            $('.descricao_detalhe').html(data[6]);
-            $('.unidade_detalhe').html(data[7]);
+            $('.qtd_atacado_detalhe').html(data[6]);
+            $('.preco_atacado_detalhe').html(data[7]);
+            $('.descricao_detalhe').html(data[8]);
+            $('.unidade_detalhe').html(data[9]);
             $('.validade_detalhe').html(validade);
-            $('.cod_barra_detalhe').html(data[9]);
-            $('.estoque_minimo_detalhe').html(data[10]);
-            $('.preco_custo_detalhe').html(data[11]);
-            $('.preco_minimo_detalhe').html(data[12]);
-            $('.ncm_detalhe').html(data[13]);
-            $('.cest_detalhe').html(data[14]);
-            $('.extipi_detalhe').html(data[15]);
-            $('.cfop_detalhe').html(data[16]);
-            $('.origem_detalhe').html(data[17]);
-            $('.situacao_tributaria_detalhe').html(data[18]);
+            $('.cod_barra_detalhe').html(data[11]);
+            $('.estoque_minimo_detalhe').html(data[12]);
+            $('.preco_custo_detalhe').html(data[13]);
+            $('.preco_minimo_detalhe').html(data[14]);
+            $('.ncm_detalhe').html(data[15]);
+            $('.cest_detalhe').html(data[16]);
+            $('.extipi_detalhe').html(data[17]);
+            $('.cfop_detalhe').html(data[18]);
+            $('.origem_detalhe').html(data[19]);
+            $('.situacao_tributaria_detalhe').html(data[20]);
+            $('.lucro_real_detalhe').html(data[21]);
+            $('.lucro_per_detalhe').html(data[22]);
         });
 
         $(document).delegate(".edt_btn","click",function(){
@@ -348,40 +397,49 @@
                 return $(this).html();
             }).get();
 
-            var preco_compra = data[11].slice(3);
-            var preco_venda  = data[4].slice(3);
-            var preco_minimo = data[12].slice(3);
-
             var cod_barra;      
             var estoque_minimo; 
             var ncm;           
             var cest;           
-            var extipi;         
-            
-            if(data[9] == 'Não informado')
+            var extipi;  
+            var qtd_atacado;
+
+            var preco_compra      = data[13].slice(3);
+            var preco_venda       = data[4].slice(3);
+            var lucro_margem_real = data[21].slice(3);
+            var preco_minimo      = data[14].slice(3);
+            var preco_atacado     = data[7].slice(3);
+            var lucro_margem_per  = data[22].substring(0, data[22].length-1);
+                   
+            if(data[11] == 'Não informado')
                 cod_barra = '';
             else
-                cod_barra = data[9];
+                cod_barra = data[11];
 
-            if(data[10] == 'Não informado')
+            if(data[12] == 'Não informado')
                 estoque_minimo = '';
             else
-                estoque_minimo = data[10];
-
-            if(data[13] == 'Não informado')
-                ncm = '';
-            else
-                ncm = data[13];
-
-            if(data[14] == 'Não informado')
-                cest = '';
-            else
-                cest = data[14];
+                estoque_minimo = data[12];
 
             if(data[15] == 'Não informado')
+                ncm = '';
+            else
+                ncm = data[15];
+
+            if(data[16] == 'Não informado')
+                cest = '';
+            else
+                cest = data[16];
+
+            if(data[17] == 'Não informado')
                 extipi = '';
             else
-                extipi = data[15];
+                extipi = data[17];
+
+            if(data[6] == 'Não informado')
+                qtd_atacado = '';
+            else
+                qtd_atacado = data[6];
 
             $('.img_editar').html(data[0]);
             $('.id_editar').val(data[1]);
@@ -389,11 +447,13 @@
             $('.produto_editar').val(data[3]);
             $('.preco_venda_editar').val(preco_venda);
             $('#vuntrib_editar').val(preco_venda);
+            $('.preco_atacado_editar').val(preco_atacado);
+            $('.qtd_atacado_editar').val(qtd_atacado);
             $('.estoque_editar').val(data[5]);
             $('#qtrib_editar').val(data[5]);
-            $('.descricao_editar').val(data[6]);
-            $('.unidade_medida_editar').val(data[7]);
-            $('.validade_editar').val(data[8]);
+            $('.descricao_editar').val(data[8]);
+            $('.unidade_medida_editar').val(data[9]);
+            $('.validade_editar').val(data[10]);
             $('.cod_barra_editar').val(cod_barra);
             $('#ceantrib_editar').val(cod_barra);
             $('.estoque_minimo_editar').val(estoque_minimo);
@@ -402,9 +462,11 @@
             $('.ncm_editar').val(ncm);
             $('.cest_editar').val(cest);
             $('.extipi_editar').val(extipi);
-            $('.cfop_editar').val(data[16]);
-            $('.origem_editar').val(data[17]);
-            $('.situacao_tributaria_editar').val(data[18]);
+            $('.cfop_editar').val(data[18]);
+            $('.origem_editar').val(data[19]);
+            $('.situacao_tributaria_editar').val(data[20]);
+            $('.lucro_real_editar').val(lucro_margem_real);
+            $('.lucro_per_editar').val(lucro_margem_per);
             selectCategoria(data[1]);
             
         });
@@ -486,7 +548,6 @@
                             $('#form_cadastro_produto').find('input[type="text"]').val("");
                             $('#form_cadastro_produto').find('input[type="date"]').val("");
                             $('#form_cadastro_produto').find('input[type="file"]').val("");
-                            $('.img_produto_input span').next().text("Selecionar imagem");
                             $('#form_cadastro_produto').find('#ucom').val("UNID");
                             $('#form_cadastro_produto').find('#utrib').val("UNID");
                             $('#form_cadastro_produto').find('#utrib').prop("readonly",true);
@@ -494,7 +555,8 @@
                             $('#form_cadastro_produto').find('#origem').val("0 - Nacional");
                             $('#form_cadastro_produto').find('#situacao_tributaria').val("102 - Tributada pelo Simples Nacional sem permissão de crédito");
                             $('#form_cadastro_produto').find('#cfop').val("5101");
-                            
+                            $('.img_produto_input span').next().text("Selecionar imagem");
+
                             getCategoria();
                             getProduto();
                             selectCategoria();
@@ -538,6 +600,9 @@
                             $(".errors").html("");
                             $(".errors_editar_produto").html("");
                             $('.search_product').val("");
+                            $('#lucro_real').val("");
+                            $('#lucro_per').val("");
+
                             getCategoria();
                             getProduto();
                             selectCategoria();
@@ -895,5 +960,27 @@
             }
         });
     }
+
+    function lucroValores(preco_compra_lucro, preco_venda_lucro)
+    {
+        var options = { 
+                currency: 'BRL', 
+                minimumFractionDigits: 2, 
+                maximumFractionDigits: 3 
+            };
+
+        var formatNumber = new Intl.NumberFormat('pt-BR', options);
+       
+        var resultLucroReal = parseFloat(preco_venda_lucro.replace("," , ".")) - parseFloat(preco_compra_lucro.replace("," , "."));  
+        var resultLucroPer  = parseFloat((preco_venda_lucro.replace("," , ".")) - parseFloat(preco_compra_lucro.replace("," , "."))) / parseFloat(preco_venda_lucro.replace("," , "."));  
+
+        resultLucroReal = formatNumber.format(resultLucroReal);
+       
+        $('#lucro_real').val(resultLucroReal);
+        $('#lucro_per').val(resultLucroPer.toFixed(2));
+
+        $('#lucro_real_editar').val(resultLucroReal);
+        $('#lucro_per_editar').val(resultLucroPer.toFixed(2));
+    }   
 </script>
 @endpush
