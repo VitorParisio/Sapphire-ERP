@@ -131,7 +131,9 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/pdv', [VendasController::class, 'pdv'])->name('pdv.vendas');
     Route::post('/finalizavenda', [VendasController::class, 'finalizaVenda'])->name('finaliza_venda.vendas');
     Route::get('/cupom', [VendasController::class, 'cupom'])->name('cupom.vendas');
-
+    Route::get('/getvendastablepdv/{query?}', [VendasController::class, 'tabelaVendasPdv'])->name('cupom.tabela_venda_pdv');
+    Route::get('/cancelavendapdv/{nro_cupom}', [VendasController::class, 'cancelaVendaPDV'])->name('cupom.cancela_venda_pdv');
+    
     Route::get('notas_fiscais', [NfeController::class, 'index'])->name('index.nfe');
     Route::get('cadastrar_nota', [NfeController::class, 'create'])->name('create.nfe');
     Route::post('cadastra_nfe', [NfeController::class, 'cadastraNfe'])->name('cadastra.nfe');
@@ -143,7 +145,7 @@ Route::group(['middleware' => 'auth'], function (){
     //Route::get('email_nfe', [NfeController::class, 'emailNfe'])->name('email.nfe');
     Route::get('itens_nota_nfe/{id}', [NfeController::class, 'itensNotaNfe'])->name('itens_nota.nfe');
     Route::get('status_sefaz', [NfeController::class, 'statusSefaz'])->name('status.sefaz');
-
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 
     Route::fallback(function(){
         return redirect()->back();

@@ -15,6 +15,7 @@ class CreateVendaCupomsTable extends Migration
     {
         Schema::create('venda_cupoms', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('cupom_id');
             $table->unsignedBigInteger('caixa_id');
             $table->decimal('total_venda', 10,2)->default(0.00);

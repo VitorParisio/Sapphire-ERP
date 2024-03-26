@@ -204,7 +204,7 @@ class ItemVendaController extends Controller
             ->get();
           }
     
-          $total_row   = $produto->count();
+          $total_row = $produto->count();
           
           if ($total_row > 0)
           {

@@ -12,5 +12,5 @@ class Cupom extends Model
     protected $table   = 'cupoms';
     public $timestamps = false;
 
-    protected $fillable = ['user_id', 'caixa_id', 'nro_cupom'];
+    protected $fillable = ['user_id', 'caixa_id', 'nro_cupom', 'status'];
 }

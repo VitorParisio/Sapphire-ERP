@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Caixa;
 use App\Models\Cupom;
 use App\Models\NumeroCaixa;
@@ -11,6 +12,7 @@ use App\Models\Emitente;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class VendasController extends Controller
 {
@@ -76,7 +78,7 @@ class VendasController extends Controller
             
             $novo_id_cupom = Cupom::select('id')->orderBy('id', 'desc')->limit(1)->first();
             $id_cupom      = $novo_id_cupom->id;
-          
+
             ItemVenda::select('cupom_id')
             ->orderBy('id', 'desc')->limit($count_qtd_id)
             ->update(['cupom_id' => $id_cupom]);
@@ -85,7 +87,9 @@ class VendasController extends Controller
         }
     }
 
-    function finalizaVenda(Request $request){
+    function finalizaVenda(Request $request)
+    {
+        $user_auth         = Auth::user()->id;
         $data              = $request->all();
         $numero_caixa      = $request->caixa_id_pdv;
         $slc_ult_id_cupom  = Cupom::orderBy('id', 'desc')->limit(1)->first();
@@ -95,7 +99,8 @@ class VendasController extends Controller
         $total_venda_formatado    = str_replace('.', '', $request->total_venda);
         $desconto_formatado       = str_replace('.', '', $request->desconto);
         $troco_formatado          = str_replace('.', '', $request->troco);
-        
+
+        $data['user_id']        = $user_auth;
         $data['cupom_id']       = $slc_ult_id_cupom->id;
         $data['caixa_id']       = $request->caixa_id_pdv;
         $data['valor_recebido'] = str_replace(',', '.', $valor_recebido_formatado);
@@ -119,7 +124,8 @@ class VendasController extends Controller
             Cupom::where('id', $slc_ult_id_cupom->id)->update([
                 "user_id"   => $request->user_id,
                 "caixa_id"  => $request->caixa_id_pdv,
-                "nro_cupom" => 1
+                "nro_cupom" => 1,
+                "status"    => "FECHADO"
             ]);  
         } else {
             $nmro_cupom = Cupom::select("nro_cupom")
@@ -133,7 +139,8 @@ class VendasController extends Controller
             Cupom::where('id', $slc_ult_id_cupom->id)->update([
                 "user_id"   => $request->user_id,
                 "caixa_id"  => $request->caixa_id_pdv,
-                "nro_cupom" => $ult_numero_cupom
+                "nro_cupom" => $ult_numero_cupom,
+                "status"    => "FECHADO"
             ]);  
         }
 
@@ -143,12 +150,115 @@ class VendasController extends Controller
         return redirect()->route('cupom.vendas');
     }
 
-    function cupom(){
+    function tabelaVendasPdv(Request $request, $query = null)
+    {
+        $venda_pdv_busca     = '';
+        $total_row_venda_pdv = '';
+
+        if ($request->ajax())
+        {
+          if ($query != '')
+          {
+            $cupom_venda = VendaCupom::join('users', 'users.id', '=', 'venda_cupoms.user_id')
+            ->join('cupoms', 'cupoms.id', '=', 'venda_cupoms.cupom_id')
+            ->select('cupoms.nro_cupom', 'users.name', 'cupoms.status', 'venda_cupoms.created_at', 'venda_cupoms.total_venda')
+            ->where('cupoms.nro_cupom','LIKE','%'.$query.'%')
+            ->whereDate('venda_cupoms.created_at', Carbon::today())
+            ->orderBy('cupoms.nro_cupom', 'DESC')
+            ->get();
+          }
+          else
+          {
+            $cupom_venda = VendaCupom::join('users', 'users.id', '=', 'venda_cupoms.user_id')
+            ->join('cupoms', 'cupoms.id', '=', 'venda_cupoms.cupom_id')
+            ->select('cupoms.nro_cupom', 'users.name', 'cupoms.status', 'venda_cupoms.created_at', 'venda_cupoms.total_venda')
+            ->whereDate('venda_cupoms.created_at', Carbon::today())
+            ->orderBy('cupoms.nro_cupom', 'DESC')
+            ->get(); 
+          }
+    
+          $total_row_venda_pdv = $cupom_venda->count();
+         
+          if ($total_row_venda_pdv > 0)
+          {
+            foreach($cupom_venda as $listVendaTablePdv)
+            {
+              $venda_pdv_busca .='
+                <tr>
+                    <td>'.$listVendaTablePdv->nro_cupom.'</td>
+                    <td>'.date("d/m/Y", strtotime($listVendaTablePdv->created_at)).'</td>
+                    <td>CONSUMIDOR FINAL</td>
+                    <td>'.ucfirst($listVendaTablePdv->name).'</td>
+                    <td>R$ '.number_format($listVendaTablePdv->total_venda,2,',','.').'</td>
+                    <td>'.$listVendaTablePdv->status.'</td>
+                    <td><a href="javascript:void(0);" class="cancela_venda_pdv_link"><i class="fas fa-ban"></i></a></td>
+                </tr>
+              ';
+            }
+          }
+          else
+          {
+            $venda_pdv_busca ='
+            <tr>
+                <td colspan="7" style="font-weight:100; font-size: 19px"><i>Nenhuma venda tem sido realizada.</i></td>
+            </tr>
+            ';
+          }
+    
+          $data = array(
+            'venda_pdv_busca' => $venda_pdv_busca,
+          );
+    
+          return response()->json($data);
+        }
+    }
+
+    function cancelaVendaPDV(Request $request, $nro_cupom)
+    { 
+        if ($request->ajax())
+        {
+            $produto_id = Product::select('id', 'estoque')->get();
+           
+            $item_venda_cancela = ItemVenda::join('cupoms', 'cupoms.id', '=', 'item_vendas.cupom_id')
+            ->join('products', 'products.id', '=', 'item_vendas.product_id')
+            ->select('product_id', 'item_vendas.qtd')
+            ->where('cupoms.nro_cupom', $nro_cupom)
+            ->get();
+
+            for($i = 0; $i < count($produto_id); $i++)
+            {
+                for($j = 0; $j < count($item_venda_cancela); $j++)
+                {
+                    if($produto_id[$i]->id == $item_venda_cancela[$j]->product_id)
+                    {
+                        $retorna_estoque = $produto_id[$i]->estoque + $item_venda_cancela[$j]->qtd;
+                        
+                        Product::where('id', $produto_id[$i]->id)->update(['estoque' => $retorna_estoque]);
+                    }
+                }
+            }
+
+            ItemVenda::join('cupoms', 'cupoms.id', '=', 'item_vendas.cupom_id')
+            ->where('cupoms.nro_cupom', $nro_cupom)
+            ->delete();
+
+            VendaCupom::join('cupoms', 'cupoms.id', '=', 'venda_cupoms.cupom_id')
+            ->where('cupoms.nro_cupom', $nro_cupom)
+            ->delete();
+
+            Cupom::where('nro_cupom', $nro_cupom)->update(['status' => "CANCELADO"]);
+        }
+
+        return response()->json(['message' => 'Venda cancelada com sucesso!']);
+    }
+
+    function cupom()
+    {
         $user_auth = Auth::user()->id;
         $emitente = Emitente::first();
         $cupom_id = Cupom::orderBy('id', 'desc')->skip(1)->limit(1)->first();
         $total    = null;
-
+       
         $descricao_caixa = NumeroCaixa::join('caixas', 'numero_caixas.id' , '=', 'caixas.nro_caixa_id')
         ->select('numero_caixas.descricao AS descricao_caixa')
         ->where('caixas.user_abertura_id', $user_auth)
@@ -174,7 +284,7 @@ class VendasController extends Controller
 
         $view = view('vendas.cupom', compact('descricao_caixa', 'emitente', 'itens', 'cupom', 'qtd_itens', 'total'));
        
-        $pdf = PDF::loadHTML($view)->setPaper([0, 0, 807.874, 221.102], 'landscape');
+        $pdf = PDF::loadHTML($view)->setPaper([20, 0, 807.874, 201.102], 'landscape');
         
         return $pdf->stream();
     }

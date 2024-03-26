@@ -11,5 +11,5 @@ class VendaCupom extends Model
 
     protected $table = 'venda_cupoms';
 
-    protected $fillable = ['cupom_id','caixa_id', 'total_venda', 'forma_pagamento', 'valor_recebido', 'desconto', 'troco'];
+    protected $fillable = ['user_id', 'cupom_id','caixa_id', 'total_venda', 'forma_pagamento', 'valor_recebido', 'desconto', 'troco'];
 }

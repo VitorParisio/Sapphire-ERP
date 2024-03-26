@@ -3,9 +3,6 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="pagamento_title"><i><b>FORMA DE PAGAMENTO</b></i></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border:none; border-radius:10px">
-            <span aria-hidden="true" style="font-weight: bold">X</span>
-          </button>
         </div>
         <div class="modal-body">
           <div class="pagamento_pdv">
@@ -37,6 +34,9 @@
           </div>
           <div class="btn_finalizar_venda">
             <button type="button" class="btn btn-success" id="disabled_btn_finaliza_venda" onclick="finalizarVenda()"><i class="fas fa-dollar-sign"></i> Finalizar venda</button>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border:none; border-radius:10px; position: absolute; margin-top:37px;">
+              <span aria-hidden="true" style="font-weight: bold">X</span>
+            </button>
           </div>
         </div>
       </div>

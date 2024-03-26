@@ -75,7 +75,7 @@
     <div style="padding:10px 0;">
         <span><small>Total Caixa:<b> R$ {{number_format($info_caixa->total_caixa,'2',',','.')}}</b> (previsto)</small></span><br>
         <div style="width:100%; text-align:center; margin-top:30px; border:1px solid black">
-            <h2><b>FECHAMENTO GERAL</b></h2>
+            <h5><b>FECHAMENTO GERAL</b></h5>
             <span><h1>R$ {{number_format($fechamento,'2',',','.')}}</h1></span>
         </div>
     </div>

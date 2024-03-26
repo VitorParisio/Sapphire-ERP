@@ -18,6 +18,7 @@ class CreateCupomsTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('caixa_id')->nullable();
             $table->integer('nro_cupom')->nullable();
+            $table->string('status')->nullable();
         });
     }
 

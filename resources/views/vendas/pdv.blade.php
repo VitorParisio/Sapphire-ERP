@@ -81,6 +81,7 @@
         </div> 
         <button id="btn_modal_venda" data-toggle="modal" data-target="#pagamento_modal" style="display: none"></button>
         <button id="btn_modal_tabela_produto" data-toggle="modal" data-target="#tabela_produto_modal" style="display: none"></button>
+        <button id="btn_modal_cancela_venda" data-toggle="modal" data-target="#cancela_venda_modal" style="display: none"></button>
       </div>
       <div class="total_venda_pdv_mobile" style="position:absolute; right:0; margin-top:13px">
         <label  for="total_venda" style="font-size:35px; font-weight:bold;">TOTAL</label><br>
@@ -122,16 +123,16 @@
       <div class="lista_atalhos">
         <div class="lista_teclas">
           <div style="position: relative;">
-            <img src="{{asset('img/sapphire_logo.png')}}" alt="logo" style="position: absolute; height: 63px; margin: 9px 0;">
-            <span></span>
+            <span><b>F1</b> - INICIAR VENDA</span>
+            <span><b>F9</b> - BUSCAR PRODUTO</span>
           </div>
           <div>
-            <span>Alt + 3 - INICIAR VENDA&nbsp<i class="fas fa-sticky-note"></i></span>
-            <span>Alt + Q - BUSCAR PRODUTO&nbsp<i class="fas fa-search"></i></span>
+            <span><b>F5</b> - PAGAMENTO</span>
+            <span><b>F8</b> - CANCELAR VENDA</span>
           </div>
           <div>
-            <span>Alt + ENTER - PAGAMENTO&nbsp<i class="fas fa-money-bill-wave"></i></span>
-            <span>Alt + R - FECHAR CAIXA&nbsp<i class="fas fa-cash-register"></i></span>
+            <span><b>Alt + Q</b> - FECHAR CAIXA</span>
+            <span><b>Alt + R</b> - SAIR</span>
           </div>
         </div>
       </div>
@@ -140,6 +141,9 @@
       </div>
       <div>
         @include('modals.pdv.pagamento')
+      </div>
+      <div>
+        @include('modals.pdv.cancela_venda')
       </div>
     </div>
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
@@ -154,21 +158,40 @@
        
         document.addEventListener('keydown', (e) => {
             tecla_pressionada[e.key] = true;
+
+            if(e.key === "F1")
+              e.preventDefault();
             
-            if (tecla_pressionada['Alt'] && e.key == 'Enter')
-              $("#btn_modal_venda").trigger( "click" ); 
+            if(e.key === "F5")
+              e.preventDefault();
+
+            if(e.key === "F9")
+              e.preventDefault();
+
+            if(e.key === "F8")
+              e.preventDefault();
 
             if (tecla_pressionada['Alt'] && e.key == 'q')
-              $("#btn_modal_tabela_produto").trigger( "click" ); 
+              fecharCaixaPDV();
 
             if (tecla_pressionada['Alt'] && e.key == 'r')
-            {
-              fecharCaixaPDV();
-            }
-             
-            if (tecla_pressionada['Alt'] && e.key == '3') 
-              document.getElementById('cod_barra').focus();
+              sairPDV();
         });
+
+        document.addEventListener('keyup', (e)=>{
+
+            if(e.key === "F1")
+              document.getElementById('cod_barra').focus();
+
+            if(e.key === "F5")
+              $("#btn_modal_venda").trigger( "click" ); 
+
+            if(e.key === "F9")
+              $("#btn_modal_tabela_produto").trigger( "click" ); 
+            
+            if(e.key === "F8")
+              $("#btn_modal_cancela_venda").trigger( "click" ); 
+        })
 
         document.addEventListener('keyup', (e) => {
             delete tecla_pressionada[e.key];
@@ -226,6 +249,32 @@
             setTimeout(() => {
               $("#preloader_full").css({'display' : 'none'});
               window.location.href = "/fecha_caixa";
+            }, 1000); 
+          } 
+        }); 
+      }
+
+      function sairPDV()
+      {
+        swal("Tem certeza que deseja sair?", {
+        buttons: {
+            yes: {
+                text: "Sim",
+                value: "yes"
+            },
+            no: {
+                text: "Não",
+                value: "no"
+            },
+        },
+        icon:"warning", 
+        }).then((value) => {
+          if (value === "yes") {
+            $("#preloader_full").css({'display' : 'block'});
+
+            setTimeout(() => {
+              $("#preloader_full").css({'display' : 'none'});
+              window.location.href = "/dashboard";
             }, 1000); 
           } 
         }); 

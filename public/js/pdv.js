@@ -25,17 +25,67 @@ $(function(){
         getProdutoTabela(data);
     });
 
+    $('.list_venda_pdv_table_search').on('keyup',function(){
+        var data = $(this).val();
+        getVendasTabela(data)
+    });
+
+    $(document).on('click', '.cancela_venda_pdv_link', function(){
+        var nro_cupom_cancel = $(this).closest("tr").children(":first").text();
+
+        swal("Tem certeza que deseja cancelar a venda do cupom nº "+nro_cupom_cancel+"?", {
+            buttons: {
+                yes: {
+                    text: "Sim",
+                    value: "yes"
+                },
+                no: {
+                    text: "Não",
+                    value: "no"
+                },
+                
+            },
+            icon:"warning" 
+        }).then((value) => {
+            if (value === "yes") {
+                $.ajax({
+                    url:"/cancelavendapdv/"+nro_cupom_cancel,
+                    method: 'GET',
+                    beforeSend: () =>{
+                        $("#preloader_full").css({'display' : 'block'});
+                    }, 
+                    success:function(data)
+                    {   
+                        $("#preloader_full").css({'display' : 'none'});
+                        swal({
+                            type: "warning",
+                            text: data.message,
+                            icon: "success",
+                            showCancelButton: false,
+                            confirmButtonColor: "#DD6B55",
+                            closeOnConfirm: false
+                        }).then(() => {
+                            getVendasTabela();
+                            $('#cancela_venda_modal').modal('hide');
+                        });  
+                    }
+                });
+            }
+        });
+    });
+
     $(document).on('click', 'li', function(){
         var item = $(this).text();
         $('#cod_barra').val(item);
         $('#cod_barra_mobile').val(item);
-        document.getElementById('qtd').focus();
         $('.lista_produtos_input').html("")
         $('.lista_produtos_mobile').html("")
+        document.getElementById('qtd').focus();
     });
 
     $(document).on('click', '.produto_nome_busca', function(){
         var item = $(this).text();
+
         $('#cod_barra').val(item);
         $('.produto_search_tabela').val("");
         $('.modal').hide();
@@ -141,7 +191,6 @@ $(function(){
     $('#valor_recebido').mask("000.000.000.000.000,00", {reverse: true});
 
     getProduto();
-    
 });
 
 function getProduto(data)
@@ -193,7 +242,7 @@ function getProduto(data)
                 
                 $('.table_itens_vendas tbody').append('<tr>\
                     <td data-label="#">'+img_tag+'</td>\
-                    <td data-label="Item">'+data.nome+'</td>\
+                    <td data-label="Item">'+data.nome.toUpperCase()+'</td>\
                     <td data-label="VL. Unitário">'+preco_venda+'</td>\
                     <td data-label="Quantidade">'+data.qtd+'</td>\
                     <td data-label="Subtotal">'+sub_total+'</td>\
@@ -208,6 +257,7 @@ function getProduto(data)
 
             totalPagamento();
             getProdutoTabela();
+            getVendasTabela();
         }
     });
 }
@@ -220,7 +270,6 @@ function getProdutoSearch(data = '')
         success: function(data) {
           $('.lista_produtos_input').html(data);
           $('.lista_produtos_mobile').html(data);
-          console.log(data);
         }
     })
 }
@@ -233,6 +282,18 @@ function getProdutoTabela(query = '')
         success:function(data)
         {   
            $('.table_produto_list_pdv tbody').html(data.produto_nome_busca);
+        }
+    });
+}
+
+function getVendasTabela(query = '')
+{   
+    $.ajax({
+        url:"/getvendastablepdv/"+query,
+        method: 'GET',
+        success:function(data)
+        {   
+           $('.tabela_vendas_pdv tbody').html(data.venda_pdv_busca);
         }
     });
 }
@@ -354,6 +415,7 @@ $.ajax({
     },
     success:function(data)
     {
+        getVendasTabela();
         removeProdutos();
         $('.total_venda').val('R$ 0,00');
         $('.table_itens_vendas tbody').html("");

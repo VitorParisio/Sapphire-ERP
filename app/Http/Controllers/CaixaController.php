@@ -439,7 +439,7 @@ class CaixaController extends Controller
        
         $view = view('caixas.cupom_fechamento', compact('info_caixa', 'pagamentos', 'fechamento'));
 
-        $pdf = PDF::loadHTML($view)->setPaper([0, 0, 807.874, 321.102], 'landscape');
+        $pdf = PDF::loadHTML($view)->setPaper([20, 0, 807.874, 201.102], 'landscape');
 
         return $pdf->stream();
     }

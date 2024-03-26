@@ -644,6 +644,10 @@ input{
     width: 364px;
 }
 
+#cancela_venda_modal .cancela_venda_pdv {
+    overflow: auto;
+}
+
 .lista_produtos_input {
     position: absolute;
     width: 325px;
@@ -708,7 +712,6 @@ input{
 }
 
 .lista_atalhos .lista_teclas{
-    text-align: center;
     display: flex;
     justify-content: space-around;
 }
@@ -717,8 +720,7 @@ input{
 {
     background-color: #183c70;
     color: #FFF;
-    font-size: 13px;
-    padding: 10px;
+    font-size: 14px;
     width: 100%;
     display: block;
 }
