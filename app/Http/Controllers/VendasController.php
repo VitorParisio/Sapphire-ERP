@@ -252,6 +252,54 @@ class VendasController extends Controller
         return response()->json(['message' => 'Venda cancelada com sucesso!']);
     }
 
+    function conferenciaCaixa(Request $request)
+    { 
+        $conferencia_caixa           = '';
+        $total_row_conferencia_caixa = '';
+
+        if ($request->ajax())
+        {
+            $conferencia_caixa_valores = VendaCupom::join('cupoms', 'cupoms.id', '=', 'venda_cupoms.cupom_id')
+            ->select('cupoms.nro_cupom', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.total_venda')
+            ->whereDate('venda_cupoms.created_at', Carbon::today())
+            ->orderBy('cupoms.nro_cupom', 'DESC')
+            ->get();
+            
+            $conferencia_caixa_total = VendaCupom::whereDate('venda_cupoms.created_at', Carbon::today())
+            ->sum('total_venda');
+
+            $conferencia_caixa_total = number_format($conferencia_caixa_total,2,',','.');
+
+            $total_row_conferencia_caixa = $conferencia_caixa_valores->count();
+         
+            if ($total_row_conferencia_caixa > 0)
+            {
+              foreach($conferencia_caixa_valores as $listConferenciaCaixa)
+              {
+                $conferencia_caixa .='
+                  <tr>
+                      <td>'.$listConferenciaCaixa->nro_cupom.'</td>
+                      <td>R$ '.number_format($listConferenciaCaixa->valor_recebido, 2, ',','.').'</td>
+                      <td>R$ '.number_format($listConferenciaCaixa->troco, 2, ',','.').'</td>
+                      <td>R$ '.number_format($listConferenciaCaixa->desconto, 2, ',','.').'</td>
+                      <td>R$ '.number_format($listConferenciaCaixa->total_venda, 2, ',','.').'</td>
+                  </tr>
+                ';
+              }
+            }
+            else
+            {
+              $conferencia_caixa ='
+              <tr>
+                  <td colspan="7" style="font-weight:100; font-size: 19px"><i>Nenhuma venda tem sido realizada.</i></td>
+              </tr>
+              ';
+            }
+        }
+
+        return response()->json(['conferencia_caixa' => $conferencia_caixa, 'conferencia_caixa_total' => $conferencia_caixa_total, 'total_row_conferencia_caixa' => $total_row_conferencia_caixa]);
+    }
+
     function cupom()
     {
         $user_auth = Auth::user()->id;
@@ -276,15 +324,16 @@ class VendasController extends Controller
         $cupom = Cupom::join('users', 'users.id', '=', 'cupoms.user_id')
         ->join('caixas', 'caixas.id', '=', 'cupoms.caixa_id')
         ->join('venda_cupoms', 'venda_cupoms.cupom_id', '=', 'cupoms.id')
-        ->select('users.name', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento', 'venda_cupoms.created_at')
+        ->select('cupoms.nro_cupom', 'users.name', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento', 'venda_cupoms.created_at')
         ->where('cupoms.id', $cupom_id->id)
-        ->groupBy('users.name', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento','venda_cupoms.created_at')->get();
+        ->groupBy('cupoms.nro_cupom', 'users.name', 'venda_cupoms.total_venda', 'venda_cupoms.valor_recebido', 'venda_cupoms.troco', 'venda_cupoms.desconto', 'venda_cupoms.forma_pagamento','venda_cupoms.created_at')
+        ->get();
        
         $total = $cupom[0]->total_venda + $cupom[0]->desconto;
 
         $view = view('vendas.cupom', compact('descricao_caixa', 'emitente', 'itens', 'cupom', 'qtd_itens', 'total'));
        
-        $pdf = PDF::loadHTML($view)->setPaper([20, 0, 807.874, 201.102], 'landscape');
+        $pdf = PDF::loadHTML($view)->setPaper([20, 0, 807.874, 190.102], 'landscape');
         
         return $pdf->stream();
     }

@@ -82,6 +82,7 @@
         <button id="btn_modal_venda" data-toggle="modal" data-target="#pagamento_modal" style="display: none"></button>
         <button id="btn_modal_tabela_produto" data-toggle="modal" data-target="#tabela_produto_modal" style="display: none"></button>
         <button id="btn_modal_cancela_venda" data-toggle="modal" data-target="#cancela_venda_modal" style="display: none"></button>
+        <button id="btn_modal_conferencia_caixa" data-toggle="modal" data-target="#conferencia_caixa_modal" style="display: none"></button>
       </div>
       <div class="total_venda_pdv_mobile" style="position:absolute; right:0; margin-top:13px">
         <label  for="total_venda" style="font-size:35px; font-weight:bold;">TOTAL</label><br>
@@ -131,7 +132,10 @@
             <span><b>F8</b> - CANCELAR VENDA</span>
           </div>
           <div>
+            <span><b>F4</b> - CONFERÊNCIA CAIXA</span>
             <span><b>Alt + Q</b> - FECHAR CAIXA</span>
+          </div>
+          <div> 
             <span><b>Alt + R</b> - SAIR</span>
           </div>
         </div>
@@ -144,6 +148,9 @@
       </div>
       <div>
         @include('modals.pdv.cancela_venda')
+      </div>
+      <div>
+        @include('modals.pdv.conferencia_caixa')
       </div>
     </div>
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
@@ -170,9 +177,13 @@
 
             if(e.key === "F8")
               e.preventDefault();
+            
+             if(e.key === "F4")
+              e.preventDefault();
 
             if (tecla_pressionada['Alt'] && e.key == 'q')
-              fecharCaixaPDV();
+              fecharCaixaPDV(); 
+          
 
             if (tecla_pressionada['Alt'] && e.key == 'r')
               sairPDV();
@@ -191,6 +202,9 @@
             
             if(e.key === "F8")
               $("#btn_modal_cancela_venda").trigger( "click" ); 
+
+            if(e.key === "F4")
+              $("#btn_modal_conferencia_caixa").trigger( "click" );
         })
 
         document.addEventListener('keyup', (e) => {

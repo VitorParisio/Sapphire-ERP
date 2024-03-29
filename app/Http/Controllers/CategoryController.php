@@ -15,7 +15,7 @@ class CategoryController extends Controller
 
         foreach($categorias as $categoria)
         {
-            $categoria->categoria = ucfirst($categoria->categoria);
+            $categoria->categoria = strtoupper($categoria->categoria);
             
             if ($categoria->descricao == null)
             {

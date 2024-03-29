@@ -24,6 +24,7 @@
         @if ($emitente->cep)
             <span style="font-size:11px;">CEP: {{$emitente->cep}}</span><br>
         @endif
+        <span style="font-size:11px;">Cupom: {{$cupom[0]->nro_cupom}}</span><br>
     </div>
     <span style="font-size:11px; font-weight:bold;">------------------------------------------------------</span>
     <div>

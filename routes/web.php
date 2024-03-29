@@ -133,6 +133,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/cupom', [VendasController::class, 'cupom'])->name('cupom.vendas');
     Route::get('/getvendastablepdv/{query?}', [VendasController::class, 'tabelaVendasPdv'])->name('cupom.tabela_venda_pdv');
     Route::get('/cancelavendapdv/{nro_cupom}', [VendasController::class, 'cancelaVendaPDV'])->name('cupom.cancela_venda_pdv');
+    Route::get('/conferenciacaixa', [VendasController::class, 'conferenciaCaixa'])->name('item_vendas.conferencia_caixa');
     
     Route::get('notas_fiscais', [NfeController::class, 'index'])->name('index.nfe');
     Route::get('cadastrar_nota', [NfeController::class, 'create'])->name('create.nfe');

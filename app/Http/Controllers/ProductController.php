@@ -61,8 +61,8 @@ class ProductController extends Controller
             <tr>
               <td data-label="#">'.$img_prod.'</td>
               <td data-label="Código">'.$row->id.'</td>
-              <td data-label="Categoria">'.ucfirst($row->categoria).'</td>
-              <td data-label="Produto">'.ucfirst($row->nome).'</td>
+              <td data-label="Categoria">'.strtoupper($row->categoria).'</td>
+              <td data-label="Produto">'.strtoupper($row->nome).'</td>
               <td data-label="Preço venda">R$ '.number_format($row->preco_venda, 2, ',', '.').'</td>
               <td data-label="Estoque">'.$row->estoque.'</td>
               <td style="display:none;">'.$qtd_atacado.'</td>

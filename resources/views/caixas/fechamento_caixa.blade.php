@@ -566,6 +566,7 @@
     function imprimirCupomFechamento(caixa_id) {
         var popupWindow = window.open('/imprimir_cupom_fechamento/'+caixa_id, '_blank', "width=300, height=600");
         popupWindow.focus();
+        popupWindow.print(); 
     }
 
     function caixaLogout(caixa_id) {

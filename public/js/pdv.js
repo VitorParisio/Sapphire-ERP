@@ -66,6 +66,7 @@ $(function(){
                             closeOnConfirm: false
                         }).then(() => {
                             getVendasTabela();
+                            conferenciaCaixa();
                             $('#cancela_venda_modal').modal('hide');
                         });  
                     }
@@ -258,6 +259,7 @@ function getProduto(data)
             totalPagamento();
             getProdutoTabela();
             getVendasTabela();
+            conferenciaCaixa();
         }
     });
 }
@@ -296,6 +298,20 @@ function getVendasTabela(query = '')
            $('.tabela_vendas_pdv tbody').html(data.venda_pdv_busca);
         }
     });
+}
+
+function conferenciaCaixa()
+{
+    $.ajax({
+        url:"/conferenciacaixa/",
+        method: 'GET',
+        success:function(data)
+        {   
+           $('.tabela_conferencia_caixa tbody').html(data.conferencia_caixa);
+           $('.total_venda_conferencia_caixa').html(data.conferencia_caixa_total);
+           $('.total_values_conferencia_caixa').html(data.total_row_conferencia_caixa);
+        }
+    }); 
 }
 
 function totalPagamento(){
@@ -416,6 +432,7 @@ $.ajax({
     success:function(data)
     {
         getVendasTabela();
+        conferenciaCaixa();
         removeProdutos();
         $('.total_venda').val('R$ 0,00');
         $('.table_itens_vendas tbody').html("");
