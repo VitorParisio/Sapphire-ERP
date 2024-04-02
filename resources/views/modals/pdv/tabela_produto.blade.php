@@ -11,10 +11,10 @@
           <div class="tabela_produto_pdv">
             <input type="text" class="produto_search_tabela" placeholder="Pesquisar..."/>
             <hr>
-            <div class="tabela_produtos">
+            <div class="tabela_produtos" style="overflow: auto; height: 300px;">
                 <table class="table table-striped table_produto_list_pdv">
                     <thead>
-                        <th>ID</th>
+                        <th>Código</th>
                         <th>Produto</th>
                         <th>Preço venda</th>
                         <th>Preço atacado</th>

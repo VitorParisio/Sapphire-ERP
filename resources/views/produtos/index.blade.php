@@ -19,19 +19,19 @@
         <div class="tabcontainer">
             <div>
                 <ul class="tabheading">
-                    <li class="active" rel="tab1" >
+                    <li class="active" rel="tab1" id="tabhead1">
                         <a href="#">
-                            <small><i class="fas fa-tags"></i> Categorias</small>
+                            <small><i class="fas fa-tags"></i> CATEGORIAS - <b>F1</b></small>
                         </a>
                     </li>
-                    <li rel="tab2">
+                    <li rel="tab2" id="tabhead2">
                         <a href="#">
-                            <small><i class="fas fa-list fa-x3"></i> Lista de produtos</small>
+                            <small><i class="fas fa-list fa-x3"></i> LISTA DE PRODUTOS - <b>F2</b></small>
                         </a> 
                     </li>
-                    <li rel="tab3">
+                    <li rel="tab3" id="tabhead3">
                         <a href="#">
-                            <small><i class="fas fa-plus fa-x3"></i> Novo produto</small>
+                            <small><i class="fas fa-plus fa-x3"></i> NOVO PRODUTO - <b>F3</b></small>
                         </a>
                     </li>
                 </ul>
@@ -70,7 +70,7 @@
                                 <label for="descricao_categoria">Descrição</label>
                                 <textarea rows="5" name="descricao" id="descricao_categoria" value="{{old('descricao')}}"></textarea>
                             </div>
-                            <button class="btn_add_categoria" onclick="addCategoria()">Adicionar</button>
+                            <button class="btn_add_categoria" onclick="addCategoria()">ADICIONAR - <b>F4</b></button>
                         </div>
                     </div>
                 </div>
@@ -174,6 +174,10 @@
                             <label for="situacao_tributaria">Situação Tributária
                                 <input type="text" class="form-control" name="situacao_tributaria" id="situacao_tributaria" value="102 - Tributada pelo Simples Nacional sem permissão de crédito">
                             </label>
+                            <div style="display:flex; gap:4px; margin-top:15px; position: absolute; bottom: 60px; right:22px; ">
+                                <button class="btn_adicionar_produto" type="submit" style="border: none; background: #3f6792; color: #FFF;">ADICIONAR - <b>F6</b></button><br>
+                                <input type="reset" value="CANCEL" class="btn btn-danger">
+                            </div>
                             <label for="ceantrib" style="display: none">EAN Unid. Tributável
                                 <input type="text" class="form-control" name="ceantrib" id="ceantrib" value="{{ old('ceantrib')}}">
                             </label>
@@ -185,10 +189,6 @@
                             </label>
                         </div>
                         <hr>
-                        <div style="display:flex; gap:4px; margin-top:15px;">
-                            <button type="submit" style="border: none; background: #3f6792; color: #FFF;">Adicionar</button><br>
-                            <input type="reset" value="Cancel" class="btn btn-danger">
-                        </div>
                     </form>
                 </div>
                 <div class="tabbody" id="tab2" style="display: none;">
@@ -286,6 +286,63 @@
         $('#lucro_per_editar').attr('readonly', "true");
         $('#situacao_tributaria_editar').prop('disabled', true);
 
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "F1")
+                e.preventDefault();
+            
+            if (e.key === "F2")
+                e.preventDefault();
+
+            if (e.key === "F3")
+                e.preventDefault();
+            
+            if (e.key === "F4")
+                e.preventDefault();
+            
+            if (e.key === "F5")
+                e.preventDefault();
+                
+            if (e.key === "F6")
+                e.preventDefault();
+        });
+
+        document.addEventListener('keyup', (e)=>{
+            if (e.key === "F1")
+            {
+                $("#tabhead1").trigger( "click" ); 
+                $("#categoria").focus();
+            }
+            
+            if (e.key === "F2")
+            {
+                $("#tabhead2").trigger( "click" );
+                $("#search_product").focus();
+            }
+                
+            if (e.key === "F3")
+            {
+                $("#tabhead3").trigger( "click" );
+                $("#select_categoria").focus();
+            }
+        });
+        
+        document.addEventListener('keyup', (e)=>{
+            if(e.key === "F4")
+                if ($("#tabhead1").attr('class') == 'active')
+                    $(".btn_add_categoria").trigger( "click" );
+                
+            if(e.key === "F5")
+                if ($("#editar_produto_modal").attr('class') == 'modal fade show')
+                    $(".btn_editar_produto").trigger( "click" );
+
+            if(e.key === "F6")
+                if ($("#tabhead3").attr('class') == 'active')
+                    if ($("#lucro_real").val() == "" || $("#lucro_per").val() == "")
+                        return false;
+                    else
+                        $(".btn_adicionar_produto").trigger( "click" );
+        });
+
         $('.search_category').on('keyup',function(){
             var value = $(this).val();
             searchCategory(value);
@@ -325,8 +382,8 @@
         });  
 
         $('#preco_venda').blur(function(){
-            var preco_venda_lucro = $(this).val();
-            var preco_compra_lucro  = $('#preco_compra').val();
+            var preco_venda_lucro  = $(this).val();
+            var preco_compra_lucro = $('#preco_compra').val();
             
             if (preco_compra_lucro != "" && preco_venda_lucro != "")
                 lucroValores(preco_compra_lucro, preco_venda_lucro)
@@ -556,6 +613,7 @@
                             $('#form_cadastro_produto').find('#situacao_tributaria').val("102 - Tributada pelo Simples Nacional sem permissão de crédito");
                             $('#form_cadastro_produto').find('#cfop').val("5101");
                             $('.img_produto_input span').next().text("Selecionar imagem");
+                            $("#select_categoria").focus();
 
                             getCategoria();
                             getProduto();
@@ -743,7 +801,8 @@
                     $('.list_produtos_estoque_baixo').html(data.dados_produtos_estoque_baixo); 
                 }
             });
-        })
+        });
+        
         $(document).delegate('.select_produto_estoque_baixo', 'click', function(e){
 
             $('#estoque_baixo_modal').modal('hide');
@@ -963,6 +1022,7 @@
 
     function lucroValores(preco_compra_lucro, preco_venda_lucro)
     {
+    
         var options = { 
                 currency: 'BRL', 
                 minimumFractionDigits: 2, 

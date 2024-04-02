@@ -232,12 +232,16 @@
             var cheque_forma_pagamento         = '';
             var dinheiro_forma_pagamento       = '';
             var pix_forma_pagamento            = '';
+            var is_atacado                     = '';
             var forma_pagamento_fechamento     = $("input[name='forma_pagamento_fechamento[]']")
                 .map(function()
                 {  
                     return $(this).val();
                     
                 }).get();
+
+            is_atacado = $('table tbody tr').find('td:eq(2)').html();
+            console.log(is_atacado)
          
             for(var i = 0; i < forma_pagamento_fechamento.length; i++)
             {
@@ -491,6 +495,24 @@
                 }           
             });
         });
+    
+    function isAtacado()
+    {
+        $.ajax({
+            url: '/isatacado/'+caixa_id,
+            method:'GET',
+            success:function(data)
+            {
+                if (data)
+                {
+                    window.location.href = data;
+                }
+                else {
+                    window.location.href = '/login'
+                }
+            }
+        });       
+    }
 
     function fechamentoCaixa(caixa_id)
     {

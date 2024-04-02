@@ -224,11 +224,11 @@ class CaixaController extends Controller
 
         $itens_vendidos = ItemVenda::join('caixas', 'caixas.id', '=', 'item_vendas.caixa_id')
         ->join('products', 'products.id', '=', 'item_vendas.product_id')
-        ->selectRaw('products.nome, SUM(item_vendas.qtd) as item_qtd, products.id, SUM(item_vendas.sub_total) as item_soma_total, products.preco_venda')
+        ->selectRaw('products.nome, item_vendas.qtd, SUM(item_vendas.qtd) as item_qtd, products.id, SUM(item_vendas.sub_total) as item_soma_total, products.preco_venda')
         ->where('caixas.user_abertura_id', $user_auth_id)
         ->where('caixas.id', $caixa_info->caixa_id)
         ->where('caixas.status', 1)
-        ->groupBy('products.nome', 'products.id', 'products.preco_venda')
+        ->groupBy('products.nome', 'products.id', 'products.preco_venda', 'item_vendas.qtd')
         ->get();
 
         $qtd_itens_vendidos = count($itens_vendidos);

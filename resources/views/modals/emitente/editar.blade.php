@@ -97,7 +97,7 @@
                 <input type="text" class="uf_editar" id="uf_editar" name="uf"/>
               </div>
               <hr>
-              <button type="submit" class="btn btn-primary">Editar</button>
+              <button type="submit" class="btn btn-primary btn_editar_emitente">EDITAR - <b>F4</b></button>
             </form>
           </div>
         </div>

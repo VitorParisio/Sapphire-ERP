@@ -188,7 +188,7 @@ class VendasController extends Controller
                     <td>'.$listVendaTablePdv->nro_cupom.'</td>
                     <td>'.date("d/m/Y", strtotime($listVendaTablePdv->created_at)).'</td>
                     <td>CONSUMIDOR FINAL</td>
-                    <td>'.ucfirst($listVendaTablePdv->name).'</td>
+                    <td>'.strtoupper($listVendaTablePdv->name).'</td>
                     <td>R$ '.number_format($listVendaTablePdv->total_venda,2,',','.').'</td>
                     <td>'.$listVendaTablePdv->status.'</td>
                     <td><a href="javascript:void(0);" class="cancela_venda_pdv_link"><i class="fas fa-ban"></i></a></td>

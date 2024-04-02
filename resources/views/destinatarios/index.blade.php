@@ -18,14 +18,14 @@
         <div class="tabcontainer">
             <div>
                 <ul class="tabheading">
-                    <li class="active" rel="tab1" >
+                    <li class="active" rel="tab1" id="tabhead1">
                         <a href="#">
-                            <small><i class="fas fa-list fa-x3"></i> Lista de clientes</small>
+                            <small><i class="fas fa-list fa-x3"></i> LISTA DE CLIENTES - <b>F1</b></small>
                         </a>
                     </li>
-                    <li rel="tab2">
+                    <li rel="tab2" id="tabhead2">
                         <a href="#">
-                            <small><i class="fas fa-plus fa-x3"></i> Novo cliente</small>
+                            <small><i class="fas fa-plus fa-x3"></i> NOVO CLIENTE - <b>F2</b></small>
                         </a> 
                     </li>
                 </ul>
@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                             <div style="display:flex; gap:4px; margin-top:10px;">
-                                <button type="submit" style="border: none; background: #3f6792; color: #FFF;">Adicionar</button><br>
+                                <button type="submit" class="btn_add_destinatario" style="border: none; background: #3f6792; color: #FFF;">ADICIONAR - <b>F3</b></button><br>
                                 <input type="reset" value="Cancel" class="btn btn-danger">
                             </div>
                         </form>
@@ -141,6 +141,47 @@
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "F1")
+                e.preventDefault();
+            
+            if (e.key === "F2")
+                e.preventDefault();
+            
+            if (e.key === "F3")
+                e.preventDefault();
+        });
+    
+        document.addEventListener('keyup', (e)=>{
+            if (e.key === "F1")
+            {
+                $("#tabhead1").trigger( "click" ); 
+            
+            }
+            
+            if (e.key === "F2")
+            {
+                $("#tabhead2").trigger( "click" );
+            
+            }
+                
+            if (e.key === "F3")
+            {
+                $("#tabhead3").trigger( "click" );
+            
+            }
+        });
+
+        document.addEventListener('keyup', (e)=>{
+            if (e.key === "F3")
+                if ($("#tabhead2").attr('class') == 'active')
+                    $(".btn_add_destinatario").trigger( "click" );
+
+            if (e.key === "F4")
+                if ($("#editar_cliente_modal").attr('class') == 'modal fade show')
+                    $(".btn_editar_destinatario").trigger( "click" );
         });
 
         $('.search_cliente').on('keyup',function(){

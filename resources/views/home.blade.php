@@ -66,11 +66,11 @@
                                 <div class="icon">
                                     <i class="fas fa-users"></i>
                                 </div>
-                                <a href="/clientes" class="small-box-footer">Ir para clientes</a>
+                                <a href="/clientes" class="small-box-footer">IR PARA CLIENTES - <b>F8</b></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-6">
-                            <div class="small-box bg-warning">
+                            <div class="small-box bg-info">
                                 <div class="inner">
                                     <div class="mb-3" style="position: relative;">
                                         <div class="visibility_values_dashboard" id="values_produtos_dashboard" style="background: #2b302d; height:40px; width:100%; border-radius: 5px; position:absolute; display:block"></div>
@@ -83,7 +83,7 @@
                                 <div class="icon">
                                     <i class="fab fa-product-hunt"></i>
                                 </div>
-                                <a href="/produtos" class="small-box-footer">Ir para produtos</a>
+                                <a href="/produtos" class="small-box-footer">IR PARA PRODUTOS - <b>F9<b/></a>
                             </div>
                         </div>
                     </div>
@@ -241,7 +241,15 @@
                 }
                 }
             }
-            });
+        });
+
+        document.addEventListener('keyup', (e)=>{
+            if (e.key === "F8")
+                $(location).prop('href', '/clientes');
+            
+            if (e.key === "F9")
+                $(location).prop('href', '/produtos');
+        });
     });
 
     function changeTagAllNone()

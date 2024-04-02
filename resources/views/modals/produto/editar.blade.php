@@ -92,14 +92,15 @@
                   <input type="date" class="validade_editar" id="validade" name="validade"/>
                 </div>
               </div>
-              <div style="display:flex; justify-content: space-between">
-                <div style="margin-top: 4px;">
+              <div style="position:relative; margin-top: 4px; display:flex; justify-content: space-between; width:100%">
+                <div>
                   <label for="validade">Entrada de produto?</label>
                   <div class="entrada_produto_editar">
                     Sim <input type="radio" name="entrada" value="yes">
                     Não <input type="radio" name="entrada" value="no">
                   </div>
                 </div>
+                <button style="position: absolute; right:0; top: 15px;" type="submit" class="btn btn-primary btn_editar_produto">Editar produto - <b>F5</b></button>
               </div>
               <div>
                 <h4 style="background:teal; color:#FFF; padding:5px; font-size:16px; margin-top:10px;"><i class="fas fa-file-invoice-dollar"></i> Dados fiscais</h4>
@@ -144,7 +145,6 @@
               </label>
               <input type="hidden" class="id_editar"/>
               <div style="margin-top:10px; float: right;">
-              <button type="submit" class="btn btn-primary">Editar produto</button>
             </form>
           </div>
         </div>

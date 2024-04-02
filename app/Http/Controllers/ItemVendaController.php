@@ -169,7 +169,7 @@ class ItemVendaController extends Controller
               $output.='<ul class="list-group" style="display:block; position:relative; margin:41px 0px;">';
                   foreach($produto_nome as $nomes)
                   {
-                      $output.='<li class="list-group-item item_search">'.$nomes->nome.'</li>';
+                      $output.='<li class="list-group-item item_search">'.strtoupper($nomes->nome).'</li>';
                   }
               $output.='</ul>';
           }
@@ -193,13 +193,13 @@ class ItemVendaController extends Controller
         {
           if ($query != '')
           {
-            $produto = Product::select('nome', 'preco_venda', 'preco_atacado')
+            $produto = Product::select('id', 'nome', 'preco_venda', 'preco_atacado')
             ->where('nome','LIKE','%'.$query.'%')
             ->get(); 
           }
           else
           {
-            $produto = Product::select('nome', 'preco_venda', 'preco_atacado')
+            $produto = Product::select('id', 'nome', 'preco_venda', 'preco_atacado')
             ->orderBy('nome', 'ASC')
             ->get();
           }
@@ -213,7 +213,7 @@ class ItemVendaController extends Controller
               $produto_nome_busca .='
                 <tr>
                   <td>'.$row->id.'</td>
-                  <td class="produto_nome_busca"><a href="javascript:void(0);">'.ucfirst($row->nome).'</a></td>
+                  <td class="produto_nome_busca"><a href="javascript:void(0);">'.strtoupper($row->nome).'</a></td>
                   <td>R$ '.number_format($row->preco_venda, 2, ',', '.').'</td>
                   <td>R$ '.number_format($row->preco_atacado, 2, ',', '.').'</td>
                 </tr>
