@@ -16,7 +16,7 @@ return [
 
     'title' => 'Sapphire',
     'title_prefix' => 'Sapphire',
-    'title_postfix' => '- SmartNet',
+    'title_postfix' => '- ERP',
 
     /*
     |--------------------------------------------------------------------------
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<i><b>SAPPHIRE</b></i>',
+    'logo' => '<span style="font-style: initial; font-weight: bold;">SAPPHIRE</span>',
     'logo_img' => 'vendor/adminlte/dist/img/sapphire_logo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -107,7 +107,7 @@ return [
     */
 
     'preloader' => [
-        'enabled' => true,
+        'enabled' => null,
         'img' => [
             'path' => 'vendor/adminlte/dist/img/sapphire_logo.png',
             'alt' => 'SAPPHIRE',
@@ -192,7 +192,7 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
+    'classes_sidebar' => 'sidebar-dark-info elevation-4',
     'classes_sidebar_nav' => '',
     'classes_topnav' => 'navbar-white navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
@@ -322,6 +322,24 @@ return [
             'url'  => '/caixas',
             'icon' => 'fas fa-cash-register',
         ],
+
+        [
+            'text'    => 'Relatórios',
+            'icon'    => 'far fa-copy',
+            'submenu' => [
+                [
+                'text' => 'Produtos',
+                'url'  => '/relatorio_produto',
+                'icon' => ''
+                ],
+                [
+                'text' => 'Vendas',
+                'url'  => '/relatorio_venda',
+                'icon' => ''
+                ],
+            ],
+        ],
+
         [
             'text'    => 'Fiscal',
             'icon'    => 'fas fa-file-alt',

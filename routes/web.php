@@ -15,6 +15,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\NfeController;
 use App\Http\Controllers\ItemVendaNfeController;
 use App\Http\Controllers\CaixaController;
+use App\Http\Controllers\RelatorioController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -134,6 +135,11 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/getvendastablepdv/{query?}', [VendasController::class, 'tabelaVendasPdv'])->name('cupom.tabela_venda_pdv');
     Route::get('/cancelavendapdv/{nro_cupom}', [VendasController::class, 'cancelaVendaPDV'])->name('cupom.cancela_venda_pdv');
     Route::get('/conferenciacaixa', [VendasController::class, 'conferenciaCaixa'])->name('item_vendas.conferencia_caixa');
+  
+    Route::get('/relatorio_produto', [RelatorioController::class, 'relProduto'])->name('relatorio.produtos');
+    Route::get('/relatorio_venda', [RelatorioController::class, 'relVenda'])->name('relatorio.vendas');
+    Route::get('/filtro_produto', [RelatorioController::class, 'filtroProduto'])->name('filtro_produto.produtos');
+    Route::get('/tst', [RelatorioController::class, 'tst'])->name('tst.produtos');
     
     Route::get('notas_fiscais', [NfeController::class, 'index'])->name('index.nfe');
     Route::get('cadastrar_nota', [NfeController::class, 'create'])->name('create.nfe');

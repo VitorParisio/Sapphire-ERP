@@ -197,12 +197,12 @@
                             <input class="search_product" id="search_product" name="search_product" type="text" placeholder="Pesquisar produto" style="outline: none" autocomplete="off">
                             <div class="total_estoque_baixo">
                                 <span id="total_produtos" style="font-size:13px; position:absolute; margin: -34px 0; font-weight:900"></span>
-                                <a class="estoque_baixo_modal" href="javascript:void(0);" style="font-size: 13px; position: absolute; margin: -34px 99px; font-weight: 900; color:red; display:none"><i>estoque baixo</i></a>
+                                <a class="estoque_baixo_modal" href="javascript:void(0);" style="font-size: 13px; position: absolute; margin: -34px 110px; font-weight: 900; color:red; display:none; text-decoration:underline"><i>Estoque baixo</i></a>
                             </div>
                         </div>
                         <hr>
                         <div style="height: 465px; width:100%; overflow:auto;">
-                            <table class="table table-striped lista_produto_table mobile-tables">
+                            <table id="lista_produto_table" class="table lista_produto_table mobile-tables">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -220,7 +220,7 @@
                         </div>
                     </div>
                 </div>                   
-            </div>
+            </div> 
             <div class="tabbody" id="tab4" style="display: none;">
                 <div class="card">
                     <div class="card-header">
@@ -269,11 +269,11 @@
 <script>
     $(function(){
         $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
         });
-
+        
         $('#cfop').prop('disabled', true);
         $('#situacao_tributaria').prop('disabled', true);
         $('#origem').prop('disabled', true);
@@ -916,7 +916,7 @@
             {   
                 $('.lista_produto_table tbody').html(data.output);
                 $('#total_produtos').text('Total de itens: '+data.total_product);
-                 
+                navegateTableRow();
             }
         });
     }
@@ -1042,5 +1042,48 @@
         $('#lucro_real_editar').val(resultLucroReal);
         $('#lucro_per_editar').val(resultLucroPer.toFixed(2));
     }   
+
+    function navegateTableRow()
+    {
+       var table = document.getElementById('lista_produto_table');
+       var rows  = document.getElementById('lista_produto_table').rows;
+
+       var parent;
+       var index;
+
+       for (var i = 0; i < table.rows.length; i++) {
+        
+            table.rows[i].onclick = function()
+            {
+                if (typeof index !== 'undefined')
+                    table.rows[index].classList.toggle("selected");
+
+                index = this.rowIndex;
+                this.classList.toggle("selected");
+            }
+       }
+       
+       $(document).keydown(function(e) {
+            parent = rows[index].parentNode;
+
+            if (e.keyCode == 38) { 
+               
+                if (index > 1)
+                {
+                    parent.insertBefore(rows[index], rows[index - 1]);
+                    index--;
+                }
+            }
+
+            if (e.keyCode == 40) { 
+               
+               if (index < rows.length - 1)
+               {
+                   parent.insertBefore(rows[index + 1] , rows[index]);
+                   index++;
+               }
+           }
+        });
+    }
 </script>
 @endpush

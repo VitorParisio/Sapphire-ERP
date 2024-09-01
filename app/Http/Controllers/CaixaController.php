@@ -257,6 +257,7 @@ class CaixaController extends Controller
 
     function fechamentoCaixa(Request $request)
     {   
+
         $user_auth  = Auth::user()->id;
         $caixa_info = Caixa::select('id', 'sangria', 'suplemento', 'valor_vendido','total_caixa')
         ->where('user_abertura_id', $user_auth)
